@@ -85,7 +85,8 @@
         </div>
 
         <div class="links">
-            <a href="https://www.zijol.com">HOMEPAGE</a>
+            <a href="http://www.zijol.com">BLOG</a>
+            <a href="http://api-doc.zijol.com/">API_DOC</a>
         </div>
     </div>
 </div>
