@@ -81,11 +81,11 @@
 
     <div class="content">
         <div class="title m-b-md">
-            User-Level
+            ZIJOL API
         </div>
 
         <div class="links">
-            <a href="https://www.pingxx.com">HOMEPAGE</a>
+            <a href="https://www.zijol.com">HOMEPAGE</a>
         </div>
     </div>
 </div>
