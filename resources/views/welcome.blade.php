@@ -85,8 +85,8 @@
         </div>
 
         <div class="links">
-            <a href="http://www.zijol.com">BLOG</a>
-            <a href="http://api-doc.zijol.com/">API_DOC</a>
+            <a href="<?php env('BLOG_URL')?>">BLOG</a>
+            <a href="<?php env('API_DOC_URL')?>">API_DOC</a>
         </div>
     </div>
 </div>
