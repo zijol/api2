@@ -17,4 +17,6 @@ return [
     'MISS_PARAM' => ['code' => '4000', 'msg' => '却少参数'],
     'SYSTEM_ERROR' => ['code' => '5000', 'msg' => '系统出错，请稍后再试试'],
     'PARAM_ERROR' => ['code' => '4001', 'msg' => '参数错误'],
+    'CREATE_PROJECT_FAIL' => ['code' => '4004', 'msg' => '创建项目失败'],
+    'PROJECT_ALREADY_EXIST' => ['code' => '4004', 'msg' => '项目已经存在'],
 ];

@@ -17,4 +17,6 @@ return [
     'MISS_PARAM' => ['code' => '4000', 'msg' => 'Miss params!'],
     'SYSTEM_ERROR' => ['code' => '5000', 'msg' => 'System error, try it later.'],
     'PARAM_ERROR' => ['code' => '4001', 'msg' => 'Parameter validate fail.'],
+    'CREATE_PROJECT_FAIL' => ['code' => '4004', 'msg' => 'create a project fail.'],
+    'PROJECT_ALREADY_EXIST' => ['code' => '4004', 'msg' => 'project already exist'],
 ];

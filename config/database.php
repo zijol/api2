@@ -42,14 +42,14 @@ $config = [
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
-        // 裂变坊
-        'mysql' => [
+        // API_DOC
+        'api_doc' => [
             'driver' => 'mysql',
-            'host' => env('LBF_DB_HOST', '127.0.0.1'),
-            'port' => env('LBF_DB_PORT', '3306'),
-            'database' => env('LBF_DB_DATABASE', 'forge'),
-            'username' => env('LBF_DB_USERNAME', 'forge'),
-            'password' => env('LBF_DB_PASSWORD', ''),
+            'host' => env('API_DOC_DB_HOST', '127.0.0.1'),
+            'port' => env('API_DOC_DB_PORT', '3306'),
+            'database' => env('API_DOC_DB_NAME', 'forge'),
+            'username' => env('API_DOC_DB_USER', 'forge'),
+            'password' => env('API_DOC_DB_PWD', ''),
             'unix_socket' => env('LBF_DB_SOCKET', ''),
             'charset' => 'utf8',
             'collation' => 'utf8_general_ci',

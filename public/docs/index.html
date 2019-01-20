@@ -47,14 +47,129 @@
 <h1>Info</h1>
 <p>Welcome to the generated API reference.</p>
 <!-- END_INFO -->
+<h1>Doc</h1>
+<!-- START_e534f202615339d321e7309b258be05d -->
+<h2>项目详情</h2>
+<p>获取到项目详情，参数id和name，必须传一个，优先使用id进行查询</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X GET -G "http://west.api.zijol.com/doc/project/detail" </code></pre>
+<pre><code class="language-javascript">const url = new URL("http://west.api.zijol.com/doc/project/detail");
+
+    let params = {
+            "id": "pRQlTMBinA5CejDg",
+            "name": "tRl9Pd9DYgRePwmY",
+        };
+    Object.keys(params).forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<blockquote>
+<p>Example response (200):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "code": "0",
+    "msg": "",
+    "result": []
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET doc/project/detail</code></p>
+<h4>Query Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>optional</td>
+<td>optional 项目ID</td>
+</tr>
+<tr>
+<td>name</td>
+<td>optional</td>
+<td>optional 项目名称</td>
+</tr>
+</tbody>
+</table>
+<!-- END_e534f202615339d321e7309b258be05d -->
+<!-- START_a168dcf017bc01c28011a43ec3b8244d -->
+<h2>创建项目</h2>
+<p>新建一个项目</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X POST "http://west.api.zijol.com/doc/project"     -d "project_name"="kxanrQATpl0anLMI" \
+    -d "project_description"="yhEFog2jYEMzfRog" </code></pre>
+<pre><code class="language-javascript">const url = new URL("http://west.api.zijol.com/doc/project");
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+let body = JSON.stringify({
+    "project_name": "kxanrQATpl0anLMI",
+    "project_description": "yhEFog2jYEMzfRog",
+})
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: body
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST doc/project</code></p>
+<h4>Body Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>project_name</td>
+<td>string</td>
+<td>required</td>
+<td>项目名称</td>
+</tr>
+<tr>
+<td>project_description</td>
+<td>string</td>
+<td>required</td>
+<td>项目描述</td>
+</tr>
+</tbody>
+</table>
+<!-- END_a168dcf017bc01c28011a43ec3b8244d -->
 <h1>Helper</h1>
 <!-- START_89d7df66b9c17fd511183d9750ee2f7e -->
 <h2>获取签名</h2>
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X GET -G "http://api.zijol.com/signature" </code></pre>
-<pre><code class="language-javascript">const url = new URL("http://api.zijol.com/signature");
+<pre><code class="language-bash">curl -X GET -G "http://west.api.zijol.com/signature" </code></pre>
+<pre><code class="language-javascript">const url = new URL("http://west.api.zijol.com/signature");
 
     let params = {
             "key": "api",
@@ -78,7 +193,7 @@ fetch(url, {
 <pre><code class="language-json">{
     "code": "0",
     "msg": "",
-    "result": "15c50873f03c4aed0542aa4cef159bfb387f5c8f"
+    "result": "cf989d44b5521c1d2a61387288be97e96a95f8b8"
 }</code></pre>
 <h3>HTTP Request</h3>
 <p><code>GET signature</code></p>

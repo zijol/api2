@@ -19,6 +19,109 @@ Welcome to the generated API reference.
 
 <!-- END_INFO -->
 
+#Doc
+<!-- START_e534f202615339d321e7309b258be05d -->
+## 项目详情
+
+获取到项目详情，参数id和name，必须传一个，优先使用id进行查询
+
+> Example request:
+
+```bash
+curl -X GET -G "http://west.api.zijol.com/doc/project/detail" 
+```
+
+```javascript
+const url = new URL("http://west.api.zijol.com/doc/project/detail");
+
+    let params = {
+            "id": "pRQlTMBinA5CejDg",
+            "name": "tRl9Pd9DYgRePwmY",
+        };
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+> Example response (200):
+
+```json
+{
+    "code": "0",
+    "msg": "",
+    "result": []
+}
+```
+
+### HTTP Request
+`GET doc/project/detail`
+
+#### Query Parameters
+
+Parameter | Status | Description
+--------- | ------- | ------- | -----------
+    id |  optional  | optional 项目ID
+    name |  optional  | optional 项目名称
+
+<!-- END_e534f202615339d321e7309b258be05d -->
+
+<!-- START_a168dcf017bc01c28011a43ec3b8244d -->
+## 创建项目
+
+新建一个项目
+
+> Example request:
+
+```bash
+curl -X POST "http://west.api.zijol.com/doc/project"     -d "project_name"="kxanrQATpl0anLMI" \
+    -d "project_description"="yhEFog2jYEMzfRog" 
+```
+
+```javascript
+const url = new URL("http://west.api.zijol.com/doc/project");
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+let body = JSON.stringify({
+    "project_name": "kxanrQATpl0anLMI",
+    "project_description": "yhEFog2jYEMzfRog",
+})
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: body
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+### HTTP Request
+`POST doc/project`
+
+#### Body Parameters
+
+Parameter | Type | Status | Description
+--------- | ------- | ------- | ------- | -----------
+    project_name | string |  required  | 项目名称
+    project_description | string |  required  | 项目描述
+
+<!-- END_a168dcf017bc01c28011a43ec3b8244d -->
+
 #Helper
 <!-- START_89d7df66b9c17fd511183d9750ee2f7e -->
 ## 获取签名
@@ -26,11 +129,11 @@ Welcome to the generated API reference.
 > Example request:
 
 ```bash
-curl -X GET -G "http://api.zijol.com/signature" 
+curl -X GET -G "http://west.api.zijol.com/signature" 
 ```
 
 ```javascript
-const url = new URL("http://api.zijol.com/signature");
+const url = new URL("http://west.api.zijol.com/signature");
 
     let params = {
             "key": "api",
@@ -56,7 +159,7 @@ fetch(url, {
 {
     "code": "0",
     "msg": "",
-    "result": "15c50873f03c4aed0542aa4cef159bfb387f5c8f"
+    "result": "cf989d44b5521c1d2a61387288be97e96a95f8b8"
 }
 ```
 

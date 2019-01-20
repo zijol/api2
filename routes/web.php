@@ -10,6 +10,8 @@
 |
 */
 
+require_once "web/api_doc.php";
+
 Route::get('/', function () {
     return view('welcome');
 });
