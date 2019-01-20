@@ -18,7 +18,7 @@ class CheckSignature
      */
     public function handle($request, Closure $next)
     {
-        $moduleName = $request->header('X-PINGXX-MODULE');
+        $moduleName = $request->header('X-ZIJOL-MODULE');
         $moduleSecret = ModuleKeySecret::getSecret($moduleName);
 
         // 如果模块的键不存在

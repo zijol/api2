@@ -13,16 +13,14 @@ class ModuleKeySecret
     /**
      * 生成secret时使用的slot
      */
-    const MIX_PREFIX = 'pingxx_';
+    const MIX_PREFIX = 'zijol_';
 
     /**
      * @var array 支持的键表
      */
     public static $keyMap = [
-        'unknown' => 'unknown',
+        'zijol' => 'zijol',
         'api' => 'api',
-        'lbf' => 'lbf',
-        'fission' => 'fission'
     ];
 
     /**
