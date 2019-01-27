@@ -16,7 +16,6 @@ class Kernel extends ConsoleKernel
         // 用户等级监控
         Commands\DbPasswordEncrypt::class,
         Commands\DbPasswordDecrypt::class,
-        Commands\ReleaseDeploy::class,
     ];
 
     /**
