@@ -14,7 +14,6 @@
         "graham-campbell/markdown": "^10.2",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
-        "mpociot/laravel-apidoc-generator": "^3.3",
         "predis/predis": "^1.1"
     },
     "require-dev": {
