@@ -51,6 +51,4 @@ $app->singleton(
 | from the actual running of the application and sending responses.
 |
 */
-
-$app->register(\Mpociot\ApiDoc\ApiDocGeneratorServiceProvider::class);
 return $app;
