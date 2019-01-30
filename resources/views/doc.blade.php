@@ -36,7 +36,7 @@
         {!! $content !!}
     </div>
 </div>
-<script src="js/app.js"></script>
+<script src="../js/app.js"></script>
 <script>
     $('.get_doc').on('click', function () {
         var type = this.getAttribute('type');
