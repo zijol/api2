@@ -6,5 +6,5 @@
 return [
     'config' => public_path('docs') . '/config.json',
     'path' => public_path('docs'),
-    'template' => 'template.md',
+    'template' => public_path('docs') . '/template.md',
 ];
