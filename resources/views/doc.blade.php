@@ -8,7 +8,7 @@
         <div id="accordion">
             <div class="">
                 <h5 class="mb-0">
-                    <a href="/md" class="btn btn-link">
+                    <a href="/document" class="btn btn-link">
                         模板
                     </a>
                 </h5>
@@ -42,7 +42,7 @@
         var type = this.getAttribute('type');
         var tag = this.getAttribute('tag');
         $.ajax({
-            url: "/md/" + type + "/" + tag,
+            url: "/document/" + type + "/" + tag,
             complete: function ($res) {
                 $('.doc_content').html($res.responseJSON.result);
                 console.log($res);
