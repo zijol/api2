@@ -1,0 +1,16 @@
+{
+    "user": {
+        "title": "用户等级",
+        "docs": {
+            "app.user.level.get": "获取用户等级",
+            "app.user.level.post": "设置用户等级"
+        }
+    },
+    "strategy": {
+        "title": "等级策略",
+        "docs": {
+            "app.strategy.get": "获取等级策略",
+            "app.strategy.post": "设置等级策略"
+        }
+    }
+}

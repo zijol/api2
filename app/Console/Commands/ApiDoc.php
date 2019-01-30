@@ -34,9 +34,9 @@ class ApiDoc extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->configJsonFile = config('doc_config_json');
-        $this->docTemplateMd = config('template_md');
-        $this->docPath = config('doc_path');
+        $this->configJsonFile = config('doc.config');
+        $this->docTemplateMd = config('doc.template');
+        $this->docPath = config('doc.path');
     }
 
     /**

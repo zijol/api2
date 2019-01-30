@@ -33,3 +33,6 @@ Route::get('/decrypt', 'Web\EncryptionController@decrypt');
 Route::get('/changelog', function () {
     return view('changelog');
 });
+
+Route::get('/document', 'Web\DocController@index');
+Route::get('/document/{type}/{tag}', 'Web\DocController@get');
