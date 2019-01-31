@@ -56,7 +56,7 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         // 如果是API异常
-        if ($request->route()->getPrefix() == 'api') {
+        if ($request->route() instanceof Route && $request->route()->getPrefix() == 'api') {
             return Make::ApiFail(ErrorCode::SYSTEM_ERROR);
         }
 

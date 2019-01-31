@@ -14,7 +14,10 @@
         "graham-campbell/markdown": "^10.2",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
-        "predis/predis": "^1.1"
+        "predis/predis": "^1.1",
+        "encore/laravel-admin": "^1.6",
+        "jxlwqq/material-ui": "^1.0",
+        "laravel-admin-ext/simplemde": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.5",
