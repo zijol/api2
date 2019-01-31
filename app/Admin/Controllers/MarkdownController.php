@@ -9,14 +9,19 @@
 namespace App\Admin\Controllers;
 
 use App\Http\Controllers\Controller;
-use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 use App\Admin\Model\DocMarkdownModel;
+use Illuminate\Http\Request;
+use Encore\Admin\Form;
 
 class MarkdownController extends Controller
 {
+    protected $classify = [
+        'user' => '用户',
+        'strategy' => '策略',
+    ];
 
     /**
      * Index interface.
@@ -35,7 +40,7 @@ class MarkdownController extends Controller
     /**
      * Show interface.
      *
-     * @param mixed   $id
+     * @param mixed $id
      * @param Content $content
      * @return Content
      */
@@ -50,7 +55,7 @@ class MarkdownController extends Controller
     /**
      * Edit interface.
      *
-     * @param mixed   $id
+     * @param mixed $id
      * @param Content $content
      * @return Content
      */
@@ -62,9 +67,28 @@ class MarkdownController extends Controller
             ->body($this->form()->edit($id));
     }
 
-    public function store()
+    /**
+     * Save interface
+     *
+     * @param Request $request
+     * @return bool
+     */
+    public function store(Request $request)
     {
+        (new DocMarkdownModel($request->toArray()))->save();
+        return back()->with(compact('success'));
+    }
 
+    /**
+     * Destroy interface
+     *
+     * @param $id
+     * @return array
+     */
+    public function destroy($id)
+    {
+        DocMarkdownModel::findOrFail($id)->delete();
+        return back()->with(compact('success'));
     }
 
     /**
@@ -88,11 +112,16 @@ class MarkdownController extends Controller
      */
     protected function grid()
     {
+        $classify = $this->classify;
         $grid = new Grid(new DocMarkdownModel);
 
-        $grid->id('ID')->sortable();
+        $grid->model()->orderBy('classify', 'asc');
+
+        $grid->classify('Classify')->display(function ($title) use ($classify) {
+            return $classify[$title] ?? "未知";
+        })->sortable();
         $grid->title('Title');
-        $grid->decription('Description');
+        $grid->description('Description');
 
         return $grid;
     }
@@ -100,7 +129,7 @@ class MarkdownController extends Controller
     /**
      * Make a show builder.
      *
-     * @param mixed   $id
+     * @param mixed $id
      * @return Show
      */
     protected function detail($id)
@@ -108,9 +137,8 @@ class MarkdownController extends Controller
         $show = new Show(DocMarkdownModel::findOrFail($id));
 
         $show->title('ID');
-        $show->description('Description');
-        $show->simplemde('Content');
-
+        $show->classify('Classify');
+        $show->content('Content');
         return $show;
     }
 
@@ -123,11 +151,13 @@ class MarkdownController extends Controller
     {
         $form = new Form(new DocMarkdownModel);
 
-        $form->text('classify', 'Classify');
+        $form->select('classify', 'Classify')->options($this->classify);
         $form->text('title', 'Title');
         $form->text('description', 'Description');
-        $form->simplemde('content')->height(400);
+        $form->simplemde('content')->height(500);
 
         return $form;
     }
+
+
 }

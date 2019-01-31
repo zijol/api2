@@ -57,12 +57,12 @@ class Handler extends ExceptionHandler
     {
         // 如果是API异常
         if ($request->route() instanceof Route && $request->route()->getPrefix() == 'api') {
-            return Make::ApiFail(ErrorCode::SYSTEM_ERROR);
+            return Response(Make::ApiFail(ErrorCode::SYSTEM_ERROR));
         }
 
         // 如果是ajax请求
         if ($request->ajax()) {
-            return Make::ApiFail(ErrorCode::SYSTEM_ERROR);
+            return Response(Make::ApiFail(ErrorCode::SYSTEM_ERROR));
         }
 
         return parent::render($request, $exception);
