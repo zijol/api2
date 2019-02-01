@@ -15,7 +15,6 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\DbPasswordEncrypt::class,
         Commands\DbPasswordDecrypt::class,
-        Commands\ApiDoc::class,
     ];
 
     /**

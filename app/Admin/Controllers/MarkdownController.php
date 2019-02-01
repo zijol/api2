@@ -8,6 +8,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Widgets\MdToHtml;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
@@ -15,6 +16,7 @@ use Encore\Admin\Show;
 use App\Admin\Model\DocMarkdownModel;
 use Illuminate\Http\Request;
 use Encore\Admin\Form;
+use Encore\Admin\Widgets\Box;
 
 class MarkdownController extends Controller
 {
@@ -71,24 +73,33 @@ class MarkdownController extends Controller
      * Save interface
      *
      * @param Request $request
-     * @return bool
      */
     public function store(Request $request)
     {
         (new DocMarkdownModel($request->toArray()))->save();
-        return back()->with(compact('success'));
+    }
+
+    /**
+     * update interface
+     *
+     * @param $id
+     * @param Request $request
+     */
+    public function update($id, Request $request)
+    {
+        DocMarkdownModel::query()->updateOrCreate([
+            'id' => $id
+        ], $request->toArray());
     }
 
     /**
      * Destroy interface
      *
      * @param $id
-     * @return array
      */
     public function destroy($id)
     {
         DocMarkdownModel::findOrFail($id)->delete();
-        return back()->with(compact('success'));
     }
 
     /**
@@ -114,15 +125,21 @@ class MarkdownController extends Controller
     {
         $classify = $this->classify;
         $grid = new Grid(new DocMarkdownModel);
-
         $grid->model()->orderBy('classify', 'asc');
 
         $grid->classify('Classify')->display(function ($title) use ($classify) {
             return $classify[$title] ?? "未知";
         })->sortable();
+
         $grid->title('Title');
         $grid->description('Description');
 
+        $grid->filter(function ($filter) {
+            // 去掉默认的id过滤器
+            $filter->disableIdFilter();
+            // 在这里添加字段过滤器
+            $filter->like('title', 'Title');
+        });
         return $grid;
     }
 
@@ -130,16 +147,20 @@ class MarkdownController extends Controller
      * Make a show builder.
      *
      * @param mixed $id
-     * @return Show
+     * @return Box
      */
     protected function detail($id)
     {
-        $show = new Show(DocMarkdownModel::findOrFail($id));
+        $doc = DocMarkdownModel::findOrFail($id);
+        $htmlContent = (new \Parsedown())->parse($doc->content);
+        $box = new Box($doc->title, new MdToHtml($htmlContent));
+        $box->removable();
+        $box->collapsable();
+        $box->solid();
+//        $box->style('info');
+        $box->solid();
 
-        $show->title('ID');
-        $show->classify('Classify');
-        $show->content('Content');
-        return $show;
+        return $box;
     }
 
     /**
@@ -158,6 +179,4 @@ class MarkdownController extends Controller
 
         return $form;
     }
-
-
 }

@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
-use GrahamCampbell\Markdown\Facades\Markdown;
 
 class ChangeLog extends Command
 {
