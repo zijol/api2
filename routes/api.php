@@ -12,6 +12,9 @@
 
 use App\Services\Helper\Make;
 use App\Services\Helper\ErrorCode\ErrorCode;
+
+Route::get('/encrypt', 'Web\EncryptionController@encrypt');
+
 /**
  * 未匹配到的路由，统一返回
  */

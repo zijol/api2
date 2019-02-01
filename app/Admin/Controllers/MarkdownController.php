@@ -12,7 +12,6 @@ use App\Admin\Widgets\MdToHtml;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
-use Encore\Admin\Show;
 use App\Admin\Model\DocMarkdownModel;
 use Illuminate\Http\Request;
 use Encore\Admin\Form;

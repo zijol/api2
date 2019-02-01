@@ -17,7 +17,10 @@
         "predis/predis": "^1.1",
         "encore/laravel-admin": "^1.6",
         "jxlwqq/material-ui": "^1.0",
-        "laravel-admin-ext/simplemde": "^1.0"
+        "laravel-admin-ext/simplemde": "^1.0",
+        "laravel-admin-ext/api-tester": "^1.0",
+        "laravel-admin-ext/config": "^1.0",
+        "jxlwqq/env-manager": "^0.1.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
