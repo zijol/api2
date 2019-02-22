@@ -20,7 +20,8 @@
         "laravel-admin-ext/simplemde": "^1.0",
         "laravel-admin-ext/api-tester": "^1.0",
         "laravel-admin-ext/config": "^1.0",
-        "jxlwqq/env-manager": "^0.1.0"
+        "jxlwqq/env-manager": "^0.1.0",
+        "zijol/model": "dev-master"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -48,6 +49,10 @@
         ]
     },
     "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/zijol/model.git"
+        }
     ],
     "autoload-dev": {
         "psr-4": {

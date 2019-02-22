@@ -12,10 +12,10 @@ use App\Admin\Widgets\MdToHtml;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
-use App\Admin\Model\DocMarkdownModel;
 use Illuminate\Http\Request;
 use Encore\Admin\Form;
 use Encore\Admin\Widgets\Box;
+use Zijol\Model\Admin\DocMarkdownModel;
 
 class MarkdownController extends Controller
 {
