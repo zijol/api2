@@ -2,10 +2,11 @@
 
 namespace App\Http\Middleware;
 
-use App\Services\Log\SubObject\RequestObject;
 use App\Services\Log\SubObject\ResponseObject;
 use Closure;
-use App\Services\Log\HttpLog;
+use App\Services\Log\Assist\LogHelper;
+use App\Services\Log\SubObject\RequestObject;
+use Illuminate\Support\Facades\Log;
 
 class ResponseLogMiddleware
 {
@@ -27,9 +28,13 @@ class ResponseLogMiddleware
      */
     public function terminate($request, $response)
     {
-        HttpLog::getInstance()->setContext([
-            'request' => RequestObject::normalize($request),
-            'response' => ResponseObject::normalize($response),
-        ])->info('HttpLog');
+        Log::stack(['daily'])
+            ->info('请求日志', [
+                'unique_id' => LogHelper::instance()->unique_id,
+                'exec_millisecond' => LogHelper::instance()->exec_millisecond,
+                'serial_number' => LogHelper::instance()->serial_number,
+                'request' => RequestObject::normalize($request),
+                'response' => ResponseObject::normalize($response)
+            ]);
     }
 }

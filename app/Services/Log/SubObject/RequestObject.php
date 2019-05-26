@@ -35,7 +35,7 @@ class RequestObject extends AbstractSubObject
                 'method' => $request->getMethod(),
                 'body' => $request->getContent(),
                 'query' => $request->getQueryString(),
-                'header' => json_encode($request->headers->all(), JSON_UNESCAPED_UNICODE),
+                'header' => $request->headers->all()
             ]);
         } else {
             parent::__construct($request);

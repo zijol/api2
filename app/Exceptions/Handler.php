@@ -8,6 +8,7 @@ use App\Services\Log\SubObject\ExceptionObject;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use App\Services\Log\ExceptionLog;
+use Illuminate\Validation\ValidationException;
 
 class Handler extends ExceptionHandler
 {
@@ -40,10 +41,10 @@ class Handler extends ExceptionHandler
     {
         parent::report($exception);
 
-        // 记录异常日志
-        ExceptionLog::getInstance()->setContext([
-            'exception' => ExceptionObject::normalize($exception)
-        ])->info('ExceptionLog');
+//        // 记录异常日志
+//        ExceptionLog::getInstance()->setContext([
+//            'exception' => ExceptionObject::normalize($exception)
+//        ])->info('ExceptionLog');
     }
 
     /**
@@ -55,14 +56,9 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        // 如果是API异常
-        if ($request->route()->getPrefix() == 'api') {
-            return Make::ApiFail(ErrorCode::SYSTEM_ERROR);
-        }
-
-        // 如果是ajax请求
-        if ($request->ajax()) {
-            return Make::ApiFail(ErrorCode::SYSTEM_ERROR);
+        // 验证异常
+        if ($exception instanceof ValidationException) {
+            return parent::render($request, new ValidatorException(($exception->validator->getMessageBag()->first())));
         }
 
         return parent::render($request, $exception);

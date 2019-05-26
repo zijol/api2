@@ -12,9 +12,7 @@
 
 require_once "web/api_doc.php";
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/','Web\IndexController@index');
 
 /**
  * 内部使用，获取签名值

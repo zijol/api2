@@ -26,7 +26,7 @@ class ResponseObject extends AbstractSubObject
     {
         if (is_object($response) && $response->getStatusCode() != '500') {
             parent::__construct([
-                'header' => "asdf" . json_encode($response->headers->all(), JSON_UNESCAPED_UNICODE),
+                'header' => $response->headers->all(),
                 'body' => $response->getContent(),
                 'status' => $response->getStatusCode(),
             ]);
