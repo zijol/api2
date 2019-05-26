@@ -8,23 +8,9 @@
 
 namespace App\Exceptions;
 
-use \Illuminate\Contracts\Support\Responsable;
-
-class ForbiddenException extends \Exception implements Responsable
+class ForbiddenException extends ApiException
 {
-    private $_type = 'forbidden';
-
-    public function __construct(string $message = "Invite forbidden.", int $code = 4003, Throwable $previous = null)
-    {
-        parent::__construct($message, $code, $previous);
-    }
-
-    public function toResponse($request)
-    {
-        return response()->make([
-            'code' => $this->code,
-            'type' => $this->_type,
-            'message' => $this->message
-        ], 403);
-    }
+    public $type = 'invite_forbidden';
+    public $code = 4003;
+    public $message = 'Invite Forbidden';
 }

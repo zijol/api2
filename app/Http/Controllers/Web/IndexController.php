@@ -10,19 +10,21 @@ namespace App\Http\Controllers\Web;
 
 use App\Exceptions\ForbiddenException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreBlogRequest;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use App\Http\Requests\ExampleRequest;
 
 class IndexController extends Controller
 {
-    public function index(StoreBlogRequest $request)
+    /**
+     * @param ExampleRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws ForbiddenException
+     */
+    public function index(ExampleRequest $request)
     {
-        Log::stack(['daily'])
-            ->info('good', ['a' => 'asd']);
-        return [];
-        throw new ForbiddenException('不可访问', 4014);
-//        $params = $request->validated();
-//        return $params;
+        $params = $request->validated();
+        if (!random_int(0, 1)) {
+            throw new ForbiddenException('拒绝访问');
+        }
+        return self::JsonResponse($params);
     }
 }

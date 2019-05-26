@@ -2,12 +2,12 @@
 
 namespace App\Exceptions;
 
-use App\Services\Helper\ErrorCode\ErrorCode;
-use App\Services\Helper\Make;
-use App\Services\Log\SubObject\ExceptionObject;
+use App\Services\Log\Assist\LogHelper;
 use Exception;
+use App\Services\Log\SubObject\ExceptionObject;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use App\Services\Log\ExceptionLog;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class Handler extends ExceptionHandler
@@ -18,7 +18,7 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        //
+        ApiException::class,
     ];
 
     /**
@@ -41,10 +41,14 @@ class Handler extends ExceptionHandler
     {
         parent::report($exception);
 
-//        // 记录异常日志
-//        ExceptionLog::getInstance()->setContext([
-//            'exception' => ExceptionObject::normalize($exception)
-//        ])->info('ExceptionLog');
+        if (!($exception instanceof ApiException)) {
+            Log::stack(['exception'])
+                ->error('系统错误', array_merge([
+                    'unique_id' => LogHelper::instance()->unique_id,
+                    'serial_number' => LogHelper::instance()->serial_number,
+                    'exec_millisecond' => LogHelper::instance()->exec_millisecond,
+                ], ExceptionObject::normalize($exception)));
+        }
     }
 
     /**
@@ -58,7 +62,11 @@ class Handler extends ExceptionHandler
     {
         // 验证异常
         if ($exception instanceof ValidationException) {
-            return parent::render($request, new ValidatorException(($exception->validator->getMessageBag()->first())));
+            $exception = new ValidatorException(($exception->validator->getMessageBag()->first()));
+
+            // 身份认证失败
+        } else if ($exception instanceof AuthorizationException) {
+            $exception = new AuthorizeException('非法访问');
         }
 
         return parent::render($request, $exception);

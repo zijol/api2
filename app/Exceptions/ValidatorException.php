@@ -8,23 +8,9 @@
 
 namespace App\Exceptions;
 
-use \Illuminate\Contracts\Support\Responsable;
-
-class ValidatorException extends \Exception implements Responsable
+class ValidatorException extends ApiException
 {
-    private $_type = 'invalid_parameters';
-
-    public function __construct(string $message = "", int $code = 4000, Throwable $previous = null)
-    {
-        parent::__construct($message, $code, $previous);
-    }
-
-    public function toResponse($request)
-    {
-        return response()->make([
-            'code' => $this->code,
-            'type' => $this->_type,
-            'message' => $this->message
-        ], 400);
-    }
+    public $type = 'invalid_parameters';
+    public $code = 4000;
+    public $message = 'Invalid Parameters';
 }

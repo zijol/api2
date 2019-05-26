@@ -10,8 +10,6 @@
 |
 */
 
-require_once "web/api_doc.php";
-
 Route::get('/','Web\IndexController@index');
 
 /**

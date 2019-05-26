@@ -54,6 +54,15 @@ return [
             'days' => 14,
         ],
 
+        'exception' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/exception.log'),
+            'handler' => StreamHandler::class,
+            'formatter' => Monolog\Formatter\JsonFormatter::class,
+            'level' => 'debug',
+            'days' => 14,
+        ],
+
         'slack' => [
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),

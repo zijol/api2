@@ -130,6 +130,7 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'str_max_len' => ':attribute 必须长度不超过 :max_len'
     ],
 
     /*
