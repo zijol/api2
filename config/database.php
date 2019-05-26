@@ -42,15 +42,32 @@ $config = [
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
-        // API_DOC
-        'api_doc' => [
+        // ADMIN
+        'admin' => [
             'driver' => 'mysql',
-            'host' => env('API_DOC_DB_HOST', '127.0.0.1'),
-            'port' => env('API_DOC_DB_PORT', '3306'),
-            'database' => env('API_DOC_DB_NAME', 'forge'),
-            'username' => env('API_DOC_DB_USER', 'forge'),
-            'password' => env('API_DOC_DB_PWD', ''),
-            'unix_socket' => env('LBF_DB_SOCKET', ''),
+            'host' => env('ADMIN_DB_HOST', '127.0.0.1'),
+            'port' => env('ADMIN_DB_PORT', '3306'),
+            'database' => env('ADMIN_DB_NAME', 'forge'),
+            'username' => env('ADMIN_DB_USER', 'forge'),
+            'password' => env('ADMIN_DB_PWD', ''),
+            'unix_socket' => env('ADMIN_DB_SOCKET', ''),
+            'charset' => 'utf8',
+            'collation' => 'utf8_general_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+        ],
+
+        // ADMIN
+        'mysql' => [
+            'driver' => 'mysql',
+            'host' => env('ADMIN_DB_HOST', '127.0.0.1'),
+            'port' => env('ADMIN_DB_PORT', '3306'),
+            'database' => env('ADMIN_DB_NAME', 'forge'),
+            'username' => env('ADMIN_DB_USER', 'forge'),
+            'password' => env('ADMIN_DB_PWD', ''),
+            'unix_socket' => env('ADMIN_DB_SOCKET', ''),
             'charset' => 'utf8',
             'collation' => 'utf8_general_ci',
             'prefix' => '',

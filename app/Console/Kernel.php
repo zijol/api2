@@ -13,7 +13,6 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        // 用户等级监控
         Commands\DbPasswordEncrypt::class,
         Commands\DbPasswordDecrypt::class,
     ];

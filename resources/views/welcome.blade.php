@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Fission</title>
+    <title>ZIJOL_API</title>
 
     <!-- Fonts -->
     <link href="./css/app.css" rel="stylesheet" type="text/css">
