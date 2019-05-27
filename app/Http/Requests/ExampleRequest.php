@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\Float2Bit;
 use App\Rules\StrMaxLen;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -27,7 +28,7 @@ class ExampleRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                new StrMaxLen(10),
+                new Float2Bit(),
             ]
         ];
     }

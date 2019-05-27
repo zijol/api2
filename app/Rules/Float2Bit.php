@@ -25,7 +25,7 @@ class Float2Bit implements Rule
      */
     public function passes($attribute, $value)
     {
-        return boolval(preg_match('/^0+(.\d{1,2})?$|^[1-9](\d*)+(.\d{1,2})?$/', $value));
+        return boolval(preg_match('/^0$|^0\.(\d{1,2})$|^[1-9](\d*)(\.\d{1,2})?$/', $value));
     }
 
     /**
