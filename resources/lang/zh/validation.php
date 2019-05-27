@@ -130,7 +130,10 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
-        'str_max_len' => ':attribute 必须长度不超过 :max_len'
+        'str_max_len' => ':attribute 长度必须不超过 :max_len 个字符',
+        'str_min_len' => ':attribute 长度必须至少 :max_len 个字符',
+        'str_bt_len' => ':attribute 长度必须是 :min_len - max_len 个字符',
+        'float_2_bit' => ':attribute 必须是2位浮点数',
     ],
 
     /*
