@@ -121,7 +121,7 @@ class BaseCache
      * 如果缓存不再，设置缓存并返回；如果缓存在，获取缓存
      *
      * @param callable $callback
-     * @return mixed|void
+     * @return mixed
      */
     public function getAndSet(callable $callback)
     {
