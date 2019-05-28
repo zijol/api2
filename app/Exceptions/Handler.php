@@ -9,6 +9,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -67,6 +68,10 @@ class Handler extends ExceptionHandler
             // 身份认证失败
         } else if ($exception instanceof AuthorizationException) {
             $exception = new AuthorizeException('非法访问');
+
+            // 无效路由
+        } else if ($exception instanceof  NotFoundHttpException) {
+            $exception = new BadRouteException('无效的路由');
         }
 
         return parent::render($request, $exception);
