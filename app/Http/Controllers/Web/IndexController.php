@@ -11,7 +11,6 @@ namespace App\Http\Controllers\Web;
 use App\Exceptions\ForbiddenException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ExampleRequest;
-use App\Services\Cache\ExampleCache;
 
 class IndexController extends Controller
 {

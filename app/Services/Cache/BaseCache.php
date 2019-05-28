@@ -67,6 +67,8 @@ class BaseCache
         $cacheData = json_decode($cacheData, true);
 
         if ($cacheData['type'] == 'array') {
+            return json_decode($cacheData['value'], true);
+        } elseif ($cacheData['type'] == 'object') {
             return json_decode($cacheData['value']);
         } else {
             return $cacheData['value'];
@@ -89,7 +91,10 @@ class BaseCache
         } else if (is_resource($data)) {
             return false;
         } else if (is_object($data)) {
-            return false;
+            $cacheData = json_encode([
+                'type' => 'object',
+                'value' => json_encode($data, JSON_UNESCAPED_UNICODE)
+            ], JSON_UNESCAPED_UNICODE);
         } else {
             $cacheData = json_encode([
                 'type' => 'normal',
