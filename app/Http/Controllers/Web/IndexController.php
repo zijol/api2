@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Web;
 use App\Exceptions\ForbiddenException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ExampleRequest;
+use App\Services\RedisLock\ExampleLock;
 
 class IndexController extends Controller
 {
@@ -23,9 +24,12 @@ class IndexController extends Controller
     {
         $params = $request->validated();
 
+        ExampleLock::safeGet($params);
+
         if (!random_int(0, 1)) {
             throw new ForbiddenException('拒绝访问');
         }
+
         return self::JsonResponse($params);
     }
 }
