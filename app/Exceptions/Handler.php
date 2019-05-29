@@ -61,8 +61,10 @@ class Handler extends ExceptionHandler
             $exception = new AuthorizeException('非法访问');
 
             // 无效路由
-        } else if ($exception instanceof  NotFoundHttpException) {
+        } else if ($exception instanceof NotFoundHttpException) {
             $exception = new BadRouteException('无效的路由');
+
+            // 未知异常，视为系统异常，记录日志
         } else {
             Log::stack(['exception'])
                 ->error('系统错误', array_merge([

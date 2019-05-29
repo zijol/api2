@@ -153,8 +153,23 @@ abstract class AbstractLog
     public function setContext($contextArray = [])
     {
         foreach ($contextArray as $attrKey => $attrValue) {
-            if (isset($this->_context[$attrKey]) && !in_array($attrKey, $this->_safeContextLabel)) {
-                $this->_context[$attrKey] = $attrValue;
+            if (!in_array($attrKey, $this->_safeContextLabel)) {
+                if (is_array($attrValue)) {
+                    if (empty($attrValue)) {
+                        $this->_context[$attrKey] = '{}';
+                    } else {
+                        foreach ($attrValue as $k => $v) {
+                            if (is_array($v)) {
+                                $this->_context[$attrKey . '.' . $k] = json_encode($v, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+                            } else {
+                                $this->_context[$attrKey . '.' . $k] = $v;
+                            }
+                        }
+                        unset($this->_context[$attrKey]);
+                    }
+                } else {
+                    $this->_context[$attrKey] = $attrValue;
+                }
             }
         }
         return $this;
