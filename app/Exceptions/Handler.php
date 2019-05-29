@@ -19,7 +19,7 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        ApiException::class,
+        ApiException::class
     ];
 
     /**
@@ -41,15 +41,6 @@ class Handler extends ExceptionHandler
     public function report(Exception $exception)
     {
         parent::report($exception);
-
-        if (!($exception instanceof ApiException)) {
-            Log::stack(['exception'])
-                ->error('系统错误', array_merge([
-                    'unique_id' => LogHelper::instance()->unique_id,
-                    'serial_number' => LogHelper::instance()->serial_number,
-                    'exec_millisecond' => LogHelper::instance()->exec_millisecond,
-                ], ExceptionObject::normalize($exception)));
-        }
     }
 
     /**
@@ -72,6 +63,15 @@ class Handler extends ExceptionHandler
             // 无效路由
         } else if ($exception instanceof  NotFoundHttpException) {
             $exception = new BadRouteException('无效的路由');
+        } else {
+            Log::stack(['exception'])
+                ->error('系统错误', array_merge([
+                    'unique_id' => LogHelper::instance()->unique_id,
+                    'serial_number' => LogHelper::instance()->serial_number,
+                    'exec_millisecond' => LogHelper::instance()->exec_millisecond,
+                ], ExceptionObject::normalize($exception)));
+
+            $exception = new ApiException('系统错误');
         }
 
         return parent::render($request, $exception);
