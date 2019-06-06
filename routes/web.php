@@ -22,10 +22,3 @@ Route::get('/signature', 'Web\SignatureController@index');
  */
 Route::get('/encrypt', 'Web\EncryptionController@encrypt');
 Route::get('/decrypt', 'Web\EncryptionController@decrypt');
-
-/**
- * change log view
- */
-Route::get('/changelog', function () {
-    return view('changelog');
-});
