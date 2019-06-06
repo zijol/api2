@@ -1,11 +1,11 @@
 {
     "name": "zijol/api",
     "type": "project",
-    "description": "Zijol Api",
+    "description": "zijol_api",
     "keywords": [
-        "Zijol",
-        "Api",
-        "Laravel"
+        "zijol",
+        "api",
+        "laravel"
     ],
     "license": "MIT",
     "require": {
@@ -20,8 +20,7 @@
         "laravel-admin-ext/simplemde": "^1.0",
         "laravel-admin-ext/api-tester": "^1.0",
         "laravel-admin-ext/config": "^1.0",
-        "jxlwqq/env-manager": "^0.1.0",
-        "zijol/model": "dev-master"
+        "jxlwqq/env-manager": "^0.1.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -48,12 +47,6 @@
             "database/factories"
         ]
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/zijol/model.git"
-        }
-    ],
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
@@ -71,9 +64,6 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ],
-        "post-install-cmd": [
-            "@php artisan change-log:update"
         ]
     }
 }
