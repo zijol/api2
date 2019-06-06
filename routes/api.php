@@ -10,14 +10,6 @@
 |
 */
 
-use App\Services\Helper\Make;
-use App\Services\Helper\ErrorCode\ErrorCode;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/encrypt', 'Web\EncryptionController@encrypt');
-
-/**
- * 未匹配到的路由，统一返回
- */
-Route::fallback(function () {
-    return Make::ApiFail(ErrorCode::ROUTE_NOT_FOUND);
-});

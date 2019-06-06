@@ -41,6 +41,14 @@ class Handler extends ExceptionHandler
     public function report(Exception $exception)
     {
         parent::report($exception);
+
+        if (!$this->shouldntReport($exception))
+            Log::stack(['exception'])
+                ->error('系统错误', array_merge([
+                    'unique_id' => LogHelper::instance()->unique_id,
+                    'serial_number' => LogHelper::instance()->serial_number,
+                    'exec_millisecond' => LogHelper::instance()->exec_millisecond,
+                ], ExceptionObject::normalize($exception)));
     }
 
     /**
@@ -54,7 +62,7 @@ class Handler extends ExceptionHandler
     {
         // 验证异常
         if ($exception instanceof ValidationException) {
-            $exception = new ValidatorException(($exception->validator->getMessageBag()->first()));
+            $exception = new ValidatorException($exception->validator->getMessageBag()->first());
 
             // 身份认证失败
         } else if ($exception instanceof AuthorizationException) {
@@ -63,17 +71,6 @@ class Handler extends ExceptionHandler
             // 无效路由
         } else if ($exception instanceof NotFoundHttpException) {
             $exception = new BadRouteException('无效的路由');
-
-            // 未知异常，视为系统异常，记录日志
-        } else {
-            Log::stack(['exception'])
-                ->error('系统错误', array_merge([
-                    'unique_id' => LogHelper::instance()->unique_id,
-                    'serial_number' => LogHelper::instance()->serial_number,
-                    'exec_millisecond' => LogHelper::instance()->exec_millisecond,
-                ], ExceptionObject::normalize($exception)));
-
-            $exception = new ApiException('系统错误');
         }
 
         return parent::render($request, $exception);
