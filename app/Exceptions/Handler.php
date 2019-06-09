@@ -73,7 +73,7 @@ class Handler extends ExceptionHandler
             $exception = new BadRouteException('无效的路由');
 
             // Api 异常
-        } else {
+        } else if (! $exception instanceof ApiException) {
             $exception = new ApiException($exception->getMessage(), $exception->getCode());
         }
 
