@@ -71,6 +71,10 @@ class Handler extends ExceptionHandler
             // 无效路由
         } else if ($exception instanceof NotFoundHttpException) {
             $exception = new BadRouteException('无效的路由');
+
+            // Api 异常
+        } else {
+            $exception = new ApiException($exception->getMessage(), $exception->getCode());
         }
 
         return parent::render($request, $exception);
