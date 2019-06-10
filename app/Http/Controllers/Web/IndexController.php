@@ -8,10 +8,10 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Exceptions\AuthorizeException;
 use App\Exceptions\ForbiddenException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ExampleRequest;
-use App\Services\RedisLock\ExampleLock;
 
 class IndexController extends Controller
 {
@@ -22,14 +22,7 @@ class IndexController extends Controller
      */
     public function index(ExampleRequest $request)
     {
-        $params = $request->validated();
-
-        ExampleLock::safeGet($params);
-
-        if (!random_int(0, 1)) {
-            throw new ForbiddenException('拒绝访问');
-        }
-
+        throw new AuthorizeException('Welcome to zijol api.');
         return self::JsonResponse($params);
     }
 }
