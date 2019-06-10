@@ -16,6 +16,7 @@ class ApiException extends \Exception implements Responsable
     public $type = 'api_error';
     public $code = 5000;
     public $message = 'Api Error';
+    public $httpCode = 500;
 
     public function toResponse($request)
     {
@@ -24,6 +25,6 @@ class ApiException extends \Exception implements Responsable
             'message' => $this->message,
             'data' => null,
             'type' => $this->type,
-        ], 403, [], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        ], $this->httpCode, [], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
     }
 }

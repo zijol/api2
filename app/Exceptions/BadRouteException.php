@@ -13,4 +13,5 @@ class BadRouteException extends ApiException
     public $type = 'bad_route';
     public $code = 4004;
     public $message = 'Bad Route';
+    public $httpCode = 404;
 }

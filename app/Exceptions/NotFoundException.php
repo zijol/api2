@@ -13,4 +13,5 @@ class NotFoundException extends ApiException
     public $type = 'not_found';
     public $code = 4004;
     public $message = 'Not Fount';
+    public $httpCode = 403;
 }

@@ -13,4 +13,5 @@ class ValidatorException extends ApiException
     public $type = 'invalid_parameters';
     public $code = 4000;
     public $message = 'Invalid Parameters';
+    public $httpCode = 400;
 }

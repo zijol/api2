@@ -13,4 +13,5 @@ class AuthorizeException extends ApiException
     public $type = 'authorize_error';
     public $code = 4001;
     public $message = 'Authorize Error';
+    public $httpCode = 401;
 }

@@ -13,4 +13,5 @@ class ForbiddenException extends ApiException
     public $type = 'invite_forbidden';
     public $code = 4003;
     public $message = 'Invite Forbidden';
+    public $httpCode = 403;
 }
