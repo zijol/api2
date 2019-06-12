@@ -9,6 +9,8 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
@@ -35,8 +37,9 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param  \Exception $exception
-     * @return void
+     * @param Exception $exception
+     * @return mixed|void
+     * @throws Exception
      */
     public function report(Exception $exception)
     {
@@ -69,14 +72,31 @@ class Handler extends ExceptionHandler
             $exception = new AuthorizeException('非法访问');
 
             // 无效路由
-        } else if ($exception instanceof NotFoundHttpException) {
-            $exception = new BadRouteException('无效的路由');
+        } else if ($exception instanceof HttpException) {
+            $exception = $this->_HandleHttpException($exception);
 
             // Api 异常
-        } else if (! $exception instanceof ApiException) {
+        } else if (!$exception instanceof ApiException) {
             $exception = new ApiException($exception->getMessage(), $exception->getCode());
         }
 
         return parent::render($request, $exception);
+    }
+
+
+    /**
+     * 处理 HttpException
+     * @param HttpException $exception
+     * @return BadRouteException|ForbiddenException
+     */
+    private function _HandleHttpException(HttpException $exception)
+    {
+        if ($exception instanceof NotFoundHttpException) {
+            return new BadRouteException('无效的路由');
+        } elseif ($exception instanceof MethodNotAllowedHttpException) {
+            return new BadRouteException('无效的Method');
+        } else {
+            return new ForbiddenException('风险访问');
+        }
     }
 }
