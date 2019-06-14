@@ -9,9 +9,13 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 use Illuminate\Support\Facades\Route;
 
-Route::get('/','Web\IndexController@index');
+Route::get('/', 'Web\IndexController@index');
+Route::get('/login', 'Web\UserController@login');
+Route::get('/info', 'Web\UserController@info');
+Route::get('/logout', 'Web\UserController@logout');
 
 /**
  * 内部使用，获取签名值

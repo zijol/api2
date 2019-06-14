@@ -15,7 +15,7 @@ $config = [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'irt'),
 
     /*
     |--------------------------------------------------------------------------
@@ -60,11 +60,11 @@ $config = [
         ],
 
         // ADMIN
-        'mysql' => [
+        'irt' => [
             'driver' => 'mysql',
             'host' => env('ADMIN_DB_HOST', '127.0.0.1'),
             'port' => env('ADMIN_DB_PORT', '3306'),
-            'database' => env('ADMIN_DB_NAME', 'admin'),
+            'database' => env('ADMIN_DB_NAME', 'IRT'),
             'username' => env('ADMIN_DB_USER', 'root'),
             'password' => env('ADMIN_DB_PWD', '123456'),
             'unix_socket' => env('ADMIN_DB_SOCKET', ''),
