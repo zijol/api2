@@ -15,7 +15,7 @@ namespace App\Services\Helper;
  *
  * @package App\Services\Helper
  */
-class DataTransfer
+class Data
 {
     /**
      * 简化数组的键
@@ -24,7 +24,7 @@ class DataTransfer
      * @param $search
      * @return array
      */
-    public static function SimplifyData($data, $search)
+    public static function simply($data, $search)
     {
         if (!is_array($data)) {
             return $data;
@@ -46,7 +46,7 @@ class DataTransfer
      * @param string $suffix
      * @return array
      */
-    public static function ComplicateData($data, $prefix = '', $suffix = '')
+    public static function complicate($data, $prefix = '', $suffix = '')
     {
         if (!is_array($data)) {
             return $data;
