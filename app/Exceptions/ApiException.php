@@ -37,7 +37,7 @@ class ApiException extends \Exception implements Responsable
             $this->message = $message;
         }
 
-        if (isset($customCode)) {
+        if (isset($code)) {
             $this->code = $code;
         }
 
@@ -45,7 +45,7 @@ class ApiException extends \Exception implements Responsable
             $this->data = $data;
         }
 
-        if (isset($customType)) {
+        if (isset($type)) {
             $this->type = $type;
         }
 
