@@ -77,7 +77,7 @@ class Handler extends ExceptionHandler
 
             // Api 异常
         } else if (!$exception instanceof ApiException) {
-            $exception = new ApiException($exception->getMessage(), $exception->getCode());
+            $exception = new SystemException($exception->getMessage(), $exception->getCode());
         }
 
         return parent::render($request, $exception);

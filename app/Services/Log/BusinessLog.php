@@ -32,7 +32,7 @@ class BusinessLog extends AbstractLog
     public static function getInstance()
     {
         if (empty(static::$_logPath)) {
-            static::$_logPath = config('logging.business_log_path');
+            static::$_logPath = config('logging.business_log_path') ?? storage_path('logs') . '/business.log';
         }
         return parent::getInstance();
     }

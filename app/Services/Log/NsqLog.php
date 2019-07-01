@@ -40,7 +40,7 @@ class NsqLog extends AbstractLog
     public static function getInstance()
     {
         if (empty(static::$_logPath)) {
-            static::$_logPath = env('NSQ_CLIENT_LOG_PATH') ?? storage_path('logs') . '/consume_nsq_client.log';
+            static::$_logPath = env('NSQ_LOG_PATH') ?? storage_path('logs') . '/consume_nsq_client.log';
         }
         return parent::getInstance();
     }
