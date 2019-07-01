@@ -112,7 +112,6 @@ class ExceptionLog extends AbstractLog
                         'file' => $e['file'],
                         'line' => $e['line'],
                         'code' => $e['type'],
-                        'trace' => ''
                     ])
                 ])->error($module, $msg);
             });

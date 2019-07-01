@@ -13,7 +13,7 @@ namespace App\Services\Log;
  *
  * @package App\Services\Log
  */
-class NsqClientLog extends AbstractLog
+class NsqLog extends AbstractLog
 {
     /**
      * @var string 日志路径

@@ -17,12 +17,10 @@ class IndexController extends Controller
 {
     /**
      * @param ExampleRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws ForbiddenException
+     * @throws AuthorizeException
      */
     public function index(ExampleRequest $request)
     {
-        throw new AuthorizeException('Welcome to zijol api.');
-        return self::JsonResponse($params);
+        throw new AuthorizeException('Welcome to zijol api.', "", "", "no", ["Mtgg" => "zijol"]);
     }
 }
