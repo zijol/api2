@@ -17,10 +17,9 @@ class IndexController extends Controller
 {
     /**
      * @param ExampleRequest $request
-     * @throws AuthorizeException
      */
     public function index(ExampleRequest $request)
     {
-        throw new AuthorizeException('Welcome to zijol api.', 123, "", "no", ["Mtgg" => "zijol"]);
+        throw (new AuthorizeException('Welcome to zijol api.', 123, "", "no", 401))->withHeaders(['author' => 'zijol']);
     }
 }
