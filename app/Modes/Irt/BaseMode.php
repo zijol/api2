@@ -8,7 +8,7 @@ class BaseMode extends Model
 {
     protected $connection = 'irt';
 
-    const KeyMap = [];
+    const KEY_MAP = [];
 
     /**
      * 修改器，支持属性重定义
@@ -18,8 +18,8 @@ class BaseMode extends Model
      */
     public function __get($key)
     {
-        if (isset(self::KeyMap[$key])) {
-            $key = self::KeyMap[$key];
+        if (isset(self::KEY_MAP[$key])) {
+            $key = self::KEY_MAP[$key];
         }
 
         return parent::__get($key);
@@ -33,8 +33,8 @@ class BaseMode extends Model
      */
     public function __set($key, $value)
     {
-        if (isset(self::KeyMap[$key])) {
-            $key = self::KeyMap[$key];
+        if (isset(self::KEY_MAP[$key])) {
+            $key = self::KEY_MAP[$key];
         }
 
         parent::__set($key, $value);
@@ -49,7 +49,7 @@ class BaseMode extends Model
     {
         $arr = parent::toArray();
 
-        $km = array_flip(self::KeyMap);
+        $km = array_flip(self::KEY_MAP);
         foreach ($arr as $key => $value) {
             if (isset($km[$key])) {
                 $arr[$km[$key]] = $value;

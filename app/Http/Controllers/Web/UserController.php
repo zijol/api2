@@ -33,19 +33,19 @@ class UserController extends Controller
             ])->first();
         // 用户存在
         if ($user) {
-            if ($user->user_password != $params['password']) {
-                if ($user->user_login_err_times >= 5) {
+            if ($user->password != $params['password']) {
+                if ($user->login_err_times >= 5) {
                     throw new ForbiddenException('登陆错误超过5次，禁止登陆');
                 } else {
-                    $user->user_login_err_times = $user->user_login_err_times + 1;
+                    $user->login_err_times = $user->login_err_times + 1;
                     $user->save();
-                    throw new ForbiddenException('密码错误 ' . ($user->user_login_err_times) . ' 次');
+                    throw new ForbiddenException('密码错误 ' . ($user->login_err_times) . ' 次');
                 }
             } else {
                 $token = Uuid::uuid1();
-                $user->user_login_at = date('Y-m-d H:i:s');
-                $user->user_login_err_times = 0;
-                $user->user_access_token = $token;
+                $user->login_at = date('Y-m-d H:i:s');
+                $user->login_err_times = 0;
+                $user->access_token = $token;
                 $user->save();
             }
 
@@ -78,7 +78,7 @@ class UserController extends Controller
                 ->where('user_access_token', $token)
                 ->first();
             if ($user) {
-                $info = $user->toArray();
+                $info = $user;
             }
         }
 

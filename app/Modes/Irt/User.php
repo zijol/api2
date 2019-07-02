@@ -21,16 +21,15 @@ class User extends BaseMode
         'user_access_token',
     ];
 
-    public static function infoFields()
-    {
-        return implode(',', [
-            'user_id AS id',
-            'user_nickname AS nickname',
-            'user_role AS role',
-            'user_mobile AS mobile',
-            'user_avatar AS avatar',
-            'user_login_at AS login_at',
-            'user_access_token'
-        ]);
-    }
+    const KEY_MAP = [
+        'name' => 'user_name',
+        'password' => 'user_password',
+        'nickname' => 'user_nickname',
+        'role' => 'user_role',
+        'avatar' => 'user_avatar',
+        'mobile' => 'user_mobile',
+        'login_at' => 'user_login_at',
+        'login_err_times' => 'user_login_err_times',
+        'access_token' => 'user_access_token'
+    ];
 }
