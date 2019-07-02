@@ -10,6 +10,10 @@ class User extends BaseMode
     public $table = 'irt_user';
     public $primaryKey = 'user_id';
 
+    public $casts = [
+
+    ];
+
     public $fillable = [
         'user_name',
         'user_nickname',
