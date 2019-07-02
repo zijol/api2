@@ -66,7 +66,7 @@ class UserController extends Controller
      */
     public function info(Request $request)
     {
-        $token = $request->header('irt_access_token');
+        $token = $request->header('irt-access-token');
 
         if (empty($token)) {
             $token = $request->all('irt_access_token');
