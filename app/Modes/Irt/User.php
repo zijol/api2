@@ -21,6 +21,15 @@ class User extends BaseMode
         'user_access_token',
     ];
 
+    public static $infoFields = [
+        'user_name',
+        'user_nickname',
+        'user_role',
+        'user_avatar',
+        'user_mobile',
+        'user_login_at',
+    ];
+
     const KEY_MAP = [
         'name' => 'user_name',
         'password' => 'user_password',

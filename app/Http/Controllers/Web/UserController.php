@@ -75,7 +75,7 @@ class UserController extends Controller
         $info = null;
         if (!empty($token)) {
             $user = User::query()
-                ->selectRaw(User::infoFields())
+                ->select(User::$infoFields)
                 ->where('user_access_token', $token)
                 ->first();
             if ($user) {
