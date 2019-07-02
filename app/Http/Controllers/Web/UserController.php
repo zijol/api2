@@ -31,6 +31,7 @@ class UserController extends Controller
             ->where([
                 'user_name' => $params['name']
             ])->first();
+        var_dump($user);die;
         // 用户存在
         if ($user) {
             if ($user->password != $params['password']) {
