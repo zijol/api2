@@ -18,8 +18,8 @@ class BaseMode extends Model
      */
     public function __get($key)
     {
-        if (isset(self::KEY_MAP[$key])) {
-            $key = self::KEY_MAP[$key];
+        if (isset(static::KEY_MAP[$key])) {
+            $key = static::KEY_MAP[$key];
         }
 
         return parent::__get($key);
@@ -33,8 +33,8 @@ class BaseMode extends Model
      */
     public function __set($key, $value)
     {
-        if (isset(self::KEY_MAP[$key])) {
-            $key = self::KEY_MAP[$key];
+        if (isset(static::KEY_MAP[$key])) {
+            $key = static::KEY_MAP[$key];
         }
 
         parent::__set($key, $value);
@@ -49,7 +49,7 @@ class BaseMode extends Model
     {
         $arr = parent::toArray();
 
-        $km = array_flip(self::KEY_MAP);
+        $km = array_flip(static::KEY_MAP);
         foreach ($arr as $key => $value) {
             if (isset($km[$key])) {
                 $arr[$km[$key]] = $value;
