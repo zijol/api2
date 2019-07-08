@@ -28,7 +28,7 @@ class NsqLog extends AbstractLog
     // 包括消息体
     protected $_typeContext = [
         'message' => '',
-        'exception' => '',
+        'exception' => [],
         'topic' => '',
         'channel' => '',
         'host' => ''
@@ -40,8 +40,59 @@ class NsqLog extends AbstractLog
     public static function getInstance()
     {
         if (empty(static::$_logPath)) {
-            static::$_logPath = env('NSQ_LOG_PATH') ?? storage_path('logs') . '/consume_nsq_client.log';
+            static::$_logPath = config('logging.nsq_log_path');
         }
         return parent::getInstance();
+    }
+
+    /**
+     * 记录日志
+     *
+     * @param string $host
+     * @param string $topic
+     * @param string $channel
+     * @param array $message
+     * @return bool
+     */
+    public static function Log(string $host, string $topic, string $channel, array $message)
+    {
+        try {
+            static::getInstance()
+                ->delContext()
+                ->setContext([
+                    'message' => json_encode(CustomObject::normalize($message), JSON_UNESCAPED_UNICODE),
+                    'host' => $host,
+                    'topic' => $topic,
+                    'channel' => $channel,
+                ])->info('NsqLog');
+            return true;
+        } catch (\Exception $exception) {
+            return false;
+        }
+    }
+
+    /**
+     * 异常日志
+     * @param string $host
+     * @param string $topic
+     * @param string $channel
+     * @param \Exception $exception
+     * @return bool
+     */
+    public static function ExceptionLog(string $host, string $topic, string $channel, \Exception $exception)
+    {
+        try {
+            static::getInstance()
+                ->delContext()
+                ->setContext([
+                    'exception' => ExceptionObject::normalize($exception),
+                    'host' => $host,
+                    'topic' => $topic,
+                    'channel' => $channel,
+                ])->error('NsqLog');
+            return true;
+        } catch (\Exception $exception) {
+            return false;
+        }
     }
 }

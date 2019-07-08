@@ -8,6 +8,8 @@
 
 namespace App\Services\Log\Assist;
 
+use App\Services\Helper\IDGenerator;
+
 /**
  * Class LogHelper
  * @package Pingpp\Framework\Log\Assist
@@ -26,26 +28,33 @@ class LogHelper
     // 初始化时候的兆秒数
     private $_initMegaSecond = 0;
 
+    private $_commitId = '';
+    private $_tagNo = '';
+
     /**
      * 初始化数据
      *
      * LogHelper constructor.
+     * @param array $config
+     * @throws \App\Exceptions\SystemException
      */
-    private function __construct()
+    private function __construct($config = [])
     {
-        $this->_id = $this->_id();
+        $this->_id = IDGenerator::uuid1();
         $this->_initMegaSecond = $this->_getMegaSecond();
     }
 
     /**
      * 拿到唯一实例
      *
-     * @return null|LogHelper
+     * @param array $config
+     * @return LogHelper|null
+     * @throws \App\Exceptions\SystemException
      */
-    public static function instance()
+    public static function instance($config = [])
     {
         if (!self::$_instance instanceof self) {
-            self::$_instance = new self();
+            self::$_instance = new self($config);
         }
         return self::$_instance;
     }
@@ -62,29 +71,42 @@ class LogHelper
     }
 
     /**
-     * 获取唯一ID
+     * 获取commit_id
      *
-     * @param int $length
-     * @param string $prefix
-     * @return bool|string
+     * @return \Illuminate\Config\Repository|int|mixed
      */
-    private function _id($length = 24, $prefix = 'log_')
+    public function getCommitId()
     {
-        $charset = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        $key = "Pingxx";
-        $str = md5(uniqid(rand(), TRUE));
-        $id = $prefix;
-        $hash = md5($key . $str);
-        $len = strlen($hash);
-        for ($i = 0; $i < 4; $i++) {
-            $hash_piece = substr($hash, $i * $len / 4, $len / 4);
-            $hex = hexdec($hash_piece) & 0x3fffffff;
-            for ($j = 0; $j < 6; $j++) {
-                $id .= $charset[$hex & 0x0000003d];
-                $hex = $hex >> 5;
-            }
+        if (empty($this->_commitId)) {
+            $this->_commitId = config('app.commit_id', "");
         }
-        return substr($id, 0, $length + strlen($prefix));
+
+        return $this->_commitId;
+    }
+
+    /**
+     * 获取 tag no
+     * @return \Illuminate\Config\Repository|int|mixed
+     */
+    public function getTagNo()
+    {
+        if (empty($this->_tagNo)) {
+            $this->_tagNo = config('app.tag_no', "");
+        }
+
+        return $this->_tagNo;
+    }
+
+    /**
+     * 重新初始化
+     *
+     * @throws \App\Exceptions\SystemException
+     */
+    public function init()
+    {
+        $this->_id = IDGenerator::uuid1();
+        $this->_initMegaSecond = $this->_getMegaSecond();
+        $this->_serialNumber = 0;
     }
 
     /**
@@ -102,6 +124,10 @@ class LogHelper
                 return $this->_id;
             case 'serial_number':
                 return ++$this->_serialNumber;
+            case 'tag_no':
+                return $this->getTagNo();
+            case 'commit_id':
+                return $this->getCommitId();
             default :
                 return null;
         }

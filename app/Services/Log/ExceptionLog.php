@@ -33,7 +33,7 @@ class ExceptionLog extends AbstractLog
     /**
      * @var string 该类型日志的日志类型
      */
-    protected $_logType = 'exception';
+    protected $_logType = 'exception_log';
 
     /**
      * 错误注册类型
@@ -58,63 +58,27 @@ class ExceptionLog extends AbstractLog
     public static function getInstance()
     {
         if (empty(static::$_logPath)) {
-            static::$_logPath = env('EXCEPTION_LOG_PATH') ?? storage_path('logs') . '/exception.log';
+            static::$_logPath = config('logging.exception_log_path');
         }
         return parent::getInstance();
     }
 
     /**
-     * 进行错误异常中断注册
+     * 异常日志
      *
-     * @param string $module
-     * @param string $msg
+     * @param \Exception $exception
+     * @return bool
      */
-    public static function registerErrorHandle($module = 'ExceptionLog', $msg = '')
+    public static function Log(\Exception $exception)
     {
-        // 添加错误日志
-        if (in_array('error', static::$_registerTypes)) {
-            set_error_handler(function ($code, $message, $file, $line, $content) use ($module, $msg) {
-                static::getInstance()->setContext([
-                    'exception' => ExceptionObject::normalize([
-                        'message' => $message,
-                        'file' => $file,
-                        'line' => $line,
-                        'code' => $code,
-                        'trace' => json_encode($content)
-                    ])
-                ])->warning($module, $msg);
-            });
-        }
-
-        // 异常日志
-        if (in_array('exception', static::$_registerTypes)) {
-            set_exception_handler(function (\Throwable $e) use ($module, $msg) {
-                static::getInstance()->setContext([
-                    'exception' => ExceptionObject::normalize([
-                        'message' => $e->getMessage(),
-                        'file' => $e->getFile(),
-                        'line' => $e->getLine(),
-                        'code' => $e->getCode(),
-                        'trace' => $e->getTraceAsString(),
-                    ])
-                ])->warning($module, $msg);
-            });
-        }
-
-        // 中断异常日志
-        if (in_array('exception', static::$_registerTypes)) {
-            register_shutdown_function(function () use ($module, $msg) {
-                $e = error_get_last();
-                if (empty($e)) return false;
-                static::getInstance()->setContext([
-                    'exception' => ExceptionObject::normalize([
-                        'message' => $e['message'],
-                        'file' => $e['file'],
-                        'line' => $e['line'],
-                        'code' => $e['type'],
-                    ])
-                ])->error($module, $msg);
-            });
+        try {
+            static::getInstance()
+                ->setContext([
+                    'exception' => ExceptionObject::normalize($exception)
+                ])->error('ExceptionLog');
+            return true;
+        } catch (\Exception $exception) {
+            return false;
         }
     }
 }
