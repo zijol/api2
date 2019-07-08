@@ -16,6 +16,7 @@ return [
     |
     */
 
+    'http_log_path' => env('HTTP_LOG_PATH', storage_path('logs/http.log')),
     'default' => env('LOG_CHANNEL', 'stack'),
 
     /*
@@ -72,7 +73,7 @@ return [
         ],
 
         'papertrail' => [
-            'driver'  => 'monolog',
+            'driver' => 'monolog',
             'level' => 'debug',
             'handler' => SyslogUdpHandler::class,
             'handler_with' => [
