@@ -18,7 +18,6 @@ class Controller extends BaseController
      * @param $data
      * @param int $status
      * @param array $headers
-     * @param int $options
      * @return JsonResponse
      */
     public static function JsonResponse($data, $status = 200, $headers = [])
