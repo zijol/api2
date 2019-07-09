@@ -274,13 +274,7 @@ abstract class AbstractLog
             }
 
             // 写入日志
-            $logPath = str_replace(
-                '.log',
-                '-' . date('Ymd') . '.log',
-                static::$_logPath,
-                $count
-            );
-            $count == 1 ?: $logPath = static::$_logPath;
+            $logPath = rtrim(static::$_logPath, '.log') . '-' . date('Ymd') . '.log';
 
             LogRecorder::instance('fission_user_level', $logPath)
                 ->log(static::$_logLevelList[$logLevelName], $message, $this->_context);
