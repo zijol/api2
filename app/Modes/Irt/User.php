@@ -9,9 +9,21 @@ class User extends BaseMode
 
     public $table = 'irt_user';
     public $primaryKey = 'user_id';
-
     public $casts = [
+    ];
 
+    public $keyMap = [
+        'name' => 'user_name',
+        'password' => 'user_password',
+        'nickname' => 'user_nickname',
+        'role' => 'user_role',
+        'avatar' => 'user_avatar',
+        'mobile' => 'user_mobile',
+        'login_at' => 'user_login_at',
+        'login_err_times' => 'user_login_err_times',
+        'access_token' => 'user_access_token',
+        'created_at' => 'user_created_at',
+        'updated_at' => 'user_updated_at',
     ];
 
     public $fillable = [
@@ -32,19 +44,5 @@ class User extends BaseMode
         'user_avatar',
         'user_mobile',
         'user_login_at',
-    ];
-
-    const KEY_MAP = [
-        'name' => 'user_name',
-        'password' => 'user_password',
-        'nickname' => 'user_nickname',
-        'role' => 'user_role',
-        'avatar' => 'user_avatar',
-        'mobile' => 'user_mobile',
-        'login_at' => 'user_login_at',
-        'login_err_times' => 'user_login_err_times',
-        'access_token' => 'user_access_token',
-        'created_at' => 'user_created_at',
-        'updated_at' => 'user_updated_at',
     ];
 }
