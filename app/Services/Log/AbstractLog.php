@@ -65,7 +65,7 @@ abstract class AbstractLog
         'log_id' => '',
         'log_serial' => 1,
         'log_time' => '',
-        'log_exec_msec' => 0,
+        'log_exec_time' => 0,
         'log_type' => '',
         'log_module' => '',
         'log_level' => '',
@@ -262,7 +262,7 @@ abstract class AbstractLog
             // 日志时间
             $this->_context['log_time'] = date('Y-m-d H:i:s');
             // 过程执行毫秒数
-            $this->_context['log_exec_msec'] = $this->_logHelper->exec_millisecond;
+            $this->_context['log_exec_time'] = $this->_logHelper->exec_millisecond;
             // 获取commit_id
             $this->_context['log_commit_id'] = $this->_logHelper->commit_id;
             // 获取tag_no
