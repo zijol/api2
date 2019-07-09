@@ -36,15 +36,6 @@ class ExceptionLog extends AbstractLog
     protected $_logType = 'exception_log';
 
     /**
-     * 错误注册类型
-     *
-     * @var array
-     */
-    protected static $_registerTypes = [
-        'exception', 'error', 'shutdown'
-    ];
-
-    /**
      * 初始化子对象
      */
     public function init()
