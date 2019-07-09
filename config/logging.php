@@ -17,7 +17,7 @@ return [
     */
 
     'http_log_path' => env('HTTP_LOG_PATH', storage_path('logs/http.log')),
-    'exception_log_path' => env('HTTP_LOG_PATH', storage_path('logs/exception.log')),
+    'exception_log_path' => env('EXCEPTION_LOG_PATH', storage_path('logs/exception.log')),
     'default' => env('LOG_CHANNEL', 'stack'),
 
     /*
