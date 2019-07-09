@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use App\Services\Log\Assist\LogHelper;
+use App\Services\Log\ExceptionLog;
 use Exception;
 use App\Services\Log\SubObject\ExceptionObject;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -46,12 +47,7 @@ class Handler extends ExceptionHandler
         parent::report($exception);
 
         if (!$this->shouldntReport($exception))
-            Log::stack(['exception'])
-                ->error('系统错误', array_merge([
-                    'unique_id' => LogHelper::instance()->unique_id,
-                    'serial_number' => LogHelper::instance()->serial_number,
-                    'exec_millisecond' => LogHelper::instance()->exec_millisecond,
-                ], ExceptionObject::normalize($exception)));
+            ExceptionLog::Log($exception);
     }
 
     /**
