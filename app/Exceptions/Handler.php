@@ -2,13 +2,10 @@
 
 namespace App\Exceptions;
 
-use App\Services\Log\Assist\LogHelper;
 use App\Services\Log\ExceptionLog;
 use Exception;
-use App\Services\Log\SubObject\ExceptionObject;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;

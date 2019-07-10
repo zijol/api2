@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Modes\Irt;
+namespace App\Models\Irt;
 
-class User extends BaseMode
+class User extends IrtModel
 {
     const UPDATED_AT = 'user_updated_at';
     const CREATED_AT = 'user_created_at';
