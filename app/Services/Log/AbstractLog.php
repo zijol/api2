@@ -105,7 +105,9 @@ abstract class AbstractLog
 
     /**
      * 设置日志固定参数
+     *
      * AbstractLog constructor.
+     * @throws \App\Exceptions\SystemException
      */
     private function __construct()
     {
