@@ -11,7 +11,7 @@ namespace App\Http\Controllers\Web;
 use App\Exceptions\ForbiddenException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
-use App\Modes\Irt\User;
+use App\Models\Irt\User;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Uuid;
 
