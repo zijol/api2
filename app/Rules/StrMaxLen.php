@@ -11,6 +11,7 @@ class StrMaxLen implements Rule
     /**
      * Create a new rule instance.
      *
+     * @param integer $maxLen
      * @return void
      */
     public function __construct(int $maxLen = 64)
@@ -37,8 +38,6 @@ class StrMaxLen implements Rule
      */
     public function message()
     {
-        return trans('validation.custom.str_max_len', [
-            'max_len' => $this->_maxLen
-        ]);
+        return trans('validation.custom.str_max_len', ['max_len' => $this->_maxLen]);
     }
 }

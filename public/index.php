@@ -22,7 +22,7 @@ define('LARAVEL_START', microtime(true));
 */
 
 require __DIR__.'/../vendor/autoload.php';
-
+\App\Services\Log\Assist\LogHelper::instance();
 /*
 |--------------------------------------------------------------------------
 | Turn On The Lights

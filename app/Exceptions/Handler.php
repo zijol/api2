@@ -2,12 +2,10 @@
 
 namespace App\Exceptions;
 
-use App\Services\Log\Assist\LogHelper;
+use App\Services\Log\ExceptionLog;
 use Exception;
-use App\Services\Log\SubObject\ExceptionObject;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -46,12 +44,7 @@ class Handler extends ExceptionHandler
         parent::report($exception);
 
         if (!$this->shouldntReport($exception))
-            Log::stack(['exception'])
-                ->error('系统错误', array_merge([
-                    'unique_id' => LogHelper::instance()->unique_id,
-                    'serial_number' => LogHelper::instance()->serial_number,
-                    'exec_millisecond' => LogHelper::instance()->exec_millisecond,
-                ], ExceptionObject::normalize($exception)));
+            ExceptionLog::Log($exception);
     }
 
     /**
@@ -77,7 +70,7 @@ class Handler extends ExceptionHandler
 
             // Api 异常
         } else if (!$exception instanceof ApiException) {
-            $exception = new ApiException($exception->getMessage(), $exception->getCode());
+            $exception = new SystemException($exception->getMessage(), $exception->getCode());
         }
 
         return parent::render($request, $exception);

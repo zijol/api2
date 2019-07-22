@@ -15,9 +15,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-        if (class_exists(Config::class)) {
-            Config::load();
-        }
+//        if (class_exists(Config::class)) {
+//            Config::load();
+//        }
     }
 
     /**

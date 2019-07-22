@@ -16,7 +16,6 @@ class ExceptionObject extends AbstractSubObject
         'file' => '',
         'code' => '',
         'line' => '',
-//        'trace' => '',
     ];
 
     protected function __construct($config = [])
@@ -27,7 +26,6 @@ class ExceptionObject extends AbstractSubObject
                 'file' => $config->getFile(),
                 'code' => $config->getCode(),
                 'line' => $config->getLine(),
-//                'trace' => $config->getTraceAsString()
             ]);
         } else {
             parent::__construct($config);

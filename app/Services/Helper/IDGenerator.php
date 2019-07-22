@@ -8,7 +8,7 @@
 
 namespace App\Services\Helper;
 
-use App\Exceptions\ApiException;
+use App\Exceptions\SystemException;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -22,15 +22,14 @@ class IDGenerator
 {
     /**
      * @return mixed
-     * @throws ApiException
+     * @throws SystemException
      */
     public static function uuid1()
     {
         try {
-            $id = Uuid::uuid1();
-            return str_replace('-', '', $id);
+            return Uuid::uuid1()->getHex();
         } catch (\Exception $e) {
-            throw new ApiException('无法生成ID');
+            throw new SystemException('无法生成ID');
         }
     }
 
@@ -38,29 +37,27 @@ class IDGenerator
      * @param string $ns
      * @param string $name
      * @return mixed
-     * @throws ApiException
+     * @throws SystemException
      */
     public static function uuid3(string $ns, string $name)
     {
         try {
-            $id = Uuid::uuid3($ns, $name);
-            return str_replace('-', '', $id);
+            return Uuid::uuid3($ns, $name)->getHex();
         } catch (\Exception $e) {
-            throw new ApiException('无法生成ID');
+            throw new SystemException('无法生成ID');
         }
     }
 
     /**
      * @return mixed
-     * @throws ApiException
+     * @throws SystemException
      */
     public static function uuid4()
     {
         try {
-            $id = Uuid::uuid4();
-            return str_replace('-', '', $id);
+            return Uuid::uuid4()->getHex();
         } catch (\Exception $e) {
-            throw new ApiException('无法生成ID');
+            throw new SystemException('无法生成ID');
         }
     }
 
@@ -69,15 +66,14 @@ class IDGenerator
      * @param string $ns
      * @param string $name
      * @return mixed
-     * @throws ApiException
+     * @throws SystemException
      */
     public static function uuid5(string $ns, string $name)
     {
         try {
-            $id = Uuid::uuid5($ns, $name);
-            return str_replace('-', '', $id);
+            return Uuid::uuid5($ns, $name)->getHex();
         } catch (\Exception $e) {
-            throw new ApiException('无法生成ID');
+            throw new SystemException('无法生成ID');
         }
     }
 }

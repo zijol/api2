@@ -28,6 +28,11 @@ use App\Services\Log\Assist\LogRecorder;
 abstract class AbstractLog
 {
     /**
+     * @var LogHelper|null
+     */
+    private $_logHelper = null;
+
+    /**
      * @var string 日志的记录文件路径
      * 想要不同类型的日志支持存储在不同文件，只需在子类中覆盖该属性(当前不建议)
      * 并可以被config()进行日志文件路径配置
@@ -55,10 +60,12 @@ abstract class AbstractLog
      * @var array
      */
     protected $_context = [
+        'log_commit_id' => '',
+        'log_tag_no' => '',
         'log_id' => '',
         'log_serial' => 1,
         'log_time' => '',
-        'log_exec_msec' => 0,
+        'log_exec_time' => 0,
         'log_type' => '',
         'log_module' => '',
         'log_level' => '',
@@ -76,7 +83,7 @@ abstract class AbstractLog
      * @var array
      */
     private $_safeContextLabel = [
-//        'log_id', 'log_time', 'log_level', 'log_type', 'log_module',
+        'log_commit_id', 'log_tag_no', 'log_id', 'log_time', 'log_level', 'log_type', 'log_module',
     ];
 
     /**
@@ -98,12 +105,13 @@ abstract class AbstractLog
 
     /**
      * 设置日志固定参数
+     *
      * AbstractLog constructor.
+     * @throws \App\Exceptions\SystemException
      */
     private function __construct()
     {
-        // 设置日志ID
-        $this->_context['log_id'] = LogHelper::instance()->unique_id;
+        $this->_logHelper = LogHelper::instance();
         // 设置日志类型，子类覆盖属性后，会使用到子类的属性
         $this->_context['log_type'] = $this->_logType;
         // 设置安全属性
@@ -141,7 +149,16 @@ abstract class AbstractLog
     public static function config($logPath)
     {
         static::$_logPath = $logPath;
-        LogHelper::instance();
+    }
+
+    /**
+     * 重新初始化LogHelper
+     *
+     * @throws \App\Exceptions\SystemException
+     */
+    public static function restart()
+    {
+        LogHelper::instance()->init();
     }
 
     /**
@@ -154,19 +171,15 @@ abstract class AbstractLog
     {
         foreach ($contextArray as $attrKey => $attrValue) {
             if (!in_array($attrKey, $this->_safeContextLabel)) {
-                if (is_array($attrValue)) {
-                    if (empty($attrValue)) {
-                        $this->_context[$attrKey] = '{}';
-                    } else {
-                        foreach ($attrValue as $k => $v) {
-                            if (is_array($v)) {
-                                $this->_context[$attrKey . '.' . $k] = json_encode($v, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-                            } else {
-                                $this->_context[$attrKey . '.' . $k] = $v;
-                            }
+                if (is_array($attrValue) || is_object($attrValue)) {
+                    foreach ($attrValue as $k => $v) {
+                        if (is_array($v)) {
+                            $this->_context[$attrKey . '.' . $k] = json_encode($v, JSON_UNESCAPED_UNICODE);
+                        } else {
+                            $this->_context[$attrKey . '.' . $k] = $v;
                         }
-                        unset($this->_context[$attrKey]);
                     }
+                    unset($this->_context[$attrKey]);
                 } else {
                     $this->_context[$attrKey] = $attrValue;
                 }
@@ -183,11 +196,21 @@ abstract class AbstractLog
      */
     public function delContext($contextIndex = [])
     {
+        if (empty($contextIndex)) {
+            foreach ($this->_context as $key => $value) {
+                if (!in_array($key, $this->_safeContextLabel)) {
+                    unset($this->_context[$key]);
+                }
+            }
+            return $this;
+        }
+
         foreach ($contextIndex as $index) {
             if (isset($this->_context[$index]) && !in_array($index, $this->_safeContextLabel)) {
                 unset($this->_context[$index]);
             }
         }
+
         return $this;
     }
 
@@ -230,16 +253,22 @@ abstract class AbstractLog
             // 日志附属消息
             $message = isset($arguments[1]) && is_string($arguments[1]) ? $arguments[1] : "";
 
+            // 设置日志ID
+            $this->_context['log_id'] = $this->_logHelper->unique_id;
             // 描述模块信息添加到上下文中
             $this->_context['log_module'] = $logModule;
             // 日志等级
             $this->_context['log_level'] = $logLevelName;
             // 日志序号
-            $this->_context['log_serial'] = LogHelper::instance()->serial_number;
+            $this->_context['log_serial'] = $this->_logHelper->serial_number;
             // 日志时间
-            $this->_context['log_time'] = date('Y-m-d H:i:s.');
+            $this->_context['log_time'] = date('Y-m-d H:i:s');
             // 过程执行毫秒数
-            $this->_context['log_exec_msec'] = LogHelper::instance()->exec_millisecond;
+            $this->_context['log_exec_time'] = $this->_logHelper->exec_millisecond;
+            // 获取commit_id
+            $this->_context['log_commit_id'] = $this->_logHelper->commit_id;
+            // 获取tag_no
+            $this->_context['log_tag_no'] = $this->_logHelper->tag_no;
 
             // 如果定义了装饰context的回调函数
             if ($this->_decorateContextHandler && is_callable([$this, $this->_decorateContextHandler])) {
@@ -247,7 +276,9 @@ abstract class AbstractLog
             }
 
             // 写入日志
-            LogRecorder::instance('fission_user_level', static::$_logPath)
+            $logPath = rtrim(static::$_logPath, '.log') . '-' . date('Ymd') . '.log';
+
+            LogRecorder::instance('fission_user_level', $logPath)
                 ->log(static::$_logLevelList[$logLevelName], $message, $this->_context);
         }
 
