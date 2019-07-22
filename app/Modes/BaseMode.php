@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modes\Irt;
+namespace App\Modes;
 
 use Illuminate\Database\Eloquent\Model;
 
