@@ -56,21 +56,27 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        // 验证异常
-        if ($exception instanceof ValidationException) {
-            $exception = new ValidatorException($exception->validator->getMessageBag()->first());
+        // 如果是自定义的异常类
+        if ($exception instanceof CustomException) {
+            return parent::render($request, $exception);
 
-            // 身份认证失败
+            // 未认证的请求
         } else if ($exception instanceof AuthorizationException) {
-            $exception = new AuthorizeException('非法访问');
+            $exception = new UnauthorizedException('未认证的请求');
 
             // 无效路由
         } else if ($exception instanceof HttpException) {
-            $exception = $this->_HandleHttpException($exception);
+            $exception = $this->_handleHttpException($exception, $request);
 
-            // Api 异常
-        } else if (!$exception instanceof ApiException) {
-            $exception = new SystemException($exception->getMessage(), $exception->getCode());
+            // 验证错误
+        } else if ($exception instanceof ValidationException) {
+            $exception = new InvalidArgumentException($exception->validator->getMessageBag()->first());
+
+            // 其他异常直接视为 500
+        } else {
+            $newException = new SystemException('系统错误');
+            $newException->errorMessage = $exception->getMessage();
+            $exception = $newException;
         }
 
         return parent::render($request, $exception);

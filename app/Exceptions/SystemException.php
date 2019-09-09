@@ -10,8 +10,8 @@ namespace App\Exceptions;
 
 class SystemException extends ApiException
 {
-    public $type = 'system_error';
-    public $code = 5000;
-    public $message = 'System Error';
     public $httpCode = 500;
+    public $customType = 'system_error';
+    public $errorMessage = 'System Error';
+    public $customCode = 5000;
 }

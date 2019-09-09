@@ -10,8 +10,8 @@ namespace App\Exceptions;
 
 class ValidatorException extends ApiException
 {
-    public $type = 'invalid_parameters';
-    public $code = 4000;
-    public $message = 'Invalid Parameters';
     public $httpCode = 400;
+    public $customType = 'invalid_parameters';
+    public $errorMessage = 'Invalid Parameters';
+    public $customCode = 4000;
 }

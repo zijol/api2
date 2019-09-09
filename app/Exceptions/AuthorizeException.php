@@ -8,10 +8,10 @@
 
 namespace App\Exceptions;
 
-class AuthorizeException extends ApiException
+class AuthorizeException extends CustomException
 {
-    public $type = 'authorize_error';
-    public $code = 4001;
-    public $message = 'Authorize Error';
     public $httpCode = 401;
+    public $customType = 'authorize_error';
+    public $errorMessage = 'Authorize';
+    public $customCode = 4001;
 }

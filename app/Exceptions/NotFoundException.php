@@ -10,8 +10,8 @@ namespace App\Exceptions;
 
 class NotFoundException extends ApiException
 {
-    public $type = 'not_found';
-    public $code = 4004;
-    public $message = 'Not Fount';
-    public $httpCode = 403;
+    public $httpCode = 404;
+    public $customType = 'not_found';
+    public $errorMessage = 'Not Fount';
+    public $customCode = 4004;
 }

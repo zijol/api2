@@ -10,8 +10,8 @@ namespace App\Exceptions;
 
 class ForbiddenException extends ApiException
 {
-    public $type = 'invite_forbidden';
-    public $code = 4003;
-    public $message = 'Invite Forbidden';
     public $httpCode = 403;
+    public $customType = 'invite_forbidden';
+    public $errorMessage = 'Invite Forbidden';
+    public $customCode = 4003;
 }
