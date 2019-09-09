@@ -10,6 +10,7 @@ use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Http\Request;
 
 class Handler extends ExceptionHandler
 {
@@ -18,8 +19,8 @@ class Handler extends ExceptionHandler
      *
      * @var array
      */
-    protected $dontReport = [
-        ApiException::class
+    protected $dontLog = [
+        CustomException::class
     ];
 
     /**
@@ -84,18 +85,29 @@ class Handler extends ExceptionHandler
 
 
     /**
-     * 处理 HttpException
-     * @param HttpException $exception
-     * @return BadRouteException|ForbiddenException
+     * 处理HttpException
+     *
+     * @param HttpException $httpException
+     * @param Request $request
+     * @return ForbiddenException|NotFoundException
      */
-    private function _HandleHttpException(HttpException $exception)
+    private function _handleHttpException(HttpException $httpException, Request $request)
     {
-        if ($exception instanceof NotFoundHttpException) {
-            return new BadRouteException('无效的路由');
-        } elseif ($exception instanceof MethodNotAllowedHttpException) {
-            return new BadRouteException('无效的Method');
+        // 路由方法不存在
+        if ($httpException instanceof MethodNotAllowedHttpException) {
+            return new NotFoundException(
+                '无法识别的 METHOD [ ' . $request->getMethod() . ': ' . $request->getRequestUri() . ' ]'
+            );
+
+            // 路由URL不存在
+        } else if ($httpException instanceof NotFoundHttpException) {
+            return new NotFoundException(
+                '无法识别的 URL [ ' . $request->getMethod() . ': ' . $request->getRequestUri() . ' ]'
+            );
+
+            // 其他视作无效访问（后续可以继续细分处理）
         } else {
-            return new ForbiddenException('风险访问');
+            return new ForbiddenException("风险访问");
         }
     }
 }

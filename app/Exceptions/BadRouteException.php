@@ -8,7 +8,7 @@
 
 namespace App\Exceptions;
 
-class BadRouteException extends ApiException
+class BadRouteException extends CustomException
 {
     public $httpCode = 404;
     public $customType = 'bad_route';

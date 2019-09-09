@@ -8,7 +8,7 @@
 
 namespace App\Exceptions;
 
-class SystemException extends ApiException
+class SystemException extends CustomException
 {
     public $httpCode = 500;
     public $customType = 'system_error';

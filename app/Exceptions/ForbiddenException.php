@@ -8,7 +8,7 @@
 
 namespace App\Exceptions;
 
-class ForbiddenException extends ApiException
+class ForbiddenException extends CustomException
 {
     public $httpCode = 403;
     public $customType = 'invite_forbidden';

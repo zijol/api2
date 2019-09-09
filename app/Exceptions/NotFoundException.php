@@ -8,7 +8,7 @@
 
 namespace App\Exceptions;
 
-class NotFoundException extends ApiException
+class NotFoundException extends CustomException
 {
     public $httpCode = 404;
     public $customType = 'not_found';
