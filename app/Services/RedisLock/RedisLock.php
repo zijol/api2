@@ -1,99 +1,99 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: ping123
+ * Date: 2019/5/19
+ * Time: 14:26
+ */
 
 namespace App\Services\RedisLock;
 
-use App\Exceptions\ForbiddenException;
+use Common\Exceptions\ForbiddenException;
 use Illuminate\Support\Facades\Redis;
 
-class RedisLock
+abstract class RedisLock
 {
-    /**
-     * 链接池名称
-     */
-    const CONNECTION_NAME = 'default';
+    // 锁的有效时间（ms）
+    const MILLISECONDS_EXPIRE_TTL = 1000;
+    const LOCKED_TIP_MSG = '系统繁忙，请稍后再试';
+    const LOCKED_ERR_CODE = null;
+
+    const REDIS_NAME = 'default';
+    const LOCK_SUCCESS = 'OK';
+    const IF_NOT_EXIST = 'NX';
+    const MILLISECONDS_EXPIRE_TIME = 'PX';
+    const RELEASE_SUCCESS = 1;
+    private $lockKey = 'redis_lock';
 
     /**
-     * 锁名字，根据业务保证唯一
+     * @var null | \Illuminate\Redis\Connections\Connection
      */
-    protected const LOCK_KEY = 'redis_lock';
+    protected $redis = null;
 
     /**
-     * 锁的有效时间（ms）
+     * RLock constructor.
+     *
+     * 获取redis
      */
-    protected const MILLISECONDS_EXPIRE_TTL = 1000;
+    public function __construct()
+    {
+        $this->redis = Redis::connection(static::REDIS_NAME);
+        $this->lockKey = $this->getLockKey();
+    }
 
-    private const LOCK_SUCCESS = 'OK';
-    private const IF_NOT_EXIST = 'NX';
-    private const MILLISECONDS_EXPIRE_TIME = 'PX';
-    private const RELEASE_SUCCESS = 1;
+    /**
+     * @return string 获取缓存键
+     */
+    abstract function getLockKey();
 
     /**
      * 获取锁
      *
-     * @param array $relies
      * @return bool
      */
-    public static function get(array $relies)
+    public function get()
     {
-        $redis = Redis::connection(static::CONNECTION_NAME);
-
-        $result = $redis->set(
-            static::LOCK_KEY,
-            self::requestId($relies),
-            self::MILLISECONDS_EXPIRE_TIME,
+        $result = $this->redis->set(
+            $this->lockKey,
+            "using",
+            static::MILLISECONDS_EXPIRE_TIME,
             static::MILLISECONDS_EXPIRE_TTL,
-            self::IF_NOT_EXIST);
+            static::IF_NOT_EXIST);
 
-        return self::LOCK_SUCCESS === (string)$result;
+        return static::LOCK_SUCCESS === (string)$result;
     }
 
     /**
      * 释放锁
      *
-     * @param array $relies
      * @return bool
      */
-    public static function release(array $relies)
+    public function release()
     {
-        $redis = Redis::connection(static::CONNECTION_NAME);
-
         $lua = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
-        $result = $redis->eval($lua, 1, static::LOCK_KEY, self::requestId($relies));
+        $result = $this->redis->eval($lua, 1, $this->lockKey, 'using');
 
-        return self::RELEASE_SUCCESS === $result;
+        return static::RELEASE_SUCCESS === $result;
     }
 
     /**
-     * @param array $relies
      * @return bool
      * @throws ForbiddenException
      */
-    public static function safeGet(array $relies)
+    public function safeGet()
     {
-        if (!self::get($relies)) {
-            throw new ForbiddenException('系统繁忙，请稍后再试');
+        if (!$this->get()) {
+            throw new ForbiddenException(static::LOCKED_TIP_MSG);
         }
 
         return true;
     }
 
     /**
-     * 根据依赖生成 requestId
-     *
-     * @param array $relies
-     * @param string $split
-     * @param bool $useReliesKey
-     * @return string
+     * 断开redis连接
      */
-    private static function requestId(array $relies, $split = '&', $useReliesKey = false)
+    public function __destruct()
     {
-        $temp = [];
-        sort($relies);
-        foreach ($relies as $k => $v) {
-            $useReliesKey
-                ? array_push($temp, $v)
-                : array_push($temp, $k . ':' . $v);
-        }
-        return 'redis_lock:' . md5(implode($split, $temp));
+        $this->redis->disconnect();
     }
 }

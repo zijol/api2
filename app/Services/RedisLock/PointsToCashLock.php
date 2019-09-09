@@ -1,16 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zjiol
- * Date: 2019-05-29
- * Time: 22:11
- */
-
 namespace App\Services\RedisLock;
 
-class ExampleLock extends RedisLock
+class PointsToCashLock extends RedisLock
 {
-    const MILLISECONDS_EXPIRE_TTL = 5000;
+    protected const MILLISECONDS_EXPIRE_TTL = 5000;
     private $appId = '';
     private $userId = '';
 
@@ -23,6 +16,6 @@ class ExampleLock extends RedisLock
 
     public function getLockKey()
     {
-        return "app:{$this->appId}&user:{$this->userId}&finish_task_lock";
+        return "app:{$this->appId}&user:{$this->userId}&points_to_cash_lock";
     }
 }
