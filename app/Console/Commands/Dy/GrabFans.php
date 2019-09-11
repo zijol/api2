@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands\Dy;
 
-use Common\Model\Dy\VUser;
+use App\Models\Dy\VUser;
 use Illuminate\Database\Eloquent\Builder;
 
 class GrabFans extends Base

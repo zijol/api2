@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands\Dy;
 
-use App\Services\Cache\AppCache\DyCookiesCache;
-use App\Services\Cache\AppCache\DyProxiesIpCache;
-use Common\Model\Dy\RawUser;
-use Common\Model\Dy\User;
-use Common\Model\Dy\UserFollowers;
-use Common\Model\Dy\VUser;
+use App\Services\Cache\DyCookiesCache;
+use App\Services\Cache\DyProxiesIpCache;
+use App\Models\Dy\RawUser;
+use App\Models\Dy\User;
+use App\Models\Dy\UserFollowers;
+use App\Models\Dy\VUser;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 
@@ -95,6 +95,8 @@ class Base extends Command
                 continue;
             }
         }
+
+        return "";
     }
 
     /**
@@ -122,12 +124,12 @@ class Base extends Command
             'short_id' => $data['short_id'] ?? '',
             'unique_id' => $data['unique_id'] ?? '',
             'nickname' => $data['nickname'] ?? '',
-            'gender' => $data['gender'] ?? '',
-            'aweme_count' => $data['aweme_count'] ?? '',
-            'following_count' => $data['following_count'] ?? '',
-            'favoriting_count' => $data['favoriting_count'] ?? '',
-            'total_favorited' => $data['total_favorited'] ?? '',
-            'is_phone_binded' => $data['is_phone_binded'] ?? '',
+            'gender' => intval($data['gender'] ?? 0),
+            'aweme_count' => intval($data['aweme_count'] ?? 0),
+            'following_count' => intval($data['following_count'] ?? 0),
+            'favoriting_count' => intval($data['favoriting_count'] ?? 0),
+            'total_favorited' => intval($data['total_favorited'] ?? 0),
+            'is_phone_binded' => intval($data['is_phone_binded'] ?? 0),
             'bind_phone' => $data['bind_phone'] ?? '',
             'search_level' => intval($searchLevel),
             'search_base' => $searchBase
@@ -148,12 +150,12 @@ class Base extends Command
             'short_id' => $data['short_id'] ?? '',
             'unique_id' => $data['unique_id'] ?? '',
             'nickname' => $data['nickname'] ?? '',
-            'gender' => $data['gender'] ?? '',
-            'aweme_count' => $data['aweme_count'] ?? '',
-            'following_count' => $data['following_count'] ?? '',
-            'favoriting_count' => $data['favoriting_count'] ?? '',
-            'total_favorited' => $data['total_favorited'] ?? '',
-            'is_phone_binded' => $data['is_phone_binded'] ?? '',
+            'gender' => intval($data['gender'] ?? 0),
+            'aweme_count' => intval($data['aweme_count'] ?? 0),
+            'following_count' => intval($data['following_count'] ?? 0),
+            'favoriting_count' => intval($data['favoriting_count'] ?? 0),
+            'total_favorited' => intval($data['total_favorited'] ?? 0),
+            'is_phone_binded' => intval($data['is_phone_binded'] ?? 0),
             'bind_phone' => $data['bind_phone'] ?? ''
         ];
         RawUser::query()->updateOrCreate(['id' => $uid], ['raw_data' => json_encode($data)]);
@@ -182,34 +184,34 @@ class Base extends Command
      */
     public function getProxies()
     {
-        $proxiesIpCache = new DyProxiesIpCache([]);
-
-        $proxiesIpPool = $proxiesIpCache->getWithSet(function () {
-            $client = new Client([
-                'base_uri' => 'http://http.tiqu.alicdns.com',
-                'timeout' => 5.0,
-            ]);
-            $uri = '/getip3?num=20&type=2&pro=0&city=0&yys=100017&port=1&pack=63776&ts=1&ys=0&cs=0&lb=1&sb=0&pb=4&mr=1&regions=';
-            $response = $client->request('GET', $uri, []);
-            $res = $response->getBody()->getContents();
-            $res = json_decode($res, true);
-            return $res['data'] ?? null;
-        });
-
-        if (empty($proxiesIpPool)) {
-            echo "今日可用代理IP已用完" . PHP_EOL;
-            return null;
-        }
-
-        while (1) {
-            $ip = $proxiesIpPool[rand(0, count($proxiesIpPool) - 1)];
-            if (strtotime($ip['expire_time']) < time()) {
-                continue;
-            } else {
-                echo "代理: " . $ip['ip'] . ":" . $ip['port'] . PHP_EOL;
-                return $ip['ip'] . ":" . $ip['port'];
-            }
-        }
+//        $proxiesIpCache = new DyProxiesIpCache([]);
+//
+//        $proxiesIpPool = $proxiesIpCache->getWithSet(function () {
+//            $client = new Client([
+//                'base_uri' => 'http://http.tiqu.alicdns.com',
+//                'timeout' => 5.0,
+//            ]);
+//            $uri = '/getip3?num=20&type=2&pro=0&city=0&yys=100017&port=1&pack=63776&ts=1&ys=0&cs=0&lb=1&sb=0&pb=4&mr=1&regions=';
+//            $response = $client->request('GET', $uri, []);
+//            $res = $response->getBody()->getContents();
+//            $res = json_decode($res, true);
+//            return $res['data'] ?? null;
+//        });
+//
+//        if (empty($proxiesIpPool)) {
+//            echo "今日可用代理IP已用完" . PHP_EOL;
+//            return null;
+//        }
+//
+//        while (1) {
+//            $ip = $proxiesIpPool[rand(0, count($proxiesIpPool) - 1)];
+//            if (strtotime($ip['expire_time']) < time()) {
+//                continue;
+//            } else {
+//                echo "代理: " . $ip['ip'] . ":" . $ip['port'] . PHP_EOL;
+//                return $ip['ip'] . ":" . $ip['port'];
+//            }
+//        }
 
         return null;
     }

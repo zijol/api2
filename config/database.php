@@ -60,6 +60,23 @@ $config = [
         ],
 
         // ADMIN
+        'dy' => [
+            'driver' => 'mysql',
+            'host' => env('DY_DB_HOST', '127.0.0.1'),
+            'port' => env('DY_DB_PORT', '3306'),
+            'database' => env('DY_DB_NAME', 'douyin'),
+            'username' => env('DY_DB_USER', 'root'),
+            'password' => env('DY_DB_PWD', '123456'),
+            'unix_socket' => env('DY_DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_bin',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+        ],
+
+        // ADMIN
         'irt' => [
             'driver' => 'mysql',
             'host' => env('IRT_DB_HOST', '127.0.0.1'),

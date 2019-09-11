@@ -128,7 +128,7 @@ class BaseCache
      * @param callable $callback
      * @return mixed
      */
-    public function getAndSet(callable $callback)
+    public function getWithSet(callable $callback)
     {
         $cacheGet = $this->get();
 
