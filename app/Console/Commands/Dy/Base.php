@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands\Dy;
 
-use App\Services\Cache\DyCookiesCache;
-use App\Services\Cache\DyProxiesIpCache;
-use App\Models\Dy\RawUser;
-use App\Models\Dy\User;
-use App\Models\Dy\UserFollowers;
-use App\Models\Dy\VUser;
+use App\Services\Cache\{
+    DyCookiesCache, DyProxiesIpCache
+};
+use App\Models\Dy\{
+    RawUser, User, UserFollowers, VUser
+};
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 
@@ -21,12 +21,22 @@ class Base extends Command
     protected $signature = 'Dy:base';
 
     protected $baseUri = 'http://127.0.0.1:5000';
-    protected $timeOut = 5.0;
+    protected $timeOut = 35.0;
     protected $client = null;
     protected $cookie = [];
     protected $proxiesIndex = 0;
     protected $proxiesPool = [];
     protected $sleepSecond = 0.1 * 1000000;
+
+    const FIELDS_LIST = [
+        'short_id', 'uid', 'unique_id', 'user_mode', 'ins_id', 'birthday', 'signature', 'gender', 'school_name', 'region', 'is_phone_binded', 'bind_phone',
+        'sec_uid', 'twitter_id', 'youtube_channel_title', 'is_gov_media_vip', 'live_commerce', 'account_region', 'user_period', 'is_binded_weibo', 'cv_level',
+        'live_agreement', 'weibo_schema', 'birthday_hide_level', 'create_time', 'google_account', 'constellation', 'is_mirror', 'need_recommend',
+        'room_id', 'has_orders', 'reflow_page_uid', 'language', 'school_type', 'twitter_name', 'weibo_verify', 'with_fusion_shop_entry', 'youtube_channel_id',
+        'user_rate_map', 'enterprise_verify_reason', 'story_open', 'user_rate', 'live_verify', 'short_id', 'secret', 'is_verified', 'with_commerce_entry',
+        'has_email', 'weibo_url', 'weibo_name', 'commerce_user_level', 'verify_info', 'apple_account', 'verification_type', 'follower_status',
+        'neiguang_shield', 'authority_status', 'is_ad_fake', 'nickname', 'is_star_atlas', 'custom_verify', 'user_canceled', 'status',
+    ];
 
     /**
      * The console command description.
@@ -82,11 +92,11 @@ class Base extends Command
                         return $this->cookie;
                     }
                 });
-                if (empty($cookie)) {
-                    echo "再次尝试获取cookie" . PHP_EOL;
-                    usleep($this->sleepSecond);
-                    continue;
-                }
+//                if (empty($cookie)) {
+//                    echo "再次尝试获取cookie" . PHP_EOL;
+//                    usleep($this->sleepSecond);
+//                    continue;
+//                }
                 return $cookie;
             } catch (\Exception $exception) {
                 echo "获取 cookies 异常 " . $exception->getMessage() . PHP_EOL;
@@ -95,8 +105,56 @@ class Base extends Command
                 continue;
             }
         }
-
         return "";
+    }
+
+    /**
+     * 获取用户信息
+     *
+     * @param $uid
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    protected function getUserInfo($uid)
+    {
+        $tryTimes = 0;
+        while ($tryTimes < 3) {
+            $tryTimes++;
+//            echo "【查询用户】第 {$tryTimes} 次尝试 【{$uid}】" . PHP_EOL;
+            try {
+                $uri = "/douyin/get_user_info?user_id={$uid}&cookies=" . json_encode($this->getCookie());
+                // 获取随即代理
+                $proxiesIp = $this->getProxies();
+                if (!empty($proxiesIp)) {
+                    $uri .= "&proxies={$proxiesIp}";
+                }
+
+                $response = $this->client->request('GET', $uri, []);
+                $responseBody = $response->getBody()->getContents();
+                $responseData = json_decode($responseBody, true);
+
+                if (!isset($responseData['code']) || 200 != $responseData['code']) {
+                    echo "第 {$tryTimes} 次【查询用户】接口错误：" . $responseData['msg'] . PHP_EOL;
+                    usleep($this->sleepSecond);
+                    continue;
+                } else {
+                    $data = $responseData['data']['user'] ?? [];
+                    if (empty($data)) {
+                        echo "第 {$tryTimes} 次【查询用户】未查询到数据 {$uid}" . PHP_EOL;
+                        $this->freshCookie();
+                        usleep($this->sleepSecond);
+                        continue;
+                    }
+                    return $data;
+                }
+            } catch (\Exception $exception) {
+                echo "第 {$tryTimes} 次【查询用户】接口异常：" . $exception->getMessage() . PHP_EOL;
+                usleep($this->sleepSecond);
+                continue;
+            }
+        }
+
+        return [];
     }
 
     /**
@@ -110,56 +168,51 @@ class Base extends Command
     }
 
     /**
-     * 更新大V用户
-     *
      * @param $uid
      * @param $data
      * @param int $searchLevel
      * @param string $searchBase
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+     * @return bool
      */
     protected function saveVUser($uid, $data, $searchLevel = 0, $searchBase = '')
     {
-        $userData = [
-            'short_id' => $data['short_id'] ?? '',
-            'unique_id' => $data['unique_id'] ?? '',
-            'nickname' => $data['nickname'] ?? '',
-            'gender' => intval($data['gender'] ?? 0),
-            'aweme_count' => intval($data['aweme_count'] ?? 0),
-            'following_count' => intval($data['following_count'] ?? 0),
-            'favoriting_count' => intval($data['favoriting_count'] ?? 0),
-            'total_favorited' => intval($data['total_favorited'] ?? 0),
-            'is_phone_binded' => intval($data['is_phone_binded'] ?? 0),
-            'bind_phone' => $data['bind_phone'] ?? '',
-            'search_level' => intval($searchLevel),
-            'search_base' => $searchBase
-        ];
-        return VUser::query()->updateOrCreate(['id' => $uid], $userData);
+        if (empty(VUser::query()->find($uid))) {
+            (new VUser([
+                'id' => $uid,
+                'short_id' => $data['short_id'] ?? '',
+                'unique_id' => $data['unique_id'] ?? '',
+                'nickname' => $data['nickname'] ?? '',
+                'gender' => $data['gender'] ?? '',
+                'search_level' => intval($searchLevel),
+                'search_base' => $searchBase
+            ]))->save();
+        }
+        return true;
     }
 
     /**
-     * 更新用户
-     *
      * @param $uid
      * @param $data
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+     * @return bool
      */
     protected function saveUser($uid, $data)
     {
-        $userData = [
-            'short_id' => $data['short_id'] ?? '',
-            'unique_id' => $data['unique_id'] ?? '',
-            'nickname' => $data['nickname'] ?? '',
-            'gender' => intval($data['gender'] ?? 0),
-            'aweme_count' => intval($data['aweme_count'] ?? 0),
-            'following_count' => intval($data['following_count'] ?? 0),
-            'favoriting_count' => intval($data['favoriting_count'] ?? 0),
-            'total_favorited' => intval($data['total_favorited'] ?? 0),
-            'is_phone_binded' => intval($data['is_phone_binded'] ?? 0),
-            'bind_phone' => $data['bind_phone'] ?? ''
-        ];
-        RawUser::query()->updateOrCreate(['id' => $uid], ['raw_data' => json_encode($data)]);
-        return User::query()->updateOrCreate(['id' => $uid], $userData);
+        if (empty(User::query()->find($uid))) {
+            (new User([
+                'id' => $uid,
+                'short_id' => $data['short_id'] ?? '',
+                'unique_id' => $data['unique_id'] ?? '',
+                'nickname' => $data['nickname'] ?? '',
+                'gender' => $data['gender'] ?? '',
+            ]))->save();
+        }
+
+        $rawData = [];
+        foreach (static::FIELDS_LIST as $field) {
+            $rawData[$field] = $data[$field] ?? null;
+        }
+        RawUser::query()->updateOrCreate(['id' => $uid,], ['raw_data' => $rawData]);
+        return true;
     }
 
     /**
@@ -184,34 +237,34 @@ class Base extends Command
      */
     public function getProxies()
     {
-//        $proxiesIpCache = new DyProxiesIpCache([]);
-//
-//        $proxiesIpPool = $proxiesIpCache->getWithSet(function () {
-//            $client = new Client([
-//                'base_uri' => 'http://http.tiqu.alicdns.com',
-//                'timeout' => 5.0,
-//            ]);
-//            $uri = '/getip3?num=20&type=2&pro=0&city=0&yys=100017&port=1&pack=63776&ts=1&ys=0&cs=0&lb=1&sb=0&pb=4&mr=1&regions=';
-//            $response = $client->request('GET', $uri, []);
-//            $res = $response->getBody()->getContents();
-//            $res = json_decode($res, true);
-//            return $res['data'] ?? null;
-//        });
-//
-//        if (empty($proxiesIpPool)) {
-//            echo "今日可用代理IP已用完" . PHP_EOL;
-//            return null;
-//        }
-//
-//        while (1) {
-//            $ip = $proxiesIpPool[rand(0, count($proxiesIpPool) - 1)];
-//            if (strtotime($ip['expire_time']) < time()) {
-//                continue;
-//            } else {
+        $proxiesIpCache = new DyProxiesIpCache([]);
+
+        $proxiesIpPool = $proxiesIpCache->getWithSet(function () {
+            $client = new Client([
+                'base_uri' => 'http://http.tiqu.alicdns.com',
+                'timeout' => 5.0,
+            ]);
+            $uri = '/getip3?num=20&type=2&pro=0&city=0&yys=100017&port=1&pack=63776&ts=1&ys=0&cs=0&lb=1&sb=0&pb=4&mr=1&regions=';
+            $response = $client->request('GET', $uri, []);
+            $res = $response->getBody()->getContents();
+            $res = json_decode($res, true);
+            return $res['data'] ?? null;
+        });
+
+        if (empty($proxiesIpPool)) {
+            echo "今日可用代理IP已用完" . PHP_EOL;
+            return null;
+        }
+
+        while (1) {
+            $ip = $proxiesIpPool[rand(0, count($proxiesIpPool) - 1)];
+            if (strtotime($ip['expire_time']) < time()) {
+                continue;
+            } else {
 //                echo "代理: " . $ip['ip'] . ":" . $ip['port'] . PHP_EOL;
-//                return $ip['ip'] . ":" . $ip['port'];
-//            }
-//        }
+                return $ip['ip'] . ":" . $ip['port'];
+            }
+        }
 
         return null;
     }

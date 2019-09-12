@@ -11,12 +11,7 @@ namespace App\Models\Dy;
  * @property $unique_id
  * @property $nickname
  * @property $gender
- * @property $aweme_count
- * @property $following_count
- * @property $favoriting_count
- * @property $total_favorited
- * @property $is_phone_binded
- * @property $bind_phone
+ * @property $sync_times
  * @property $created_at
  * @property $updated_at
  */
@@ -33,17 +28,13 @@ class User extends DyModel
     public $incrementing = false;
     protected $primaryKey = 'id';
 
+
     protected $fillable = [
         'id',
         'short_id',
         'unique_id',
         'nickname',
         'gender',
-        'aweme_count',
-        'following_count',
-        'favoriting_count',
-        'total_favorited',
-        'is_phone_binded',
-        'bind_phone',
+        'sync_times',
     ];
 }

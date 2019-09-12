@@ -27,7 +27,6 @@ class GrabFans extends Base
     protected $hasMore = true;
     protected $fansNextTime = 0;
     protected $fansListTotal = 100;
-    protected $tryTimes = 1;
 
     /**
      * GrabFans constructor.
@@ -50,7 +49,7 @@ class GrabFans extends Base
         $this->grabTimes = $arguments['times'] ?? 1;
         $this->getCookie();
 
-        $user = $this->getUserInfo();
+        $user = $this->getUserInfo($this->keywords);
         if (isset($user['uid'])) {
             $this->saveUser($user['uid'], $user);
             $this->saveVUser($user['uid'], $user);
@@ -105,57 +104,6 @@ class GrabFans extends Base
     }
 
     /**
-     * 获取用户列表
-     *
-     * @return array|bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function getUserInfo()
-    {
-        $tryTimes = 0;
-        while ($tryTimes < 3) {
-            $tryTimes++;
-            echo "【查询用户】第 {$tryTimes} 次尝试 【{$this->keywords}】" . PHP_EOL;
-            try {
-                $response = $this->client->request('GET', '/douyin/get_user_info', [
-                    'query' => [
-                        'user_id' => $this->keywords,
-                        'cookies' => json_encode($this->getCookie()),
-                    ],
-
-                    'format' => 'query',
-                ]);
-                $responseBody = $response->getBody()->getContents();
-                $responseData = json_decode($responseBody, true);
-
-                if (!isset($responseData['code']) || 200 != $responseData['code']) {
-                    echo "【查询用户】接口错误：" . $responseData['msg'] . PHP_EOL;
-                    usleep($this->sleepSecond);
-                    continue;
-                } else {
-                    $this->hasMore = $responseData['data']['has_more'] ?? false;
-                    $data = $responseData['data']['user'] ?? [];
-                    if (empty($data)) {
-                        echo "【查询用户】未查询到数据 {$this->keywords}" . PHP_EOL;
-                        $this->freshCookie();
-                        usleep($this->sleepSecond);
-                        continue;
-                    } else {
-                        echo "【查询用户】正常" . PHP_EOL;
-                    }
-                    return $data;
-                }
-            } catch (\Exception $exception) {
-                echo "【查询用户】接口异常：" . $exception->getMessage() . PHP_EOL;
-                usleep($this->sleepSecond);
-                continue;
-            }
-        }
-
-        return [];
-    }
-
-    /**
      * 粉丝列表
      *
      * @param $uid
@@ -167,7 +115,7 @@ class GrabFans extends Base
         $tryTimes = 0;
         while ($tryTimes < 100) {
             ++$tryTimes;
-            echo "【粉丝列表】第 {$tryTimes} 次尝试 【{$uid}】" . PHP_EOL;
+//            echo "【粉丝列表】第 {$tryTimes} 次尝试 【{$uid}】" . PHP_EOL;
             try {
                 $uri = "/douyin/get_follower_list?user_id={$uid}&cookies=" . json_encode($this->getCookie()) . "&max_time={$this->fansNextTime}";
                 // 获取随即代理
@@ -181,7 +129,7 @@ class GrabFans extends Base
                 $responseData = json_decode($responseBody, true);
 
                 if (!isset($responseData['code']) || 200 != $responseData['code']) {
-                    echo "【粉丝列表】接口错误:" . $responseData['msg'] . PHP_EOL;
+                    echo "第 {$tryTimes} 次【粉丝列表】接口错误:" . $responseData['msg'] . PHP_EOL;
                     usleep($this->sleepSecond);
                     continue;
                 } else {
@@ -192,17 +140,15 @@ class GrabFans extends Base
                     $this->fansListTotal = $responseData['data']['total'] ?? 0;
                     $data = $responseData['data']['followers'] ?? [];
                     if (empty($data)) {
-                        echo "【粉丝列表】未查询到数据 {$uid}" . PHP_EOL;
+                        echo "第 {$tryTimes} 次【粉丝列表】未查询到数据 {$uid}" . PHP_EOL;
                         $this->freshCookie();
                         usleep($this->sleepSecond);
                         continue;
-                    } else {
-                        echo "【粉丝列表】正常" . PHP_EOL;
                     }
                     return $data;
                 }
             } catch (\Exception $exception) {
-                echo "【粉丝列表】接口异常：" . $exception->getMessage() . PHP_EOL;
+                echo "第 {$tryTimes} 次【粉丝列表】接口异常：" . $exception->getMessage() . PHP_EOL;
                 usleep($this->sleepSecond);
                 continue;
             }
