@@ -12,9 +12,9 @@ class GrabFans extends Base
      *
      * @var string
      */
-    protected $signature = 'Dy:GrabFans {keywords} {times?}';
+    protected $signature = 'Dy:GrabFans {port} {user_id} {grab_times?}';
 
-    protected $keywords = '';
+    protected $userId = '';
     protected $grabTimes = 1;
 
     /**
@@ -45,11 +45,15 @@ class GrabFans extends Base
         ini_set('memory_limit', '-1');
 
         $arguments = $this->arguments();
-        $this->keywords = $arguments['keywords'] ?? "60292541813";
-        $this->grabTimes = $arguments['times'] ?? 1;
+        $this->userId = $arguments['user_id'] ?? "60292541813";
+        $this->grabTimes = $arguments['grab_times'] ?? 1;
+        $this->port = $arguments['port'] ?? 5000;
+
+        // 初始化客户端
+        $this->initHttpClient($this->port);
         $this->getCookie();
 
-        $user = $this->getUserInfo($this->keywords);
+        $user = $this->getUserInfo($this->userId);
         if (isset($user['uid'])) {
             $this->saveUser($user['uid'], $user);
             $this->saveVUser($user['uid'], $user);
@@ -57,7 +61,7 @@ class GrabFans extends Base
         usleep($this->sleepSecond);
 
         if (empty($user)) {
-            echo "未查询到用户 {$this->keywords}" . PHP_EOL;
+            echo "未查询到用户 {$this->userId}" . PHP_EOL;
             exit();
         }
 

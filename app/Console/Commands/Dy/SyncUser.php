@@ -13,8 +13,7 @@ class SyncUser extends Base
      *
      * @var string
      */
-    protected $signature = 'Dy:SyncUser';
-
+    protected $signature = 'Dy:SyncUser {port}';
     protected $sleepSecond = 0.1 * 1000000;
 
     /**
@@ -40,6 +39,11 @@ class SyncUser extends Base
     {
         $args = $this->getArguments();
         $syncTimes = $args['sync_times'] ?? 1;
+        $this->port = $args['port'] ?? 5000;
+
+        // 初始化客户端
+        $this->initHttpClient($this->port);
+        $this->getCookie();
 
         while (1) {
             $user = User::query()
@@ -63,6 +67,4 @@ class SyncUser extends Base
         }
         return true;
     }
-
-
 }

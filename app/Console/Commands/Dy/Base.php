@@ -20,8 +20,10 @@ class Base extends Command
      */
     protected $signature = 'Dy:base';
 
-    protected $baseUri = 'http://127.0.0.1:5000';
-    protected $timeOut = 35.0;
+    protected $port = 5000;
+    /**
+     * @var Client
+     */
     protected $client = null;
     protected $cookie = [];
     protected $proxiesIndex = 0;
@@ -50,11 +52,20 @@ class Base extends Command
      */
     public function __construct()
     {
-        $this->client = new Client([
-            'base_uri' => $this->baseUri,
-            'timeout' => $this->timeOut,
-        ]);
         parent::__construct();
+    }
+
+    /**
+     * 初始化 http_client
+     * @param $port
+     * @param int $timeout
+     */
+    protected function initHttpClient($port, $timeout = 5)
+    {
+        $this->client = new Client([
+            'base_uri' => "http://127.0.0.1:{$port}",
+            'timeout' => $timeout,
+        ]);
     }
 
     /**

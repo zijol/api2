@@ -11,9 +11,8 @@ class GrabFollowers extends Base
      *
      * @var string
      */
-    protected $signature = 'Dy:GrabFollowers {keywords}';
-
-    protected $keywords = '';
+    protected $signature = 'Dy:GrabFollowers {port} {user_id}';
+    protected $userId = '';
 
     /**
      * The console command description.
@@ -21,7 +20,6 @@ class GrabFollowers extends Base
      * @var string
      */
     protected $description = '抓取关注用户';
-
     protected $hasMore = true;
     protected $followingNextTime = 0;
     protected $followingsTotal = 100;
@@ -42,10 +40,14 @@ class GrabFollowers extends Base
     {
         ini_set('memory_limit', '-1');
         $arguments = $this->arguments();
-        $this->keywords = $arguments['keywords'] ?? "60292541813";
+        $this->userId = $arguments['user_id'] ?? "60292541813";
+        $this->port = $arguments['port'] ?? 5000;
+
+        // 初始化客户端
+        $this->initHttpClient($this->port);
         $this->getCookie();
 
-        $user = $this->getUserInfo($this->keywords);
+        $user = $this->getUserInfo($this->userId);
         if (isset($user['uid'])) {
             $this->saveUser($user['uid'], $user);
             $this->saveVUser($user['uid'], $user);
@@ -53,7 +55,7 @@ class GrabFollowers extends Base
         usleep($this->sleepSecond);
 
         if (empty($user)) {
-            echo "未查询到用户 {$this->keywords}" . PHP_EOL;
+            echo "未查询到用户 {$this->userId}" . PHP_EOL;
             exit();
         }
 
