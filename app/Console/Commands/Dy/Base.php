@@ -28,7 +28,7 @@ class Base extends Command
     protected $cookie = [];
     protected $proxiesIndex = 0;
     protected $proxiesPool = [];
-    protected $sleepSecond = 0.1 * 1000000;
+    protected $sleepSecond = 1000000;
 
     const FIELDS_LIST = [
         'short_id', 'uid', 'unique_id', 'user_mode', 'ins_id', 'birthday', 'signature', 'gender', 'school_name', 'region', 'is_phone_binded', 'bind_phone',
@@ -83,8 +83,10 @@ class Base extends Command
      */
     protected function getCookie()
     {
-        while (1) {
+        $tryTimes = 0;
+        while ($tryTimes < 3) {
             try {
+                $tryTimes++;
                 $cookie = (new DyCookiesCache([]))->getWithSet(function () {
                     $uri = '/douyin/get_cookies';
                     $proxiesIp = $this->getProxies();
@@ -103,11 +105,6 @@ class Base extends Command
                         return $this->cookie;
                     }
                 });
-//                if (empty($cookie)) {
-//                    echo "再次尝试获取cookie" . PHP_EOL;
-//                    usleep($this->sleepSecond);
-//                    continue;
-//                }
                 return $cookie;
             } catch (\Exception $exception) {
                 echo "获取 cookies 异常 " . $exception->getMessage() . PHP_EOL;

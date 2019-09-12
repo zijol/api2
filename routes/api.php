@@ -13,3 +13,4 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/encrypt', 'Web\EncryptionController@encrypt');
+Route::get('/guan_zhu/{unique_id}', 'Web\IndexController@guanZhuList');

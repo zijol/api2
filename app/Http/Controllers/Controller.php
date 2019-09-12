@@ -20,7 +20,7 @@ class Controller extends BaseController
      * @param array $headers
      * @return JsonResponse
      */
-    public static function JsonResponse($data, $status = 200, $headers = [])
+    public function JsonResponse($data, $status = 200, $headers = [])
     {
         $data = [
             'code' => 0,
