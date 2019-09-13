@@ -22,3 +22,6 @@ Route::get('/signature', 'Web\SignatureController@index');
  */
 Route::get('/encrypt', 'Web\EncryptionController@encrypt');
 Route::get('/decrypt', 'Web\EncryptionController@decrypt');
+
+
+Route::get('/dy/{unique_id}', 'Web\DyController@index');

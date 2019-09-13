@@ -15,17 +15,23 @@ use App\Http\Requests\ExampleRequest;
 use App\Models\Dy\RawUser;
 use App\Models\Dy\User;
 use App\Models\Dy\UserFollowers;
+use App\Services\Helper\Pagination;
 use Illuminate\Http\Request;
 
-class IndexController extends Controller
+class DyController extends Controller
 {
     /**
      * @param ExampleRequest $request
      */
-    public function index(ExampleRequest $request)
+    public function index(Request $request)
     {
-        throw (new AuthorizeException('Welcome to zijol api.'))
-            ->withHeaders(['author' => 'zijol']);
+        $pagination = new Pagination($request, User::query()->count());
+        $users = User::query()->forPage($pagination->page, $pagination->per_page)->get();
+
+        return view('dy.index', [
+            'users' => $users,
+            'pagination' => $pagination
+        ]);
     }
 
     /**
@@ -59,7 +65,6 @@ class IndexController extends Controller
             ->whereIn('id', $followersIdList)
             ->get();
 
-        return view('welcome');
-        return $this->JsonResponse($list);
+        return view('welcome', ['list' => $list]);
     }
 }
