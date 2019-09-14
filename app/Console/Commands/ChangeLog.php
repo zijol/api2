@@ -12,7 +12,7 @@ class ChangeLog extends Command
      *
      * @var string
      */
-    protected $signature = 'change-log:update';
+    protected $signature = 'ChangeLog:Update';
 
     /**
      * The console command description.
@@ -21,8 +21,6 @@ class ChangeLog extends Command
      */
     protected $description = 'update change log view';
 
-    protected $viewPath = '';
-    protected $logPath = '';
 
     /**
      * Create a new command instance.
@@ -32,8 +30,6 @@ class ChangeLog extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->viewPath = base_path('resources') . '/views/changelog.blade.php';
-        $this->logPath = base_path() . '/ChangeLog.md';
     }
 
     /**
@@ -44,11 +40,6 @@ class ChangeLog extends Command
     public function handle()
     {
         // 加载changelog.md
-        $logString = File::get($this->logPath);
-        $logArray = explode('###', $logString);
-        $newViewString = "@markdown" . PHP_EOL . $logArray[0] . "###" . $logArray[1] . "@endmarkdown" . PHP_EOL;
-
-        File::put($this->viewPath, $newViewString);
-        $this->info('Change log view file updated.');
+        file_put_contents('/tmp/time.log', date('Y-m-d H:i:s') . PHP_EOL);
     }
 }

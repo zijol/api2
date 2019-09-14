@@ -23,7 +23,9 @@
         "laravel-admin-ext/config": "^1.0",
         "jxlwqq/env-manager": "^0.1.0",
         "laravel-admin-ext/redis-manager": "^1.0",
-        "laravel-admin-ext/log-viewer": "^1.0"
+        "laravel-admin-ext/log-viewer": "^1.0",
+        "laravel-admin-ext/helpers": "^1.1",
+        "laravel-admin-ext/scheduling": "^1.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
