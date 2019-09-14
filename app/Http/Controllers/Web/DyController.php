@@ -35,36 +35,18 @@ class DyController extends Controller
     }
 
     /**
-     * 关注列表
+     * 用户详情
      *
      * @param Request $request
-     * @param $userUniqueId
+     * @param $userId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function guanZhuList(Request $request, $userUniqueId)
+    public function detail(Request $request, $userId)
     {
-        $user = User::query()
-            ->where([
-                'unique_id' => $userUniqueId
-            ])->first();
+        $user = RawUser::query()
+            ->where('id', $userId)
+            ->first();
 
-        if (empty($user)) {
-            return $this->JsonResponse(null);
-        }
-
-
-        $userFollowers = UserFollowers::query()
-            ->where([
-                'uid' => $user->id
-            ])->forPage($request->input('page', 1))
-            ->get()->toArray();
-
-        $followersIdList = array_column($userFollowers, 'follow_uid');
-
-        $list = RawUser::query()
-            ->whereIn('id', $followersIdList)
-            ->get();
-
-        return view('welcome', ['list' => $list]);
+        return view('dy.detail', ['user' => $user]);
     }
 }

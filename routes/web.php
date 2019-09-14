@@ -24,4 +24,5 @@ Route::get('/encrypt', 'Web\EncryptionController@encrypt');
 Route::get('/decrypt', 'Web\EncryptionController@decrypt');
 
 
-Route::get('/dy/{unique_id}', 'Web\DyController@index');
+Route::get('/dy/index', 'Web\DyController@index');
+Route::get('/dy/{user_id}/detail', 'Web\DyController@detail');
