@@ -8,6 +8,7 @@ use App\Services\Cache\{
 use App\Models\Dy\{
     RawUser, User, UserFollowers, VUser
 };
+use App\Services\Http\DouYinClient;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 
@@ -22,7 +23,7 @@ class Base extends Command
 
     protected $port = 5000;
     /**
-     * @var Client
+     * @var DouYinClient
      */
     protected $client = null;
     protected $cookie = [];
@@ -62,10 +63,7 @@ class Base extends Command
      */
     protected function initHttpClient($port, $timeout = 5)
     {
-        $this->client = new Client([
-            'base_uri' => "http://127.0.0.1:{$port}",
-            'timeout' => $timeout,
-        ]);
+        $this->client = new DouYinClient("http://127.0.0.1:{$port}", [], $timeout);
     }
 
     /**
@@ -88,22 +86,7 @@ class Base extends Command
             try {
                 $tryTimes++;
                 $cookie = (new DyCookiesCache([]))->getWithSet(function () {
-                    $uri = '/douyin/get_cookies';
-                    $proxiesIp = $this->getProxies();
-                    if (!empty($proxiesIp)) {
-                        $uri .= "?proxies={$proxiesIp}";
-                    }
-
-                    $response = $this->client->request('GET', $uri, []);
-                    $responseBody = $response->getBody()->getContents();
-                    $responseData = json_decode($responseBody, true);
-                    if (!isset($responseData['code']) || 200 != $responseData['code']) {
-                        echo "获取 cookies 报错 " . $responseData['msg'] . PHP_EOL;
-                        return null;
-                    } else {
-                        $this->cookie = $responseData['data']['cookies'] ?? [];
-                        return $this->cookie;
-                    }
+                    return $this->client->getCookies([], $this->getProxies());
                 });
                 return $cookie;
             } catch (\Exception $exception) {
@@ -128,33 +111,20 @@ class Base extends Command
         $tryTimes = 0;
         while ($tryTimes < 3) {
             $tryTimes++;
-//            echo "【查询用户】第 {$tryTimes} 次尝试 【{$uid}】" . PHP_EOL;
             try {
-                $uri = "/douyin/get_user_info?user_id={$uid}&cookies=" . json_encode($this->getCookie());
-                // 获取随即代理
-                $proxiesIp = $this->getProxies();
-                if (!empty($proxiesIp)) {
-                    $uri .= "&proxies={$proxiesIp}";
-                }
+                $responseData = $this->client->getUserInfo([
+                    'user_id' => $uid,
+                    'cookies' => json_encode($this->getCookie())
+                ], $this->getProxies());
 
-                $response = $this->client->request('GET', $uri, []);
-                $responseBody = $response->getBody()->getContents();
-                $responseData = json_decode($responseBody, true);
-
-                if (!isset($responseData['code']) || 200 != $responseData['code']) {
-                    echo "第 {$tryTimes} 次【查询用户】接口错误：" . $responseData['msg'] . PHP_EOL;
+                $data = $responseData['user'] ?? [];
+                if (empty($data)) {
+                    echo "第 {$tryTimes} 次【查询用户】未查询到数据 {$uid}" . PHP_EOL;
+                    $this->freshCookie();
                     usleep($this->sleepSecond);
                     continue;
-                } else {
-                    $data = $responseData['data']['user'] ?? [];
-                    if (empty($data)) {
-                        echo "第 {$tryTimes} 次【查询用户】未查询到数据 {$uid}" . PHP_EOL;
-                        $this->freshCookie();
-                        usleep($this->sleepSecond);
-                        continue;
-                    }
-                    return $data;
                 }
+                return $data;
             } catch (\Exception $exception) {
                 echo "第 {$tryTimes} 次【查询用户】接口异常：" . $exception->getMessage() . PHP_EOL;
                 usleep($this->sleepSecond);

@@ -119,38 +119,26 @@ class GrabFans extends Base
         $tryTimes = 0;
         while ($tryTimes < 100) {
             ++$tryTimes;
-//            echo "【粉丝列表】第 {$tryTimes} 次尝试 【{$uid}】" . PHP_EOL;
             try {
-                $uri = "/douyin/get_follower_list?user_id={$uid}&cookies=" . json_encode($this->getCookie()) . "&max_time={$this->fansNextTime}";
-                // 获取随即代理
-                $proxiesIp = $this->getProxies();
-                if (!empty($proxiesIp)) {
-                    $uri .= "&proxies={$proxiesIp}";
-                }
+                $responseData = $this->client->getFansList([
+                    'user_id' => $uid,
+                    'cookies' => json_encode($this->getCookie()),
+                    'max_time' => $this->fansNextTime
+                ], $this->getProxies());
 
-                $response = $this->client->request('GET', $uri, []);
-                $responseBody = $response->getBody()->getContents();
-                $responseData = json_decode($responseBody, true);
+                if (isset($responseData['min_time']))
+                    $this->fansNextTime = $responseData['min_time'];
+                $this->hasMore = $responseData['has_more'] ?? false;
+                $this->fansListTotal = $responseData['total'] ?? 0;
+                $data = $responseData['followers'] ?? [];
 
-                if (!isset($responseData['code']) || 200 != $responseData['code']) {
-                    echo "第 {$tryTimes} 次【粉丝列表】接口错误:" . $responseData['msg'] . PHP_EOL;
+                if (empty($data)) {
+                    echo "第 {$tryTimes} 次【粉丝列表】未查询到数据 {$uid}" . PHP_EOL;
+                    $this->freshCookie();
                     usleep($this->sleepSecond);
                     continue;
-                } else {
-                    if (isset($responseData['data']['min_time']))
-                        $this->fansNextTime = $responseData['data']['min_time'];
-
-                    $this->hasMore = $responseData['data']['has_more'] ?? false;
-                    $this->fansListTotal = $responseData['data']['total'] ?? 0;
-                    $data = $responseData['data']['followers'] ?? [];
-                    if (empty($data)) {
-                        echo "第 {$tryTimes} 次【粉丝列表】未查询到数据 {$uid}" . PHP_EOL;
-                        $this->freshCookie();
-                        usleep($this->sleepSecond);
-                        continue;
-                    }
-                    return $data;
                 }
+                return $data;
             } catch (\Exception $exception) {
                 echo "第 {$tryTimes} 次【粉丝列表】接口异常：" . $exception->getMessage() . PHP_EOL;
                 usleep($this->sleepSecond);

@@ -168,37 +168,25 @@ class GrabFollowers extends Base
         $tryTimes = 0;
         while ($tryTimes < 3) {
             ++$tryTimes;
-//            echo "【关注列表】第 {$tryTimes} 次尝试 【{$uid}】" . PHP_EOL;
             try {
-                $uri = "/douyin/get_following_list?user_id={$uid}&cookies=" . json_encode($this->getCookie()) . "&max_time={$this->followingNextTime}";
-                // 获取随即代理
-                $proxiesIp = $this->getProxies();
-                if (!empty($proxiesIp)) {
-                    $uri .= "&proxies={$proxiesIp}";
-                }
-                $response = $this->client->request('GET', $uri, []);
-                $responseBody = $response->getBody()->getContents();
-                $responseData = json_decode($responseBody, true);
+                $responseData = $this->client->getFollowerList([
+                    'user_id' => $uid,
+                    'cookies' => json_encode($this->getCookie()),
+                    'max_time' => $this->followingNextTime
+                ], $this->getProxies());
 
-                if (!isset($responseData['code']) || 200 != $responseData['code']) {
-                    echo "第 {$tryTimes} 次【关注列表】接口错误:" . $responseData['msg'] . PHP_EOL;
+                if (isset($responseData['min_time']))
+                    $this->followingNextTime = $responseData['min_time'];
+                $this->hasMore = $responseData['has_more'] ?? false;
+                $this->followingsTotal = $responseData['total'] ?? 0;
+                $data = $responseData['followings'] ?? [];
+                if (empty($data)) {
+                    echo "第 {$tryTimes} 次【关注列表】未查询到数据 {$uid}" . PHP_EOL;
+                    $this->freshCookie();
                     usleep($this->sleepSecond);
                     continue;
-                } else {
-                    if (isset($responseData['data']['min_time']))
-                        $this->followingNextTime = $responseData['data']['min_time'];
-
-                    $this->hasMore = $responseData['data']['has_more'] ?? false;
-                    $this->followingsTotal = $responseData['data']['total'] ?? 0;
-                    $data = $responseData['data']['followings'] ?? [];
-                    if (empty($data)) {
-                        echo "第 {$tryTimes} 次【关注列表】未查询到数据 {$uid}" . PHP_EOL;
-                        $this->freshCookie();
-                        usleep($this->sleepSecond);
-                        continue;
-                    }
-                    return $data;
                 }
+                return $data;
             } catch (\Exception $exception) {
                 echo "第 {$tryTimes} 次【关注列表】接口异常：" . $exception->getMessage() . PHP_EOL;
                 usleep($this->sleepSecond);
