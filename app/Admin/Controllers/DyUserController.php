@@ -80,6 +80,7 @@ class DyUserController extends Controller
     protected function grid()
     {
         $grid = new Grid(new User);
+        $grid->paginate(10);
         $grid->filter(function ($filter) {
             $filter->like('nickname', 'nickname');
             $filter->in('gender')->checkbox([

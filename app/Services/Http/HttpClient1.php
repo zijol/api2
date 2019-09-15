@@ -15,8 +15,9 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\GuzzleException;
+use App\Services\Log\HttpServiceLog;
 
-class HttpClient
+class HttpClient1
 {
     private $base_uri = '';
     private $timeout = 5.0;
@@ -98,7 +99,7 @@ class HttpClient
      * @param $uri
      * @param $params
      * @param $format
-     * @return mixed
+     * @return string
      * @throws ForbiddenException
      * @throws SystemException
      */
@@ -128,82 +129,118 @@ class HttpClient
         }
 
         try {
+            $httpServiceLogInfo = [
+                'domain' => $this->base_uri,
+                'uri' => $uri,
+                'timeout' => $this->timeout,
+                'method' => $realMethod,
+                'format' => $format,
+                'headers' => $this->headers,
+                'params' => $params,
+                'response' => [],
+                'exception' => [],
+            ];
+
             $response = $client->request($realMethod, $uri, $requestOptions);
             // 服务端错误 5xx
         } catch (ServerException $serverException) {
+            $message = '系统错误';
+            $code = 5000;
+            $data = null;
+            $httpCode = 500;
             if ($serverException->hasResponse()) {
                 $response = $serverException->getResponse();
-                $headers = json_encode($response->getHeaders(), JSON_UNESCAPED_UNICODE);
                 $content = $response->getBody()->getContents();
                 $httpCode = $response->getStatusCode();
+                $httpServiceLogInfo['response'] = [
+                    'headers' => json_encode($response->getHeaders(), JSON_UNESCAPED_UNICODE),
+                    'status' => $response->getStatusCode(),
+                    'content' => $content
+                ];
+
+                $tmp = json_decode($content, true);
+                if (is_array($tmp)) {
+                    $message = $tmp['message'] ?? $message;
+                    $code = $tmp['code'] ?? $code;
+                    $data = $tmp['data'] ?? $data;
+                }
             }
-            return [
-                'exception' => new SystemException(
-                    '服务器错误',
-                    null,
-                    null,
-                    null,
-                    $httpCode ?? null),
-                'headers' => $headers ?? null,
-                'status' => $httpCode ?? null,
-                'content' => $content ?? null,
-            ];
+
+            $httpServiceLogInfo['exception'] = $serverException;
+            HttpServiceLog::Log($httpServiceLogInfo);
+            throw new SystemException($message, $code, $data, null, $httpCode);
 
             // 客户端错误 4xx
         } catch (ClientException $clientException) {
+            $message = '请求错误';
+            $code = 4003;
+            $data = null;
+            $httpCode = 403;
             if ($clientException->hasResponse()) {
                 $response = $clientException->getResponse();
-                $headers = json_encode($response->getHeaders(), JSON_UNESCAPED_UNICODE);
                 $content = $response->getBody()->getContents();
                 $httpCode = $response->getStatusCode();
+                $httpServiceLogInfo['response'] = [
+                    'headers' => json_encode($response->getHeaders(), JSON_UNESCAPED_UNICODE),
+                    'status' => $response->getStatusCode(),
+                    'content' => $content
+                ];
+
+                $tmp = json_decode($content, true);
+                if (is_array($tmp)) {
+                    $message = $tmp['message'] ?? $message;
+                    $code = $tmp['code'] ?? $code;
+                    $data = $tmp['data'] ?? $data;
+                }
             }
-            return [
-                'exception' => new ForbiddenException(
-                    '请求错误',
-                    null,
-                    null,
-                    null,
-                    $httpCode ?? null),
-                'headers' => $headers ?? null,
-                'status' => $httpCode ?? null,
-                'content' => $content ?? null,
-            ];
+
+            $httpServiceLogInfo['exception'] = $clientException;
+            HttpServiceLog::Log($httpServiceLogInfo);
+            throw new ForbiddenException($message, $code, $data, null, $httpCode);
 
             // 请求过程中网络错误
         } catch (RequestException $requestException) {
+            $message = '服务器网络错误';
+            $code = 4000;
+            $data = null;
+            $httpCode = 400;
             if ($requestException->hasResponse()) {
                 $response = $requestException->getResponse();
-                $headers = json_encode($response->getHeaders(), JSON_UNESCAPED_UNICODE);
                 $content = $response->getBody()->getContents();
                 $httpCode = $response->getStatusCode();
+                $httpServiceLogInfo['response'] = [
+                    'headers' => json_encode($response->getHeaders(), JSON_UNESCAPED_UNICODE),
+                    'status' => $response->getStatusCode(),
+                    'content' => $content
+                ];
+
+                $tmp = json_decode($content, true);
+                if (is_array($tmp)) {
+                    $message = $tmp['message'] ?? $message;
+                    $code = $tmp['code'] ?? $code;
+                    $data = $tmp['data'] ?? $data;
+                }
             }
-            return [
-                'exception' => new ForbiddenException(
-                    '网络错误',
-                    null,
-                    null,
-                    null,
-                    $httpCode ?? null),
-                'headers' => $headers ?? null,
-                'status' => $httpCode ?? null,
-                'content' => $content ?? null,
-            ];
+
+            $httpServiceLogInfo['exception'] = $requestException;
+            HttpServiceLog::Log($httpServiceLogInfo);
+            throw new ForbiddenException($message, $code, $data, null, $httpCode);
 
             // 其他未知错误
         } catch (GuzzleException $exception) {
-            return [
-                'exception' => new SystemException('系统错误 ' . $exception->getMessage()),
-                'headers' => null,
-                'status' => null,
-                'content' => null,
-            ];
+
+            HttpServiceLog::Log($httpServiceLogInfo);
+            throw new SystemException('系统错误', 5000);
         }
 
-        return [
-            'exception' => null,
+        $content = $response->getBody()->getContents();
+        $httpServiceLogInfo['response'] = [
             'headers' => json_encode($response->getHeaders(), JSON_UNESCAPED_UNICODE),
             'status' => $response->getStatusCode(),
-            'content' => $response->getBody()->getContents(),
+            'content' => $content
         ];
+        HttpServiceLog::Log($httpServiceLogInfo);
+
+        return $content;
     }
 }
