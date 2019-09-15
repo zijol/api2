@@ -25,9 +25,9 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $schedule->command('ChangeLog:Update')
-            ->description('自动日志')
-            ->everyMinute();
+//        $schedule->command('ChangeLog:Update')
+//            ->description('自动日志')
+//            ->everyMinute();
     }
 
     /**
