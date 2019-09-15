@@ -82,7 +82,7 @@ class GrabFollowers extends Base
             if ($count >= $this->followingsTotal)
                 break;
             else
-                echo "$count / {$this->followingsTotal} 【{$user['uid']}】" . PHP_EOL;
+                echo "$count / {$this->followingsTotal} 【{$user['uid']}】 一轮关注列表" . PHP_EOL;
         }
 
         // 第二轮关注列表
@@ -115,45 +115,45 @@ class GrabFollowers extends Base
                         if ($count >= $this->followingsTotal)
                             break;
                         else
-                            echo "$count / {$this->followingsTotal} 【{$vUser['id']}】" . PHP_EOL;
+                            echo "$count / {$this->followingsTotal} 【{$vUser['id']}】 二轮关注列表" . PHP_EOL;
                     }
                 }
             });
 
         // 第三轮关注列表
-        echo "正在进行第三轮关注列表" . PHP_EOL;
-        VUser::query()
-            ->select(['id'])
-            ->where([
-                'search_level' => 2,
-                'search_base' => $user['uid']
-            ])->chunk(100, function ($vUserList) use ($user) {
-                foreach ($vUserList as $vUser) {
-                    $count = 0;
-                    $this->hasMore = true;
-                    $this->followingNextTime = time();
-                    while ($this->hasMore) {
-                        $followings = $this->getFollowList($vUser['id']);
-                        foreach ($followings as $follow) {
-                            if (isset($follow['uid'])) {
-                                $count++;
-                                // 如果关注的是自己
-                                if ($follow['uid'] == $vUser['id'])
-                                    continue;
-                                $this->saveVUser($follow['uid'], $follow, 3, $user['uid']);
-                                $this->saveUser($follow['uid'], $follow);
-                                $this->saveRelations($vUser['id'], $follow['uid']);
-                            }
-                        }
-                        unset($followings);
-                        usleep($this->sleepSecond);
-                        if ($count >= $this->followingsTotal)
-                            break;
-                        else
-                            echo "$count / {$this->followingsTotal} 【{$vUser['id']}】" . PHP_EOL;
-                    }
-                }
-            });
+//        echo "正在进行第三轮关注列表" . PHP_EOL;
+//        VUser::query()
+//            ->select(['id'])
+//            ->where([
+//                'search_level' => 2,
+//                'search_base' => $user['uid']
+//            ])->chunk(100, function ($vUserList) use ($user) {
+//                foreach ($vUserList as $vUser) {
+//                    $count = 0;
+//                    $this->hasMore = true;
+//                    $this->followingNextTime = time();
+//                    while ($this->hasMore) {
+//                        $followings = $this->getFollowList($vUser['id']);
+//                        foreach ($followings as $follow) {
+//                            if (isset($follow['uid'])) {
+//                                $count++;
+//                                // 如果关注的是自己
+//                                if ($follow['uid'] == $vUser['id'])
+//                                    continue;
+//                                $this->saveVUser($follow['uid'], $follow, 3, $user['uid']);
+//                                $this->saveUser($follow['uid'], $follow);
+//                                $this->saveRelations($vUser['id'], $follow['uid']);
+//                            }
+//                        }
+//                        unset($followings);
+//                        usleep($this->sleepSecond);
+//                        if ($count >= $this->followingsTotal)
+//                            break;
+//                        else
+//                            echo "$count / {$this->followingsTotal} 【{$vUser['id']}】" . PHP_EOL;
+//                    }
+//                }
+//            });
 
         return true;
     }

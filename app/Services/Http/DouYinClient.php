@@ -29,7 +29,12 @@ class DouYinClient extends HttpClient
 
     /**
      * 获取粉丝列表
-     *
+     *{
+     * "user_id":"xxx",
+     * "max_time":"xxxx",
+     * "cookies":"{\"xxx\":\"xxx\"}",
+     * "proxies":"xxx.xxx.xxx.xxx:xxx"
+     * }
      * @param $params
      * @param string $proxies
      * @return mixed
@@ -44,7 +49,12 @@ class DouYinClient extends HttpClient
 
     /**
      * 获取粉丝列表
-     *
+     *{
+     * "user_id":"xxx",
+     * "max_time":"xxxx",
+     * "cookies":"{\"xxx\":\"xxx\"}",
+     * "proxies":"xxx.xxx.xxx.xxx:xxx"
+     * }
      * @param $params
      * @param string $proxies
      * @return mixed
@@ -59,7 +69,11 @@ class DouYinClient extends HttpClient
 
     /**
      * 获取用户信息
-     *
+     *{
+     * "user_id":"xxx",
+     * "cookies":"{\"xxx\":\"xxx\"}",
+     * "proxies":"xxx.xxx.xxx.xxx:xxx"
+     * }
      * @param $params
      * @param string $proxies
      * @return mixed
@@ -70,6 +84,42 @@ class DouYinClient extends HttpClient
     {
         empty($proxies) ?: $params['proxies'] = $proxies;
         return $this->_result($this->get('/douyin/get_user_info', $params));
+    }
+
+    /**
+     * 关注用户
+     *{
+     * "phonenumber":"+86xxxxxxxxxxx",
+     * "user_id":""
+     * }
+     * @param $params
+     * @param string $proxies
+     * @return mixed
+     * @throws ForbiddenException
+     * @throws \App\Exceptions\SystemException
+     */
+    public function followUser($params, $proxies = '')
+    {
+        empty($proxies) ?: $params['proxies'] = $proxies;
+        return $this->_result($this->get('/douyin/follow_user', $params));
+    }
+
+    /**
+     * 搜索用户
+     * {
+     * "keyword":"xxx",
+     * "cursor":"xxxx",
+     * "proxies":"xxx.xxx.xxx.xxx:xxx",
+     * "cookies":"{\"xxx\":\"xxx\"}"
+     * }
+     * @return mixed
+     * @throws ForbiddenException
+     * @throws \App\Exceptions\SystemException
+     */
+    public function searchUser()
+    {
+        empty($proxies) ?: $params['proxies'] = $proxies;
+        return $this->_result($this->get('/douyin/search_user', $params));
     }
 
     /**

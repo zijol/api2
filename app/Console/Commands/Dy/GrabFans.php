@@ -97,7 +97,7 @@ class GrabFans extends Base
                 if ($count >= $this->fansListTotal)
                     break;
                 else
-                    echo "$count / {$this->fansListTotal} 【{$vu['id']}】" . PHP_EOL;
+                    echo "$count / {$this->fansListTotal} 【{$vu['id']}】 粉丝列表" . PHP_EOL;
             }
 
             $vu->grab_fans = $vu->grab_fans + 1;
