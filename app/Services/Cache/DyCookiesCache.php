@@ -11,5 +11,4 @@ namespace App\Services\Cache;
 class DyCookiesCache extends BaseCache
 {
     const CACHE_NAME = 'dy_cookies';
-    protected $_relies = [];
 }

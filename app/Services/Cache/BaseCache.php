@@ -43,15 +43,9 @@ class BaseCache
      * BaseCache constructor.
      * @param array $relies
      */
-    public function __construct(array $relies = [])
+    public function __construct(...$relies)
     {
-        foreach ($this->_relies as $relyKey => $rely) {
-            if (isset($relies[$relyKey]))
-                $this->_relies[$relyKey] = $relies[$relyKey];
-        }
-
-        ksort($this->_relies);
-
+        $this->_relies = $relies;
         $this->_cache = Redis::connection(static::CONNECTION_NAME);;
     }
 
@@ -150,13 +144,13 @@ class BaseCache
      */
     private function _key()
     {
-        $key = static::CONNECTION_NAME . "&";
+        $key = static::CONNECTION_NAME . "&_";
 
         foreach ($this->_relies as $relyKey => $rely) {
             $key .= $relyKey . ':' . $rely;
         }
 
-        $key .= '&' . static::CACHE_NAME;
+        $key .= '_&' . static::CACHE_NAME;
 
         return $key;
     }

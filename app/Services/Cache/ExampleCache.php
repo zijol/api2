@@ -11,8 +11,4 @@ namespace App\Services\Cache;
 class ExampleCache extends BaseCache
 {
     const CACHE_NAME = 'example';
-
-    protected $_relies = [
-        'name' => 'name'
-    ];
 }

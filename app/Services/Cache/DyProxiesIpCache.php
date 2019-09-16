@@ -11,5 +11,4 @@ namespace App\Services\Cache;
 class DyProxiesIpCache extends BaseCache
 {
     const CACHE_NAME = 'dy_proxies_ip';
-    protected $_relies = [];
 }
