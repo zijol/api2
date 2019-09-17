@@ -88,7 +88,7 @@ class Base extends Command
                 $cookie = (new DyCookiesCache())->getWithSet(function () {
                     return $this->client->getCookies([], $this->getProxies());
                 });
-                return $cookie;
+                return $cookie['cookies'] ?? [];
             } catch (\Exception $exception) {
                 echo "获取 cookies 异常 " . $exception->getMessage() . PHP_EOL;
                 echo "再次尝试获取cookie" . PHP_EOL;
@@ -113,7 +113,7 @@ class Base extends Command
             try {
                 $responseData = $this->client->getUserInfo([
                     'user_id' => $uid,
-                    'cookies' => json_encode($this->getCookie())
+                    'cookies' => json_encode($this->getCookie(), JSON_UNESCAPED_UNICODE)
                 ], $this->getProxies());
 
                 $data = $responseData['user'] ?? [];
@@ -126,6 +126,7 @@ class Base extends Command
                 return $data;
             } catch (\Exception $exception) {
                 echo "第 {$tryTimes} 次【查询用户】接口异常：" . $exception->getMessage() . PHP_EOL;
+                echo $exception->getFile() . $exception->getLine() . PHP_EOL;
                 usleep($this->sleepSecond);
                 continue;
             }

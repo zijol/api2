@@ -108,10 +108,12 @@ class DouYinClient extends HttpClient
      * "proxies":"xxx.xxx.xxx.xxx:xxx",
      * "cookies":"{\"xxx\":\"xxx\"}"
      * }
+     * @param $params
+     * @param string $proxies
      * @return mixed
      * @throws ForbiddenException
      */
-    public function searchUser()
+    public function searchUser($params, $proxies = '')
     {
         empty($proxies) ?: $params['proxies'] = $proxies;
         return $this->_result($this->get('/douyin/search_user', $params));
