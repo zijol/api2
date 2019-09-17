@@ -66,7 +66,7 @@ $config = [
             'port' => env('DY_DB_PORT', '3306'),
             'database' => env('DY_DB_NAME', 'douyin'),
             'username' => env('DY_DB_USER', 'root'),
-            'password' => env('DY_DB_PWD', '123456'),
+            'password' => env('DY_DB_PWD', ''),
             'unix_socket' => env('DY_DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_bin',
@@ -124,7 +124,7 @@ $config = [
 
         'default' => [
             'host' => env('REDIS_HOST', '127.0.0.1'),
-            'password' => env('REDIS_PASSWORD', null),
+            'password' => 123456,
             'port' => env('REDIS_PORT', 6379),
             'database' => env('REDIS_DB', 0),
         ],

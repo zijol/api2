@@ -85,7 +85,7 @@ class Base extends Command
         while ($tryTimes < 3) {
             try {
                 $tryTimes++;
-                $cookie = (new DyCookiesCache([]))->getWithSet(function () {
+                $cookie = (new DyCookiesCache())->getWithSet(function () {
                     return $this->client->getCookies([], $this->getProxies());
                 });
                 return $cookie;
@@ -104,7 +104,6 @@ class Base extends Command
      *
      * @param $uid
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     protected function getUserInfo($uid)
     {
@@ -142,7 +141,7 @@ class Base extends Command
      */
     protected function freshCookie()
     {
-        return (new DyCookiesCache([]))->del();
+        return (new DyCookiesCache())->del();
     }
 
     /**
@@ -215,7 +214,7 @@ class Base extends Command
      */
     public function getProxies()
     {
-        $proxiesIpCache = new DyProxiesIpCache([]);
+        $proxiesIpCache = new DyProxiesIpCache();
 
         $proxiesIpPool = $proxiesIpCache->getWithSet(function () {
             $client = new Client([

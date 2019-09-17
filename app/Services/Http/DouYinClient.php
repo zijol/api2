@@ -19,7 +19,6 @@ class DouYinClient extends HttpClient
      * @param string $proxies
      * @return mixed
      * @throws ForbiddenException
-     * @throws \App\Exceptions\SystemException
      */
     public function getCookies($params, $proxies = '')
     {
@@ -59,7 +58,6 @@ class DouYinClient extends HttpClient
      * @param string $proxies
      * @return mixed
      * @throws ForbiddenException
-     * @throws \App\Exceptions\SystemException
      */
     public function getFansList($params, $proxies = '')
     {
@@ -78,7 +76,6 @@ class DouYinClient extends HttpClient
      * @param string $proxies
      * @return mixed
      * @throws ForbiddenException
-     * @throws \App\Exceptions\SystemException
      */
     public function getUserInfo($params, $proxies = '')
     {
@@ -96,7 +93,6 @@ class DouYinClient extends HttpClient
      * @param string $proxies
      * @return mixed
      * @throws ForbiddenException
-     * @throws \App\Exceptions\SystemException
      */
     public function followUser($params, $proxies = '')
     {
@@ -114,7 +110,6 @@ class DouYinClient extends HttpClient
      * }
      * @return mixed
      * @throws ForbiddenException
-     * @throws \App\Exceptions\SystemException
      */
     public function searchUser()
     {
