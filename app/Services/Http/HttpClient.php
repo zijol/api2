@@ -46,9 +46,7 @@ class HttpClient
      * @param $uri
      * @param $params
      * @param $format
-     * @return string
-     * @throws ForbiddenException
-     * @throws SystemException
+     * @return array
      */
     public function post($uri, $params, $format = 'form_params')
     {
@@ -58,9 +56,7 @@ class HttpClient
     /**
      * @param $uri
      * @param $params
-     * @return string
-     * @throws ForbiddenException
-     * @throws SystemException
+     * @return array
      */
     public function get($uri, $params)
     {
@@ -71,9 +67,7 @@ class HttpClient
      * @param $uri
      * @param $params
      * @param $format
-     * @return string
-     * @throws ForbiddenException
-     * @throws SystemException
+     * @return array
      */
     public function put($uri, $params, $format = 'form_params')
     {
@@ -83,9 +77,7 @@ class HttpClient
     /**
      * @param $uri
      * @param $params
-     * @return string
-     * @throws ForbiddenException
-     * @throws SystemException
+     * @return array
      */
     public function delete($uri, $params)
     {
@@ -94,14 +86,11 @@ class HttpClient
 
     /**
      * send 方法
-     *
      * @param $method
      * @param $uri
      * @param $params
-     * @param $format
-     * @return mixed
-     * @throws ForbiddenException
-     * @throws SystemException
+     * @param string $format
+     * @return array
      */
     public function send($method, $uri, $params, $format = 'form_params')
     {
@@ -129,72 +118,57 @@ class HttpClient
         }
 
         try {
-            return $this->_response($client->request($realMethod, $uri, $requestOptions));
-            // 服务端错误 5xx
-        } catch (ServerException $serverException) {
-            if ($serverException->hasResponse()) {
-                $response = $serverException->getResponse();
-                $httpCode = $response->getStatusCode();
-            }
-            $this->_response(
-                $response ?? null,
-                new SystemException('服务器错误', null, null, null, $httpCode ?? null)
-            );
-
-            // 客户端错误 4xx
-        } catch (ClientException $clientException) {
-            if ($clientException->hasResponse()) {
-                $response = $clientException->getResponse();
-                $httpCode = $response->getStatusCode();
-            }
-            $this->_response(
-                $response ?? null,
-                new ForbiddenException('请求错误', null, null, null, $httpCode ?? null)
-            );
-
-            // 请求过程中网络错误
-        } catch (RequestException $requestException) {
-            if ($requestException->hasResponse()) {
-                $response = $requestException->getResponse();
-                $httpCode = $response->getStatusCode();
-            }
-            $this->_response(
-                $response ?? null,
-                new ForbiddenException('网络错误', null, null, null, $httpCode ?? null)
-            );
-
-            // 其他未知错误
+            return $this->_response(null, $client->request($realMethod, $uri, $requestOptions));
         } catch (GuzzleException $exception) {
-            $this->_response(
-                null,
-                new SystemException('系统错误 ' . $exception->getMessage())
-            );
+            return $this->_response($exception);
         }
     }
 
     /**
      * 返回最终结果
      *
-     * @param $response
      * @param $exception
+     * @param $response
      * @return array
      */
-    private function _response($response, $exception = null)
+    private function _response($exception = null, $response = null)
     {
-        if ($response instanceof ResponseInterface) {
-            return [
-                'status' => $response->getStatusCode(),
-                'headers' => json_encode($response->getHeaders(), JSON_UNESCAPED_UNICODE),
-                'content' => $response->getBody()->getContents(),
-                'exception' => $exception,
-            ];
-        } else {
-            return [
-                'status' => $httpCode ?? null,
-                'headers' => $headers ?? null,
-                'content' => $content ?? null,
-                'exception' => $exception,
-            ];
+        // 服务器异常
+        if ($exception instanceof ServerException) {
+            $response = $exception->hasResponse() ? $exception->getResponse() : null;
+            $exception = new SystemException('服务器错误',
+                null,
+                $response ? $response->getBody()->getContents() : null,
+                null,
+                $response ? $response->getStatusCode() : null);
+
+            // 客户端异常
+        } elseif ($exception instanceof ClientException) {
+            $response = $exception->hasResponse() ? $exception->getResponse() : null;
+            $exception = new ForbiddenException('请求错误',
+                null,
+                $response ? $response->getBody()->getContents() : null,
+                null,
+                $response ? $response->getStatusCode() : null);
+
+            // 请求异常
+        } elseif ($exception instanceof RequestException) {
+            $response = $exception->hasResponse() ? $exception->getResponse() : null;
+            $exception = new ForbiddenException('网络错误',
+                null,
+                $response ? $response->getBody()->getContents() : null,
+                null, $response ? $response->getStatusCode() : null);
+
+            // 其他异常
+        } elseif ($exception instanceof GuzzleException) {
+            $exception = new SystemException('系统错误 ' . $exception->getMessage());
         }
+
+        return [
+            'status' => $response ? $response->getStatusCode() : null,
+            'headers' => $response ? json_encode($response->getHeaders(), JSON_UNESCAPED_UNICODE) : null,
+            'content' => $response ? $response->getBody()->getContents() : null,
+            'exception' => $exception,
+        ];
     }
 }
