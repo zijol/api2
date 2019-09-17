@@ -55,38 +55,26 @@ class BaseModel extends Model
     }
 
     /**
-     * 支持快速获取 Builder
+     * @overwrite
+     * 查询支持分表名
      *
-     * @param mixed ...$where
+     * @param null $tableFix
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public static function getQuery(...$where)
+    public static function query($tableFix = null)
     {
-        // 如果有参数
-        if (isset($where[0])) {
-            // 如果是数组条件
-            if (is_array($where[0])) {
-                return static::query()->where($where[0]);
-            }
-
-            if (is_string($where[0])) {
-                if (isset($where[2]))
-                    return static::query()->where($where[0], $where[1], $where[2]);
-
-                if (isset($where[1])) {
-                    return static::query()->where($where[0], $where[1]);
-                }
-            }
-        }
-
-        return static::query();
+        return (new static([], $tableFix))->newQuery();
     }
 
     /**
      * BaseModel constructor.
+     *
+     * 支持分表名
+     *
      * @param array $attributes
+     * @param null $tableFix
      */
-    public function __construct(array $attributes = [])
+    public function __construct(array $attributes = [], $tableFix = null)
     {
         foreach ($attributes as $key => $value) {
             if (isset(static::$KeyMap[$key])) {
@@ -97,6 +85,7 @@ class BaseModel extends Model
         }
 
         parent::__construct($attributes);
+        $this->table = $this->getTable() . (empty($tableFix) ? "" : $tableFix);
     }
 
     /**
