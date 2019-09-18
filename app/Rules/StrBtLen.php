@@ -10,9 +10,9 @@ class StrBtLen implements Rule
     private $_maxLen = 64;
 
     /**
-     * Create a new rule instance.
-     *
-     * @return void
+     * StrBtLen constructor.
+     * @param int $minLen
+     * @param int $maxLen
      */
     public function __construct($minLen = 1, $maxLen = 64)
     {

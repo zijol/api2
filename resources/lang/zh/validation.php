@@ -130,10 +130,14 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'boolean' => ':attribute 必须是布尔值',
+        'id' => ':attribute 必须是 :min_len 至 :max_len 个字符的 :object_name ID',
+        'price' => ':attribute 必须是 :min_price 至 :max_price 元',
+        'float_2_bit' => ':attribute 必须是2位浮点数',
+        'timestamp' => ':attribute 必须是个有效的秒级时间戳',
         'str_max_len' => ':attribute 长度必须不超过 :max_len 个字符',
         'str_min_len' => ':attribute 长度必须至少 :max_len 个字符',
         'str_bt_len' => ':attribute 长度必须是 :min_len - max_len 个字符',
-        'float_2_bit' => ':attribute 必须是2位浮点数',
     ],
 
     /*
