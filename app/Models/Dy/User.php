@@ -35,6 +35,19 @@ class User extends DyModel
         'unique_id',
         'nickname',
         'gender',
+        'avatar_uri',
+        'birthday',
+        'constellation',
+        'signature',
+        'school_name',
+        'has_orders',
+        'room_id',
+        'verification_info',
         'sync_times',
     ];
+
+    public static function getTableFix($id)
+    {
+        return '_' . sprintf('%03d', (intval($id) % 100) + 1);
+    }
 }

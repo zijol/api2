@@ -6,7 +6,7 @@ use App\Services\Cache\{
     DyCookiesCache, DyProxiesIpCache
 };
 use App\Models\Dy\{
-    RawUser, User, UserFollowers, VUser
+     User, UserFollowers, VUser
 };
 use App\Services\Http\DouYinClient;
 use GuzzleHttp\Client;
@@ -152,19 +152,16 @@ class Base extends Command
      * @param string $searchBase
      * @return bool
      */
-    protected function saveVUser($uid, $data, $searchLevel = 0, $searchBase = '')
+    protected function saveVUser($uid, $data = [], $searchLevel = 0, $searchBase = '')
     {
         if (empty(VUser::query()->find($uid))) {
             (new VUser([
                 'id' => $uid,
-                'short_id' => $data['short_id'] ?? '',
-                'unique_id' => $data['unique_id'] ?? '',
-                'nickname' => $data['nickname'] ?? '',
-                'gender' => $data['gender'] ?? '',
                 'search_level' => intval($searchLevel),
                 'search_base' => $searchBase
             ]))->save();
         }
+
         return true;
     }
 
@@ -175,21 +172,24 @@ class Base extends Command
      */
     protected function saveUser($uid, $data)
     {
-        if (empty(User::query()->find($uid))) {
+        $tableFix = User::getTableFix($uid);
+        if (empty(User::query($tableFix)->find($uid))) {
             (new User([
                 'id' => $uid,
                 'short_id' => $data['short_id'] ?? '',
                 'unique_id' => $data['unique_id'] ?? '',
                 'nickname' => $data['nickname'] ?? '',
                 'gender' => $data['gender'] ?? '',
-            ]))->save();
+                'avatar_uri' => $data['avatar_uri'] ?? '',
+                'birthday' => $data['birthday'] ?? '',
+                'constellation' => $data['constellation'] ?? 0,
+                'signature' => $data['signature'] ?? '',
+                'school_name' => $data['school_name'] ?? '',
+                'has_orders' => $data['has_orders'] ? intval($data['has_orders']) : 0,
+                'room_id' => isset($data['room_id']) ? intval($data['room_id']) : '',
+                'verification_info' => isset($data['verification_info']) ? $data['verification_info'] : '',
+            ], $tableFix))->save();
         }
-
-        $rawData = [];
-        foreach (static::FIELDS_LIST as $field) {
-            $rawData[$field] = $data[$field] ?? null;
-        }
-        RawUser::query()->updateOrCreate(['id' => $uid,], ['raw_data' => $rawData]);
         return true;
     }
 

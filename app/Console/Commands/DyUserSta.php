@@ -42,12 +42,15 @@ class DyUserSta extends Command
      */
     public function handle()
     {
-        $rawCount = RawUser::query()->count();
-        $userCount = User::query()->count();
+        $userCount = 0;
+        foreach (range(1, 100) as $index) {
+            $tableFix = User::getTableFix($index);
+            $userCount += User::query($tableFix)->count();
+        }
         $vCount = VUser::query()->count();
 
         $us = new UserSta([
-            'raw_count' => $rawCount,
+            'raw_count' => 0,
             'v_count' => $vCount,
             'user_count' => $userCount
         ]);

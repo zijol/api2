@@ -9,6 +9,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Illuminate\Http\Request;
 
 class DyUserController extends Controller
 {
@@ -20,12 +21,12 @@ class DyUserController extends Controller
      * @param Content $content
      * @return Content
      */
-    public function index(Content $content)
+    public function index(Request $request, Content $content)
     {
         return $content
             ->header('用户列表')
             ->description('用户概要信息列表')
-            ->body($this->grid());
+            ->body($this->grid($request));
     }
 
     /**
@@ -77,9 +78,12 @@ class DyUserController extends Controller
      *
      * @return Grid
      */
-    protected function grid()
+    protected function grid(Request $request)
     {
-        $grid = new Grid(new User);
+        $id = $request->input('id', null);
+        $tableFix = empty($id) ? '_001' : User::getTableFix($id);
+
+        $grid = new Grid(new User([], $tableFix));
         $grid->paginate(10);
         $grid->filter(function ($filter) {
             $filter->like('nickname', 'nickname');
