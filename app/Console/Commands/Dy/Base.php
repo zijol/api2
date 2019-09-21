@@ -29,7 +29,7 @@ class Base extends Command
     protected $cookie = [];
     protected $proxiesIndex = 0;
     protected $proxiesPool = [];
-    protected $sleepSecond = 1000000;
+    protected $sleepSecond = 10000;
 
     const FIELDS_LIST = [
         'short_id', 'uid', 'unique_id', 'user_mode', 'ins_id', 'birthday', 'signature', 'gender', 'school_name', 'region', 'is_phone_binded', 'bind_phone',
