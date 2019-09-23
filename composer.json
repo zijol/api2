@@ -1,11 +1,9 @@
 {
     "name": "zijol/api",
     "type": "project",
-    "description": "zijol_api",
+    "description": "zijol",
     "keywords": [
-        "zijol",
-        "api",
-        "laravel"
+        "zijol"
     ],
     "license": "MIT",
     "require": {
@@ -18,10 +16,10 @@
         "predis/predis": "^1.1",
         "encore/laravel-admin": "^1.6",
         "jxlwqq/material-ui": "^1.0",
+        "jxlwqq/env-manager": "^0.1.0",
         "laravel-admin-ext/simplemde": "^1.0",
         "laravel-admin-ext/api-tester": "^1.0",
         "laravel-admin-ext/config": "^1.0",
-        "jxlwqq/env-manager": "^0.1.0",
         "laravel-admin-ext/redis-manager": "^1.0",
         "laravel-admin-ext/log-viewer": "^1.0",
         "laravel-admin-ext/helpers": "^1.1",
