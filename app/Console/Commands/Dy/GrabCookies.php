@@ -53,16 +53,8 @@ class GrabCookies extends Base
                 }
 
                 $proxiesIp = $this->getProxies();
-                $response = $this->client->getCookies([], $proxiesIp);
-                $responseBody = $response->getBody()->getContents();
-                $responseData = json_decode($responseBody, true);
-                if (!isset($responseData['code']) || 200 != $responseData['code']) {
-                    usleep($this->sleepSecond);
-                    $cookies = [];
-                } else {
-                    $cookies = $responseData['data']['cookies'] ?? [];
-                }
-
+                $responseData = $this->client->getCookies([], $proxiesIp);
+                $cookies = $responseData['cookies'] ?? [];
                 if (!empty($cookies)) {
                     (new Cookies([
                         'cookies' => $cookies,
