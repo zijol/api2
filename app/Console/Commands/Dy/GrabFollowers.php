@@ -45,7 +45,6 @@ class GrabFollowers extends Base
 
         // 初始化客户端
         $this->initHttpClient($this->port);
-        $this->getCookie();
 
         $user = $this->getUserInfo($this->userId);
         if (isset($user['uid'])) {
@@ -169,9 +168,10 @@ class GrabFollowers extends Base
         while ($tryTimes < 3) {
             ++$tryTimes;
             try {
+                $cookies = $this->getCookie();
                 $responseData = $this->client->getFollowerList([
                     'user_id' => $uid,
-                    'cookies' => json_encode($this->getCookie()),
+                    'cookies' => json_encode($cookies['cookies']),
                     'max_time' => $this->followingNextTime
                 ], $this->getProxies());
 
@@ -182,7 +182,7 @@ class GrabFollowers extends Base
                 $data = $responseData['followings'] ?? [];
                 if (empty($data)) {
                     echo "第 {$tryTimes} 次【关注列表】未查询到数据 {$uid}" . PHP_EOL;
-                    $this->freshCookie();
+                    $this->freshCookie($cookies['id']);
                     usleep($this->sleepSecond);
                     continue;
                 }

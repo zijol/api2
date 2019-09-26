@@ -38,7 +38,6 @@ class DouYinClient extends HttpClient
      * @param string $proxies
      * @return mixed
      * @throws ForbiddenException
-     * @throws \App\Exceptions\SystemException
      */
     public function getFollowerList($params, $proxies = '')
     {

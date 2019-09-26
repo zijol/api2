@@ -6,7 +6,7 @@ use App\Services\Cache\{
     DyCookiesCache, DyProxiesIpCache
 };
 use App\Models\Dy\{
-     User, UserFollowers, VUser
+    Cookies, User, UserFollowers, VUser
 };
 use App\Services\Http\DouYinClient;
 use GuzzleHttp\Client;
@@ -77,26 +77,31 @@ class Base extends Command
     }
 
     /**
-     * @return bool|mixed|null|string
+     * @return array
      */
     protected function getCookie()
     {
-        $tryTimes = 0;
-        while ($tryTimes < 3) {
-            try {
-                $tryTimes++;
-                $cookie = (new DyCookiesCache())->getWithSet(function () {
-                    return $this->client->getCookies([], $this->getProxies());
-                });
-                return $cookie['cookies'] ?? [];
-            } catch (\Exception $exception) {
-                echo "获取 cookies 异常 " . $exception->getMessage() . PHP_EOL;
-                echo "再次尝试获取cookie" . PHP_EOL;
-                usleep($this->sleepSecond);
-                continue;
+        // 从数据库获取已经缓存的 cookies
+        $cookies = null;
+        $second = 1;
+        while (empty($cookies)) {
+            $cookies = Cookies::query()
+                ->where('err_times', "<", 10)
+                ->where('expires_at', ">", date('Y-m-d H:i:s'))
+                ->first();
+
+            // 等待时间递增的方式进行获取cookie，保证cookies池子充足
+            $sleep = ($second++ % 10) + 1;
+            if ($sleep == 10) {
+                echo "太久未获取到cookie，请检查cookie抓取进程是否异常" . PHP_EOL;
             }
+            sleep($sleep);
         }
-        return "";
+
+        return [
+            'id' => empty($cookies) ? 0 : $cookies->id,
+            'cookies' => empty($cookies) ? 0 : $cookies->cookies,
+        ];
     }
 
     /**
@@ -111,15 +116,16 @@ class Base extends Command
         while ($tryTimes < 3) {
             $tryTimes++;
             try {
+                $cookies = $this->getCookie();
                 $responseData = $this->client->getUserInfo([
                     'user_id' => $uid,
-                    'cookies' => json_encode($this->getCookie(), JSON_UNESCAPED_UNICODE)
+                    'cookies' => json_encode($cookies['cookies'])
                 ], $this->getProxies());
 
                 $data = $responseData['user'] ?? [];
                 if (empty($data)) {
                     echo "第 {$tryTimes} 次【查询用户】未查询到数据 {$uid}" . PHP_EOL;
-                    $this->freshCookie();
+                    $this->freshCookie($cookies['id']);
                     usleep($this->sleepSecond);
                     continue;
                 }
@@ -136,13 +142,23 @@ class Base extends Command
     }
 
     /**
-     * 刷新cookie
-     *
-     * @return int|null
+     * @param $cookiesId
+     * @return mixed
      */
-    protected function freshCookie()
+    protected function freshCookie($cookiesId)
     {
-        return (new DyCookiesCache())->del();
+        $cookies = Cookies::query()->where('id', '=', $cookiesId)->first();
+
+        if (!empty($cookies)) {
+            if ($cookies->err_times >= 10 || $cookies->expires_at <= date('Y-m-d H:i:s')) {
+                $cookies->delete();
+            } else {
+                $cookies->err_times = $cookies->err_times + 1;
+                $cookies->save();
+            }
+        }
+
+        return $cookiesId;
     }
 
     /**

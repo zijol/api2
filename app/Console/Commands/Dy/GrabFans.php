@@ -51,7 +51,6 @@ class GrabFans extends Base
 
         // 初始化客户端
         $this->initHttpClient($this->port);
-        $this->getCookie();
 
         $user = $this->getUserInfo($this->userId);
         if (isset($user['uid'])) {
@@ -120,9 +119,10 @@ class GrabFans extends Base
         while ($tryTimes < 100) {
             ++$tryTimes;
             try {
+                $cookies = $this->getCookie();
                 $responseData = $this->client->getFansList([
                     'user_id' => $uid,
-                    'cookies' => json_encode($this->getCookie()),
+                    'cookies' => json_encode($cookies['cookies']),
                     'max_time' => $this->fansNextTime
                 ], $this->getProxies());
 
@@ -134,7 +134,7 @@ class GrabFans extends Base
 
                 if (empty($data)) {
                     echo "第 {$tryTimes} 次【粉丝列表】未查询到数据 {$uid}" . PHP_EOL;
-                    $this->freshCookie();
+                    $this->freshCookie($cookies['id']);
                     usleep($this->sleepSecond);
                     continue;
                 }

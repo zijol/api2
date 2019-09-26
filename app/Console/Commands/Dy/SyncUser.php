@@ -33,7 +33,6 @@ class SyncUser extends Base
 
     /**
      * @return bool|mixed
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function handle()
     {
@@ -43,8 +42,6 @@ class SyncUser extends Base
 
         // 初始化客户端
         $this->initHttpClient($this->port);
-        $this->getCookie();
-
         while (1) {
             $user = User::query()
                 ->where('sync_times', '<', $syncTimes)
