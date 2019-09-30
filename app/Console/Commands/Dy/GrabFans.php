@@ -111,7 +111,6 @@ class GrabFans extends Base
      *
      * @param $uid
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getFansList($uid)
     {
