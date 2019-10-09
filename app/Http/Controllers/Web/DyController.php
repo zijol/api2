@@ -8,20 +8,17 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Exceptions\AuthorizeException;
-use App\Exceptions\ForbiddenException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ExampleRequest;
 use App\Models\Dy\RawUser;
 use App\Models\Dy\User;
-use App\Models\Dy\UserFollowers;
 use App\Services\Helper\Pagination;
 use Illuminate\Http\Request;
 
 class DyController extends Controller
 {
     /**
-     * @param ExampleRequest $request
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request)
     {
@@ -48,5 +45,14 @@ class DyController extends Controller
             ->first();
 
         return view('dy.detail', ['user' => $user]);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function lhy(Request $request)
+    {
+        return view('dy.lhy');
     }
 }
