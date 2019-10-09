@@ -27,3 +27,4 @@ Route::get('/decrypt', 'Web\EncryptionController@decrypt');
 Route::get('/dy/index', 'Web\DyController@index');
 Route::get('/dy/{user_id}/detail', 'Web\DyController@detail');
 Route::get('/lhy', 'Web\DyController@lhy');
+Route::get('/lhy2', 'Web\DyController@lhy2');

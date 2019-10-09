@@ -55,4 +55,9 @@ class DyController extends Controller
     {
         return view('dy.lhy');
     }
+
+    public function lhy2(Request $request)
+    {
+        return view('dy.lhy2');
+    }
 }
