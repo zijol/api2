@@ -20,22 +20,21 @@
 
         .box {
             position: relative;
-            width: 150px;
-            height: 250px;
-            /*border:1px solid red;*/
+            width: 170px;
+            height: 300px;
+            border: 1px solid red;
             margin: 300px auto;
             transform-style: preserve-3d;
             -webkit-animation: rotate1 10s linear infinite;
             -moz-animation: rotate1 10s linear infinite;
             animation: rotate1 10s linear infinite;
             background: url("/img/WechatIMG6.jpeg");
-            background-size: 150px 250px;
-            background-repeat: no-repeat;
+            background-size: 100% 100%;
         }
 
         .box img {
-            width: 150px;
-            height: 250px;
+            width: 168px;
+            height: 300px;
             border: 1px solid #ccc;
             position: absolute;
             left: 0;
@@ -44,63 +43,63 @@
         }
 
         .img1 {
-            -webkit-transform: translateZ(300px);
-            -moz-transform: translateZ(300px);
-            transform: translateZ(300px);
+            -webkit-transform: translateZ(400px);
+            -moz-transform: translateZ(400px);
+            transform: translateZ(400px);
         }
 
         .img2 {
-            -webkit-transform: rotateY(36deg) translateZ(300px);
-            -moz-transform: rotateY(36deg) translateZ(300px);
-            transform: rotateY(36deg) translateZ(300px);
+            -webkit-transform: rotateY(36deg) translateZ(400px);
+            -moz-transform: rotateY(36deg) translateZ(400px);
+            transform: rotateY(36deg) translateZ(400px);
         }
 
         .img3 {
-            -webkit-transform: rotateY(72deg) translateZ(300px);
-            -moz-transform: rotateY(72deg) g) translateZ(300 px);
-            transform: rotateY(72deg) (300px);
+            -webkit-transform: rotateY(72deg) translateZ(400px);
+            -moz-transform: rotateY(72deg) translateZ(400px);
+            transform: rotateY(72deg) translateZ(400px);
         }
 
         .img4 {
-            -webkit-transform: rotateY(108deg) translateZ(300px);
-            -moz-transform: rotateY(108deg) translateZ(300px);
-            transform: rotateY(108deg) translateZ(300px);
+            -webkit-transform: rotateY(108deg) translateZ(400px);
+            -moz-transform: rotateY(108deg) translateZ(400px);
+            transform: rotateY(108deg) translateZ(400px);
         }
 
         .img5 {
-            -webkit-transform: rotateY(144deg) translateZ(300px);
-            -moz-transform: rotateY(144deg) translateZ(300px);
-            transform: rotateY(144deg) translateZ(300px);
+            -webkit-transform: rotateY(144deg) translateZ(400px);
+            -moz-transform: rotateY(144deg) translateZ(400px);
+            transform: rotateY(144deg) translateZ(400px);
         }
 
         .img6 {
-            -webkit-transform: rotateY(180deg) translateZ(300px);
-            -moz-transform: rotateY(180deg) translateZ(300px);
-            transform: rotateY(180deg) translateZ(300px);
+            -webkit-transform: rotateY(180deg) translateZ(400px);
+            -moz-transform: rotateY(180deg) translateZ(400px);
+            transform: rotateY(180deg) translateZ(400px);
         }
 
         .img7 {
-            -webkit-transform: rotateY(216deg) translateZ(300px);
-            -moz-transform: rotateY(216deg) translateZ(300px);
-            transform: rotateY(216deg) translateZ(300px);
+            -webkit-transform: rotateY(216deg) translateZ(400px);
+            -moz-transform: rotateY(216deg) translateZ(400px);
+            transform: rotateY(216deg) translateZ(400px);
         }
 
         .img8 {
-            -webkit-transform: rotateY(252deg) translateZ(300px);
-            -moz-transform: rotateY(252deg) translateZ(300px);
-            transform: rotateY(252deg) translateZ(300px);
+            -webkit-transform: rotateY(252deg) translateZ(400px);
+            -moz-transform: rotateY(252deg) translateZ(400px);
+            transform: rotateY(252deg) translateZ(400px);
         }
 
         .img9 {
-            -webkit-transform: rotateY(288deg) translateZ(300px);
-            -moz-transform: rotateY(288deg) translateZ(300px);
-            transform: rotateY(288deg) translateZ(300px);
+            -webkit-transform: rotateY(288deg) translateZ(400px);
+            -moz-transform: rotateY(288deg) translateZ(400px);
+            transform: rotateY(288deg) translateZ(400px);
         }
 
         .img10 {
-            -webkit-transform: rotateY(324deg) translateZ(300px);
-            -moz-transform: rotateY(324deg) translateZ(300px);
-            transform: rotateY(324deg) translateZ(300px);
+            -webkit-transform: rotateY(324deg) translateZ(400px);
+            -moz-transform: rotateY(324deg) translateZ(400px);
+            transform: rotateY(324deg) translateZ(400px);
         }
 
         @-moz-keyframes rotate1 {
