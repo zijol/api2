@@ -46,18 +46,4 @@ class DyController extends Controller
 
         return view('dy.detail', ['user' => $user]);
     }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function lhy(Request $request)
-    {
-        return view('dy.lhy');
-    }
-
-    public function lhy2(Request $request)
-    {
-        return view('dy.lhy2');
-    }
 }
