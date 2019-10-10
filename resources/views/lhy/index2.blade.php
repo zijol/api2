@@ -29,7 +29,7 @@
 <script type="text/javascript" src="/js/jquery3.1.1.min.js"></script>
 <script type="text/javascript" src="/js/lhy/snowfall.jquery.min.js"></script>
 <script type="text/javascript">
-    $(document).snowfall({flakeCount: 20, maxSpeed: 5});
+    $(document).snowfall({flakeCount: 30, maxSpeed: 6});
 </script>
 </body>
 </html>
