@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>乖徒儿</title>
     <link rel="stylesheet" href="/css/lhy/index2.css">
-    <link rel="stylesheet" href="/css/lhy/lx.css">
+    <link rel="stylesheet" href="/css/lhy/snowfall.css">
 </head>
 <body>
 <div class="wrap">
@@ -25,5 +25,11 @@
         <span class="in-bottom"></span>
     </div>
 </div>
+
+<script type="text/javascript" src="/js/jquery3.1.1.min.js"></script>
+<script type="text/javascript" src="/js/lhy/snowfall.jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).snowfall({flakeCount: 20, maxSpeed: 5});
+</script>
 </body>
 </html>

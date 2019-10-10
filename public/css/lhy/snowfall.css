@@ -1,0 +1,25 @@
+.snowfall-flakes:before {
+    content: "";
+    /*绝对定位*/
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 20px;
+    height: 32px;
+    transform: rotate(-45deg);
+    background-color: deeppink;
+    border-radius: 10px 10px 1px 1px;
+}
+
+.snowfall-flakes:after {
+    /*激活伪元素的必要因素*/
+    content: "";
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 20px;
+    height: 32px;
+    transform: translateX(8.4px) rotate(45deg);
+    background-color: pink;
+    border-radius: 10px 10px 1px 1px;
+}
