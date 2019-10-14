@@ -48,7 +48,7 @@ html {
 .cube .out-front {
     background: url("/img/WechatIMG6.jpeg");
     background-size: 100% 100%;
-    transform: translateZ(150px);
+    transform: translateZ(200px);
 }
 
 .cube .out-back {
