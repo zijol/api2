@@ -17,7 +17,7 @@ class MemberUsersExporter extends ExcelExporter implements WithMapping
     protected $fileName = '会员列表.csv';
 
     protected $columns = [
-        'id' => 'ID',
+        'no' => '编号',
         'name' => '姓名',
         'phone' => '电话',
         'level' => '等级',
@@ -27,7 +27,7 @@ class MemberUsersExporter extends ExcelExporter implements WithMapping
     public function map($user): array
     {
         return [
-            $user->id,
+            $user->no,
             $user->name,
             $user->phone,
             $user->level,
