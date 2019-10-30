@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class BaseModel extends Model
 {
-    protected $connection = 'irt';
+    protected $connection = 'mysql';
 
     /**
      * @var bool $live_mode

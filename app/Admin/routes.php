@@ -11,6 +11,4 @@ Route::group([
 
     $router->get('/', 'HomeController@index');
     $router->resource('markdown', MarkdownController::class);
-    $router->resource('dy', DyUserController::class);
-    $router->resource('dy_sta', UserStaController::class);
 });
