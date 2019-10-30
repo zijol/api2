@@ -34,14 +34,12 @@ $config = [
     */
 
     'connections' => [
-
         'sqlite' => [
             'driver' => 'sqlite',
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
-
         // ADMIN
         'admin' => [
             'driver' => 'mysql',
@@ -51,40 +49,6 @@ $config = [
             'username' => env('ADMIN_DB_USER', 'root'),
             'password' => env('ADMIN_DB_PWD', '123456'),
             'unix_socket' => env('ADMIN_DB_SOCKET', ''),
-            'charset' => 'utf8',
-            'collation' => 'utf8_general_ci',
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'strict' => true,
-            'engine' => null,
-        ],
-
-        // ADMIN
-        'dy' => [
-            'driver' => 'mysql',
-            'host' => env('DY_DB_HOST', '127.0.0.1'),
-            'port' => env('DY_DB_PORT', '3306'),
-            'database' => env('DY_DB_NAME', 'douyin'),
-            'username' => env('DY_DB_USER', 'root'),
-            'password' => env('DY_DB_PWD', ''),
-            'unix_socket' => env('DY_DB_SOCKET', ''),
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_bin',
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'strict' => true,
-            'engine' => null,
-        ],
-
-        // ADMIN
-        'irt' => [
-            'driver' => 'mysql',
-            'host' => env('IRT_DB_HOST', '127.0.0.1'),
-            'port' => env('IRT_DB_PORT', '3306'),
-            'database' => env('IRT_DB_NAME', 'IRT'),
-            'username' => env('IRT_DB_USERNAME', 'root'),
-            'password' => env('IRT_DB_PWD', '123456'),
-            'unix_socket' => env('IRT_DB_SOCKET', ''),
             'charset' => 'utf8',
             'collation' => 'utf8_general_ci',
             'prefix' => '',
