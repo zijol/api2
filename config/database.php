@@ -15,7 +15,7 @@ $config = [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'irt'),
+    'default' => env('DB_CONNECTION', 'admin'),
 
     /*
     |--------------------------------------------------------------------------
@@ -43,14 +43,14 @@ $config = [
         // ADMIN
         'admin' => [
             'driver' => 'mysql',
-            'host' => env('ADMIN_DB_HOST', '127.0.0.1'),
-            'port' => env('ADMIN_DB_PORT', '3306'),
-            'database' => env('ADMIN_DB_NAME', 'admin'),
-            'username' => env('ADMIN_DB_USER', 'root'),
-            'password' => env('ADMIN_DB_PWD', '123456'),
-            'unix_socket' => env('ADMIN_DB_SOCKET', ''),
-            'charset' => 'utf8',
-            'collation' => 'utf8_general_ci',
+            'host' => yaConfig('db.admin.host', '127.0.0.1'),
+            'port' => yaConfig('db.admin.port', '3306'),
+            'database' => yaConfig('db.admin.database', 'admin'),
+            'username' => yaConfig('db.admin.username', 'root'),
+            'password' => yaConfig('db.admin.password', '123456'),
+            'unix_socket' => yaConfig('db.admin.unix_socket', ''),
+            'charset' => yaConfig('db.admin.charset', 'utf8'),
+            'collation' => yaConfig('db.admin.collation', 'utf8_general_ci'),
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,

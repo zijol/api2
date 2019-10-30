@@ -38,7 +38,6 @@ class Say extends Command
         $argv = $this->arguments();
         $keywords = $argv["keywords"] ?? "hello world!";
         $this->info($keywords);
-        var_dump(yaConfig("db"));
         return true;
     }
 }
