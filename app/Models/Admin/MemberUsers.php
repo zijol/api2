@@ -24,4 +24,5 @@ namespace App\Models\Admin;
 class MemberUsers extends AdminModel
 {
     protected $connection = 'admin';
+    public $table = 'member_users';
 }

@@ -12,4 +12,5 @@ Route::group([
     $router->get('/', 'HomeController@index');
     $router->resource('markdown', MarkdownController::class);
     $router->resource('member-users', MemberUsersController::class);
+    $router->resource('member-coupon-template', MemberCouponTemplateController::class);
 });

@@ -49,7 +49,7 @@ class MemberUsersController extends AdminController
                 return sprintf("%.2f", bcdiv($this->balance, 100, 2));
             });
         $grid->column('points', __('admin.model.Points'));
-        $grid->column('created_at', __('admin.model.CreatedAt'));
+        $grid->column('created_at', __('admin.model.RegisterAt'));
         $grid->column('updated_at', __('admin.model.UpdatedAt'));
 
         return $grid;
@@ -71,10 +71,10 @@ class MemberUsersController extends AdminController
         $show->field('level', __('admin.model.Level'));
         $show->field('balance', __('admin.model.Balance'))
             ->as(function () {
-                return sprintf("%.2f", bcdiv($this->balance, 100, 2));
+                return fen_to_yuan($this->balance);
             });
         $show->field('points', __('admin.model.Points'));
-        $show->field('created_at', __('admin.model.CreatedAt'));
+        $show->field('created_at', __('admin.model.RegisterAt'));
         $show->field('updated_at', __('admin.model.UpdatedAt'));
 
         return $show;

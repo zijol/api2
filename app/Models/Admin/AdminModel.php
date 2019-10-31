@@ -13,6 +13,4 @@ use App\Models\BaseModel;
 class AdminModel extends BaseModel
 {
     protected $connection = 'admin';
-
-    public $table = 'member_users';
 }

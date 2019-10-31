@@ -100,13 +100,22 @@ return [
     ],
     'menu_titles' => [],
     'model' => [
+        'Id' => 'ID',
         'Name' => '姓名',
         'Phone' => '手机',
         'No' => '编号',
         'Level' => '等级',
         'Balance' => '余额',
         'Points' => '积分',
-        'CreatedAt' => '注册时间',
+        'RegisterAt' => '注册时间',
+        'CreatedAt' => '创建时间',
         'UpdatedAt' => '更新时间',
+        'AttainAmount' => '满金额',
+        'DiscountAmount' => '抵扣金额',
+        'Expire' => '有效期',
+        'Discount' => '折扣',
+        'Amount' => '金额',
+        'Type' => '类型',
+        'Status' => '状态',
     ]
 ];

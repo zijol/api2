@@ -19,3 +19,29 @@ if (!function_exists('yaConfig')) {
         return \Yaconf::get($name, $default);
     }
 }
+
+if (!function_exists('fen_to_yuan')) {
+    /**
+     * 分转元
+     *
+     * @param int $fen
+     * @return string
+     */
+    function fen_to_yuan($fen = 100)
+    {
+        return sprintf("%.2f", bcdiv($fen, 100, 2));
+    }
+}
+
+if (!function_exists('to_discount')) {
+    /**
+     * 折扣
+     *
+     * @param int $discount
+     * @return string
+     */
+    function to_discount($discount = 100)
+    {
+        return sprintf("%.1f", bcdiv($discount, 10, 1));
+    }
+}
