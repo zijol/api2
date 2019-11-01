@@ -113,9 +113,9 @@ class MemberCouponTemplateController extends AdminController
         $form->number('discount_amount', __('admin.model.DiscountAmount') . '(元)')->default(0);
         $form->number('expire', __('admin.model.Expire') . '(天)')->default(0);
         $form->saving(function (Form $form) {
-            $form->amount = intval($form->amount * 100);
-            $form->attain_amount = intval($form->attain_amount * 100);
-            $form->discount_amount = intval($form->discount_amount * 100);
+            $form->amount = yuan_to_fen($form->amount);
+            $form->attain_amount = yuan_to_fen($form->attain_amount);
+            $form->discount_amount = yuan_to_fen($form->discount_amount);
             $form->expire = intval($form->expire * 86400);
             $form->discount = intval($form->discount * 10);
         });

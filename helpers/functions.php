@@ -29,7 +29,20 @@ if (!function_exists('fen_to_yuan')) {
      */
     function fen_to_yuan($fen = 100)
     {
-        return sprintf("%.2f", bcdiv($fen, 100, 2));
+        return floatval(bcdiv($fen, 100, 2));
+    }
+}
+
+if (!function_exists('yuan_to_fen')) {
+    /**
+     * 分转元
+     *
+     * @param int|float $yuan
+     * @return string
+     */
+    function yuan_to_fen($yuan = 100)
+    {
+        return intval($yuan * 100);
     }
 }
 
