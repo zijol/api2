@@ -17,7 +17,7 @@ class LhyController extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(Request $request)
+    public function index(Request $request, $name)
     {
         return view('lhy.index');
     }
