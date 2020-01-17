@@ -26,10 +26,7 @@ class ExampleRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => [
-                'required',
-                new Float2Bit(),
-            ]
+            'id' => 'filled',
         ];
     }
 }
