@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\DataTypeEnum;
+use App\Objects\UserObject;
 use Illuminate\Console\Command;
 
 class Say extends Command
@@ -35,9 +37,22 @@ class Say extends Command
      */
     public function handle()
     {
-        $argv = $this->arguments();
-        $keywords = $argv["keywords"] ?? "hello world!";
-        $this->info($keywords);
+        $user = UserObject::instance([
+            'name' => 'abc',
+            'age' => 25,
+            'py' => 'abc',
+            'target' => new UserObject([
+                'name' => 'bbb',
+                'age' => 12,
+                'target' => new UserObject(["name" => 'ccc']),
+            ])
+        ]);
+        $u = call_user_func([UserObject::class], ['name'=>'xj']);
+        var_dump(json_encode($u));
+//        var_dump(json_encode($user));
+//        var_dump(json_encode($user->target->target->target));
+//        $this->line($user->toArray());
+//        var_dump(DataTypeEnum::Enums());
         return true;
     }
 }

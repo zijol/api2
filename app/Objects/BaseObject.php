@@ -2,8 +2,6 @@
 
 namespace App\Objects;
 
-use App\Enums\DataTypeEnum;
-
 /**
  * Class BaseObject
  *
@@ -14,84 +12,7 @@ class BaseObject implements \ArrayAccess, \IteratorAggregate, \JsonSerializable
     /**
      * @var array 原始数组保存
      */
-    private $_array = [];
-
-    /**
-     * @var array
-     */
-    protected $_objectKeys = [];
-
-    /**
-     * @param $model
-     *
-     * @return static
-     */
-    public static function init($model)
-    {
-        $arr = [];
-
-        if (is_array($model)) {
-            $arr = $model;
-        }
-
-        if (is_object($model) && method_exists($model, 'toArray')) {
-            $arr = $model->toArray();
-        }
-
-        return new static($arr);
-    }
-
-    /**
-     * BaseObject constructor.
-     * @param $array
-     */
-    public function __construct($array)
-    {
-        foreach ($this->_objectKeys as $key => $options) {
-            if (is_array($options)) {
-                $type = $options[0] ?? '';
-                $class = $options[1] ?? '';
-                $method = $options[2] ?? '';
-            } else {
-                $type = $options;
-                $class = '';
-                $method = '';
-            }
-
-            switch ($type) {
-                case DataTypeEnum::STRING:
-                    $this->_array[$key] = isset($array[$key]) ? strval($array[$key]) : '';
-                    break;
-                case DataTypeEnum::INTEGER:
-                    $this->_array[$key] = isset($array[$key]) ? intval($array[$key]) : 0;
-                    break;
-                case DataTypeEnum::FLOAT:
-                    $this->_array[$key] = isset($array[$key]) ? floatval($array[$key]) : floatval(0);
-                    break;
-                case DataTypeEnum::Array:
-                    $this->_array[$key] = isset($array[$key]) && is_array($array[$key]) ? $array[$key] : [$array[$key]];
-                    break;
-                case DataTypeEnum::OBJECT:
-                    if (isset($array[$key]) && !is_null($array[$key])) {
-                        if (!empty($class)) {
-                            if (empty($method)) {
-                                $this->_array[$key] = new $class($array[$key]);
-                            } else {
-                                $this->_array[$key] = $class::$method($array[$key]);
-                            }
-                        } else {
-                            $this->_array[$key] = null;
-                        }
-                    } else {
-                        $this->_array[$key] = null;
-                    }
-                    break;
-                default:
-                    $this->_array[$key] = null;
-                    break;
-            }
-        }
-    }
+    protected $_array = [];
 
     /**
      * @param mixed $offset

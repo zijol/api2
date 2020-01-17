@@ -25,7 +25,7 @@ if (!function_exists('fen_to_yuan')) {
      * 分转元
      *
      * @param int $fen
-     * @return string
+     * @return float
      */
     function fen_to_yuan($fen = 100)
     {
@@ -35,10 +35,10 @@ if (!function_exists('fen_to_yuan')) {
 
 if (!function_exists('yuan_to_fen')) {
     /**
-     * 分转元
+     * 元转分
      *
      * @param int|float $yuan
-     * @return string
+     * @return integer
      */
     function yuan_to_fen($yuan = 100)
     {

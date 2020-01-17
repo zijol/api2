@@ -14,7 +14,7 @@ class BaseEnum
      * @return array
      * @throws \ReflectionException
      */
-    public static function Enums()
+    public static function enums()
     {
         $oClass = new \ReflectionClass(static::class);
         $cArr = $oClass->getConstants();

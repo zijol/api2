@@ -12,5 +12,4 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/lhy/{name}', 'Web\LhyController@index');
-Route::get('/lhy2', 'Web\LhyController@index2');
+Route::get('/', 'Web\IndexController@index');
