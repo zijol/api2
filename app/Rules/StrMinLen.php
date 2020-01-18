@@ -9,7 +9,7 @@ class StrMinLen implements Rule
     private $_minLen = 1;
     /**
      * Create a new rule instance.
-     *
+     * @param int $minLen
      * @return void
      */
     public function __construct($minLen = 1)

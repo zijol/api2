@@ -14,7 +14,7 @@ use App\Http\Requests\ExampleRequest;
 use App\Models\Admin\MemberCouponTemplate;
 use App\Objects\ModelObjects\CouponTemplateListObject;
 use App\Objects\ModelObjects\CouponTemplateObject;
-use App\Objects\PaginateDataObject;
+use App\Objects\PaginationObjects\PaginateDataObject;
 
 class IndexController extends Controller
 {
@@ -33,13 +33,13 @@ class IndexController extends Controller
                 ])->first();
             return new CouponTemplateObject($find);
         } else {
-            $pagination = $this->getPagination($request);
+            $paginate = $this->getPaginate($request);
             $find = MemberCouponTemplate::query()
-                ->forPage($pagination->page, $pagination->per_page)
+                ->forPage($paginate->page, $paginate->per_page)
                 ->get();
-            $pagination->total = MemberCouponTemplate::query()->count();
+            $paginate->total = MemberCouponTemplate::query()->count();
 
-            return PaginateDataObject::init($pagination, new CouponTemplateListObject($find));
+            return PaginateDataObject::init($paginate, new CouponTemplateListObject($find));
         }
     }
 }

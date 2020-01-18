@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Objects\PaginationObject;
+use App\Objects\PaginationObjects\PaginateObject;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\JsonResponse;
@@ -38,11 +38,11 @@ class Controller extends BaseController
      *
      * @param Request $request
      * @param int $total
-     * @return PaginationObject
+     * @return PaginateObject
      */
-    protected function getPagination(Request $request, int $total = 0)
+    protected function getPaginate(Request $request, int $total = 0)
     {
-        return new PaginationObject([
+        return new PaginateObject([
             'page' => $request->input('page', 1),
             'per_page' => $request->input('per_page', 10),
             'total' => $total

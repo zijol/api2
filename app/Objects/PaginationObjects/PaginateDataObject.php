@@ -6,14 +6,16 @@
  * Time: 16:05
  */
 
-namespace App\Objects;
+namespace App\Objects\PaginationObjects;
 
 use App\Enums\DataTypeEnum;
+use App\Objects\SimpleObject;
+use App\Objects\ListObject;
 
 class PaginateDataObject extends SimpleObject
 {
     /**
-     * @param PaginationObject $paginationObject
+     * @param PaginateObject $paginationObject
      * @param ListObject $listObject
      * @return PaginateDataObject
      */

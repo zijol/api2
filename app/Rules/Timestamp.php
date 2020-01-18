@@ -13,7 +13,6 @@ class Timestamp implements Rule
      */
     public function __construct()
     {
-        //
     }
 
     /**

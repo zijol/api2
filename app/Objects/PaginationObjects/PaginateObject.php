@@ -6,9 +6,10 @@
  * Time: 10:24
  */
 
-namespace App\Objects;
+namespace App\Objects\PaginationObjects;
 
 use App\Enums\DataTypeEnum;
+use App\Objects\SimpleObject;
 
 /**
  * @property $page
@@ -16,7 +17,7 @@ use App\Enums\DataTypeEnum;
  * @property $total
  * @property $total_page
  */
-class PaginationObject extends SimpleObject
+class PaginateObject extends SimpleObject
 {
     protected $_objectKeys = [
         'page' => [

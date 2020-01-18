@@ -27,11 +27,4 @@ class MemberCouponTemplate extends AdminModel
 {
     protected $connection = 'admin';
     public $table = 'member_coupon_template';
-
-    // 优惠券类型
-    const TYPE_LIST = [
-        0 => '现金券', // 无门槛现金券
-        1 => '折扣券', // 折扣券
-        2 => '满减券'  // 满减券
-    ];
 }
