@@ -13,5 +13,5 @@ class UnauthorizedException extends CustomException
     public $httpCode = 401;
     public $customType = 'unauthorized';
     public $errorMessage = 'Unauthorized';
-    public $customCode = 4001;
+    public $customCode = '4001';
 }

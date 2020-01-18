@@ -13,5 +13,5 @@ class InvalidArgumentException extends CustomException
     public $httpCode = 400;
     public $customType = 'invalid_parameters';
     public $errorMessage = 'Invalid Parameters';
-    public $customCode = 4000;
+    public $customCode = '4000';
 }

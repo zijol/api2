@@ -13,5 +13,5 @@ class NotFoundException extends CustomException
     public $httpCode = 404;
     public $customType = 'not_found';
     public $errorMessage = 'Not Fount';
-    public $customCode = 4004;
+    public $customCode = '4004';
 }

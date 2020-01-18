@@ -13,5 +13,5 @@ class SystemException extends CustomException
     public $httpCode = 500;
     public $customType = 'system_error';
     public $errorMessage = 'System Error';
-    public $customCode = 5000;
+    public $customCode = '5000';
 }

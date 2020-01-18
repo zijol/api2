@@ -13,5 +13,5 @@ class BadRouteException extends CustomException
     public $httpCode = 404;
     public $customType = 'bad_route';
     public $errorMessage = 'Bad Route';
-    public $customCode = 4004;
+    public $customCode = '4004';
 }
