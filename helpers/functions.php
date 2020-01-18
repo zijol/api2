@@ -58,3 +58,16 @@ if (!function_exists('to_discount')) {
         return sprintf("%.1f", bcdiv($discount, 10, 1));
     }
 }
+
+if (!function_exists('parse_to_xml_str')) {
+    /**
+     * 解析成xml能正常识别的字符串
+     *
+     * @param string $str
+     * @return string
+     */
+    function parse_to_xml_str($str)
+    {
+        return str_ireplace(["<", ">", "&", "\"", "'"], ["&lt;", "&gt;", "&amp;", "&quot;", "&apos;"], $str);
+    }
+}
