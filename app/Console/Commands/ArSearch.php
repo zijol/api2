@@ -13,7 +13,7 @@ class ArSearch extends Command
      *
      * @var string
      */
-    protected $signature = 'ArObjectRun';
+    protected $signature = 'ArSearch';
 
     /**
      * The console command description.

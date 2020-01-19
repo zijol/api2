@@ -48,8 +48,16 @@ $factory->define(
         return [
             'type' => $faker->randomElement([0, 1, 2]),
             'url' => "http://127.0.0.1:8000",
-            'data' => "",
-            'method' => "GET",
+            'data' => json_encode([
+                'type' => $faker->randomElement([0, 1, 2]),
+                'name' => $faker->name,
+                'amount' => $faker->randomNumber(6),
+                'discount' => $faker->randomNumber(2),
+                'attain_amount' => $faker->randomNumber(6),
+                'discount_amount' => $faker->randomNumber(4),
+                'expire' => $faker->randomNumber(6),
+            ]),
+            'method' => $faker->randomElement(["GET", "POST"]),
             'time_periods' => json_encode([
                 '2020-01-18 12:00:00', '2020-01-19 12:00:00', '2020-01-20 12:00:00', '2020-01-21 12:00:00', '2020-01-22 12:00:00', '2020-01-23 12:00:00', '2020-01-24 12:00:00',
             ]),
