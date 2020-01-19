@@ -11,7 +11,7 @@ namespace App\Http\Controllers\Web;
 use App\Exceptions\AuthorizeException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ExampleRequest;
-use App\Models\Admin\MemberCouponTemplate;
+use App\Models\Admin\CouponTemplateModel;
 use App\Objects\ModelObjects\CouponTemplateListObject;
 use App\Objects\ModelObjects\CouponTemplateObject;
 use App\Objects\PaginationObjects\PaginateDataObject;
@@ -27,17 +27,17 @@ class ArController extends Controller
         $id = $request->get('id', null);
 
         if (!empty($id)) {
-            $find = MemberCouponTemplate::query()
+            $find = CouponTemplateModel::query()
                 ->where([
                     'id' => $id
                 ])->first();
             return new CouponTemplateObject($find);
         } else {
             $paginate = $this->getPaginate($request);
-            $find = MemberCouponTemplate::query()
+            $find = CouponTemplateModel::query()
                 ->forPage($paginate->page, $paginate->per_page)
                 ->get();
-            $paginate->total = MemberCouponTemplate::query()->count();
+            $paginate->total = CouponTemplateModel::query()->count();
 
             return PaginateDataObject::init($paginate, new CouponTemplateListObject($find));
         }

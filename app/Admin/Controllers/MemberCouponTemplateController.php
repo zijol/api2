@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Admin\MemberCouponTemplate;
+use App\Models\Admin\CouponTemplateModel;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -24,11 +24,11 @@ class MemberCouponTemplateController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new MemberCouponTemplate);
+        $grid = new Grid(new CouponTemplateModel);
 
         $grid->column('type', __('admin.model.Type'))
             ->display(function () {
-                return MemberCouponTemplate::TYPE_LIST[$this->type] ?? "未知";
+                return CouponTemplateModel::TYPE_LIST[$this->type] ?? "未知";
             });
         $grid->column('name', __('admin.model.Name'));
         $grid->column('amount', __('admin.model.Amount') . '(元)')
@@ -65,11 +65,11 @@ class MemberCouponTemplateController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(MemberCouponTemplate::findOrFail($id));
+        $show = new Show(CouponTemplateModel::findOrFail($id));
 
         $show->field('type', __('admin.model.Type'))
             ->as(function () {
-                return MemberCouponTemplate::TYPE_LIST[$this->type] ?? "未知";
+                return CouponTemplateModel::TYPE_LIST[$this->type] ?? "未知";
             });
         $show->field('name', __('admin.model.Name'));
         $show->field('amount', __('admin.model.Amount') . '(元)')
@@ -102,10 +102,10 @@ class MemberCouponTemplateController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new MemberCouponTemplate);
+        $form = new Form(new CouponTemplateModel);
 
         $form->select('type', __('admin.model.Type'))
-            ->options(MemberCouponTemplate::TYPE_LIST);
+            ->options(CouponTemplateModel::TYPE_LIST);
         $form->text('name', __('admin.model.Name'))->required();
         $form->number('amount', __('admin.model.Amount') . '(元)')->default(0);
         $form->number('discount', __('admin.model.Discount'))->max(10)->default(0);

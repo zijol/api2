@@ -28,7 +28,7 @@ $factory->define(
     });
 
 $factory->define(
-    App\Models\Admin\MemberCouponTemplate::class,
+    App\Models\Admin\CouponTemplateModel::class,
     function (Faker $faker) {
         return [
             'type' => $faker->randomElement([0, 1, 2]),

@@ -23,8 +23,18 @@ namespace App\Models\Admin;
  * @property string $created_at
  * @property string $updated_at
  */
-class MemberCouponTemplate extends AdminModel
+class CouponTemplateModel extends AdminModel
 {
     protected $connection = 'admin';
     public $table = 'member_coupon_template';
+
+    protected $fillable = [
+        'type',
+        'name',
+        'amount',
+        'discount',
+        'attain_amount',
+        'discount_amount',
+        'expire',
+    ];
 }
