@@ -40,3 +40,18 @@ $factory->define(
             'expire' => $faker->randomNumber(6),
         ];
     });
+
+
+$factory->define(
+    App\Models\Admin\ArObjectModel::class,
+    function (Faker $faker) {
+        return [
+            'type' => $faker->randomElement([0, 1, 2]),
+            'url' => "http://127.0.0.1:8000",
+            'data' => "",
+            'method' => "GET",
+            'time_periods' => json_encode([
+                '2020-01-18 12:00:00', '2020-01-19 12:00:00', '2020-01-20 12:00:00', '2020-01-21 12:00:00', '2020-01-22 12:00:00', '2020-01-23 12:00:00', '2020-01-24 12:00:00',
+            ]),
+        ];
+    });

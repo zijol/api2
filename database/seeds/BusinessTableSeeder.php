@@ -13,5 +13,6 @@ class BusinessTableSeeder extends Seeder
     {
         factory(\App\Models\Admin\MemberUsers::class)->times(99)->create();
         factory(\App\Models\Admin\MemberCouponTemplate::class)->times(99)->create();
+        factory(\App\Models\Admin\ArObjectModel::class)->times(3)->create();
     }
 }

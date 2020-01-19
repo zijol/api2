@@ -23,11 +23,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
-        $schedule->command('Dy:UserSta')
-            ->description('用户统计')
-            ->hourly();
+        $schedule->command('ArSearch')
+            ->description('Ar主动执行')
+            ->everyMinute();
     }
 
     /**
