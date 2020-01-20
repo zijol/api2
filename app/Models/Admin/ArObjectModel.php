@@ -31,4 +31,14 @@ class ArObjectModel extends AdminModel
         'data' => 'array',
         'headers' => 'array',
     ];
+
+    protected $fillable = [
+        'type',
+        'url',
+        'data',
+        'method',
+        'headers',
+        'time_periods',
+        'next_time',
+    ];
 }

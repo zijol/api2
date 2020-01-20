@@ -14,3 +14,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'Web\IndexController@index');
 Route::post('/', 'Web\IndexController@post');
+Route::post('/ar', 'Web\ArController@post');

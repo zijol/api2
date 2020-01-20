@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Rules\Float2Bit;
 use App\Rules\StrMaxLen;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ArRequest extends FormRequest
 {
@@ -26,7 +27,11 @@ class ArRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'filled',
+            'url' => 'required|string',
+            'method' => ['required', Rule::in(['POST', 'GET', 'DELETE', 'PUT'])],
+            'headers' => 'filled|array',
+            'data' => 'filled|array',
+            'periods' => 'required|array|max:10',
         ];
     }
 }

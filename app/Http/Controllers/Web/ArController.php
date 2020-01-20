@@ -8,38 +8,35 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Exceptions\AuthorizeException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ExampleRequest;
-use App\Models\Admin\CouponTemplateModel;
-use App\Objects\ModelObjects\CouponTemplateListObject;
-use App\Objects\ModelObjects\CouponTemplateObject;
-use App\Objects\PaginationObjects\PaginateDataObject;
+use App\Http\Requests\ArRequest;
+use App\Models\Admin\ArObjectModel;
 
 class ArController extends Controller
 {
     /**
-     * @param ExampleRequest $request
-     * @return CouponTemplateListObject | CouponTemplateObject | PaginateDataObject
+     * @param ArRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index(ExampleRequest $request)
+    public function post(ArRequest $request)
     {
-        $id = $request->get('id', null);
+        $data = $request->validated();
 
-        if (!empty($id)) {
-            $find = CouponTemplateModel::query()
-                ->where([
-                    'id' => $id
-                ])->first();
-            return new CouponTemplateObject($find);
-        } else {
-            $paginate = $this->getPaginate($request);
-            $find = CouponTemplateModel::query()
-                ->forPage($paginate->page, $paginate->per_page)
-                ->get();
-            $paginate->total = CouponTemplateModel::query()->count();
+        $data['data'] = empty($data['data']) ? [] : $data['data'];
+        $data['data'] = json_encode($data['data']);
 
-            return PaginateDataObject::init($paginate, new CouponTemplateListObject($find));
+        $data['headers'] = empty($data['headers']) ? [] : $data['headers'];
+        $data['headers'] = json_encode($data['headers']);
+
+        $time = time();
+        foreach ($data['periods'] as $t) {
+            $periods[] = date('Y-m-d H:i:s', $time + $t);
         }
+        $data['periods'] = empty($periods) ? [date('Y-m-d H:i:s', $time)] : $periods;
+        $data['time_periods'] = json_encode($data['periods']);
+        $data['next_time'] = $data['periods'][0];
+        (new ArObjectModel($data))->save();
+
+        return $this->JsonResponse(true);
     }
 }
