@@ -9,16 +9,16 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ArRequest;
+use App\Http\Requests\Modify\PostArRequest;
 use App\Models\Admin\ArObjectModel;
 
 class ArController extends Controller
 {
     /**
-     * @param ArRequest $request
+     * @param PostArRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function post(ArRequest $request)
+    public function post(PostArRequest $request)
     {
         $data = $request->validated();
 
@@ -38,5 +38,10 @@ class ArController extends Controller
         (new ArObjectModel($data))->save();
 
         return $this->JsonResponse(true);
+    }
+
+    public function list()
+    {
+
     }
 }

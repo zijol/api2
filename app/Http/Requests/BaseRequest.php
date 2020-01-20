@@ -2,12 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\Float2Bit;
-use App\Rules\StrMaxLen;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class ArRequest extends FormRequest
+class BaseRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,12 +23,19 @@ class ArRequest extends FormRequest
      */
     public function rules()
     {
+        return [];
+    }
+
+    /**
+     * 分页通用的规则
+     *
+     * @return array
+     */
+    protected function paginateRules()
+    {
         return [
-            'url' => 'required|string',
-            'method' => ['required', Rule::in(['POST', 'GET', 'DELETE', 'PUT'])],
-            'headers' => 'filled|array',
-            'data' => 'filled|array',
-            'periods' => 'required|array|max:10',
+            'page' => 'filled|integer|between:1,10000',
+            'per_page' => 'filled|integer|between:1,100',
         ];
     }
 }

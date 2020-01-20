@@ -12,6 +12,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', 'Web\IndexController@index');
-Route::post('/', 'Web\IndexController@post');
+Route::get('/', 'Web\CouponTemplateController@list');
+Route::post('/', 'Web\CouponTemplateController@post');
+
 Route::post('/ar', 'Web\ArController@post');

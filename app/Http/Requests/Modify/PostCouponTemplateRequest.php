@@ -1,24 +1,14 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Modify;
 
 use App\Enums\CouponTemplateTypeEnum;
+use App\Http\Requests\BaseRequest;
 use App\Rules\Price;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class PostCouponTemplateRequest extends FormRequest
+class PostCouponTemplateRequest extends BaseRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
-
     /**
      * @return array
      * @throws \ReflectionException
