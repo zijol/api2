@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Make;
 
 use Illuminate\Console\GeneratorCommand;
 
@@ -23,7 +23,7 @@ class ModelObjectMakeCommand extends GeneratorCommand
     /**
      * @var string
      */
-    protected $type = 'Objects';
+    protected $type = 'ModelObjects';
 
     /**
      * @var string

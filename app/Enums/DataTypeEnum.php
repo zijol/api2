@@ -8,7 +8,10 @@
 
 namespace App\Enums;
 
-
+/**
+ * Class DataTypeEnum
+ * @package App\Enums
+ */
 class DataTypeEnum extends BaseEnum
 {
     CONST STRING = 'String';

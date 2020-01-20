@@ -1,0 +1,12 @@
+<?php
+namespace DummyNamespace;
+
+/**
+ * Class DummyClass
+ * @package DummyNamespace
+ */
+class DummyClass extends BaseEnum
+{
+    // Add a const to be one item of enums
+    CONST ENUM_1 = 'ENUM_1';
+}
