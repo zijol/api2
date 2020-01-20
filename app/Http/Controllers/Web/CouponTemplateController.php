@@ -14,23 +14,21 @@ use App\Http\Requests\QueryList\ListCouponTemplateRequest;
 use App\Http\Requests\Modify\PostCouponTemplateRequest;
 use App\Models\Admin\CouponTemplateModel;
 use App\Objects\ModelObjects\CouponTemplateListObject;
-use App\Objects\ModelObjects\CouponTemplateObject;
 use App\Objects\PaginationObjects\PaginateDataObject;
 
 class CouponTemplateController extends Controller
 {
     /**
      * @param ListCouponTemplateRequest $request
-     * @return CouponTemplateListObject | CouponTemplateObject | PaginateDataObject
+     * @return \Illuminate\Http\JsonResponse
      */
     public function list(ListCouponTemplateRequest $request)
     {
         $paginate = $this->getPaginate($request);
-        $find = CouponTemplateModel::query()
-            ->forPage($paginate->page, $paginate->per_page)
-            ->get();
+        $find = CouponTemplateModel::query()->forPage($paginate->page, $paginate->per_page)->get();
         $paginate->total = CouponTemplateModel::query()->count();
-        return PaginateDataObject::init($paginate, new CouponTemplateListObject($find));
+        $paginateDataObject = PaginateDataObject::init($paginate, new CouponTemplateListObject($find));
+        return $this->JsonResponse($paginateDataObject);
     }
 
     /**
