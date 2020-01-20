@@ -43,8 +43,6 @@ class ArSearch extends Command
                 ->where('status', '!=', 2)
                 ->get();
 
-            $this->line(count($arObjects));
-
             foreach ($arObjects as $object) {
                 ArJob::dispatch([
                     'method' => $object->method,

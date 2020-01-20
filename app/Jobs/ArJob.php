@@ -27,17 +27,14 @@ class ArJob implements ShouldQueue
     }
 
     /**
-     * Execute the job.
-     *
-     * @return void
+     * @throws \ReflectionException
      */
     public function handle()
     {
         $headers = is_array($this->arEvent['headers']) ? $this->arEvent['headers'] : [];
+        $httpClient = new HttpClient(['headers' => $headers]);
+
         $data = is_array($this->arEvent['data']) ? $this->arEvent['data'] : [];
-
-        $httpClient = new HttpClient('', $headers, 10);
-
         switch (strtoupper($this->arEvent['method'])) {
             case "GET":
                 $httpClient->get($this->arEvent['url'], $data);

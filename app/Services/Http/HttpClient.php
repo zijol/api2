@@ -15,30 +15,96 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\RequestOptions;
 
 class HttpClient
 {
-    private $base_uri = '';
-    private $timeout = 5.0;
-    private $headers = [];
-    private $http_errors = true;
+    // json | form_params | body | multipart
+    const FORMAT_JSON = 'json';
+    const FORMAT_FORM = 'form_params';
+    const FORMAT_BODY = 'body';
+    const FORMAT_MULTIPART = 'multipart';
 
-    public function __construct($base_uri, $headers = [], $timeout = 5.0, $http_errors = true)
+    // 支持的数据格式
+    private static $formats = [
+        self::FORMAT_FORM,
+        self::FORMAT_FORM,
+        self::FORMAT_JSON,
+        self::FORMAT_MULTIPART
+    ];
+
+    // 默认请求选项参数
+    private $requestOptions = [
+        'base_uri' => '',
+        'timeout' => 5.0,
+        'connect_timeout' => 5.0,
+        'headers' => [],
+        'http_errors' => true,
+    ];
+
+    // 可以设置的请求选项枚举
+    private $requestOptionKeys = [];
+
+    /**
+     * HttpClient constructor.
+     * @param array $requestOptions
+     * @throws \ReflectionException
+     */
+    public function __construct($requestOptions = [])
     {
-        $this->base_uri = $base_uri;
-        $this->headers = $headers;
-        $this->timeout = $timeout;
-        $this->http_errors = $http_errors;
+        $this->setOptionKeys();
+        foreach ($requestOptions as $key => $value) {
+            $this->setOptions($key, $value);
+        }
     }
 
-    protected function getClient()
+    /**
+     * 设置 请求设置的枚举
+     *
+     * @return array
+     * @throws \ReflectionException
+     */
+    private function setOptionKeys()
     {
-        return new Client([
-            'base_uri' => $this->base_uri,
-            'timeout' => $this->timeout,
-            'headers' => $this->headers,
-            'http_errors' => $this->http_errors
-        ]);
+        $oClass = new \ReflectionClass(RequestOptions::class);
+        $cArr = $oClass->getConstants();
+        $this->requestOptionKeys = array_unique(array_values($cArr));
+        return $this->requestOptionKeys;
+    }
+
+    /**
+     * 获取可以设置的选项枚举
+     *
+     * @return array
+     */
+    public function getOptionKeys()
+    {
+        return $this->requestOptionKeys;
+    }
+
+    /**
+     * 设置请求选项
+     *
+     * @param $optionsKey
+     * @param $value
+     * @return $this
+     */
+    public function setOptions($optionsKey, $value)
+    {
+        if (in_array($optionsKey, $this->requestOptionKeys)) {
+            $this->requestOptions[$optionsKey] = $value;
+        }
+        return $this;
+    }
+
+    /**
+     * 获取设置的请求选项
+     *
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->requestOptions;
     }
 
     /**
@@ -47,7 +113,7 @@ class HttpClient
      * @param $format
      * @return array
      */
-    public function post($uri, $params, $format = 'form_params')
+    public function post($uri, $params, $format = self::FORMAT_JSON)
     {
         return $this->send('POST', $uri, $params, $format);
     }
@@ -68,7 +134,7 @@ class HttpClient
      * @param $format
      * @return array
      */
-    public function put($uri, $params, $format = 'form_params')
+    public function put($uri, $params, $format = self::FORMAT_JSON)
     {
         return $this->send('PUT', $uri, $params, $format);
     }
@@ -91,19 +157,18 @@ class HttpClient
      * @param string $format
      * @return array
      */
-    public function send($method, $uri, $params, $format = 'form_params')
+    public function send($method, $uri, $params, $format = self::FORMAT_JSON)
     {
-        $client = $this->getClient();
-        $requestOptions = [];
+        $client = new Client($this->requestOptions);
 
         // 如果是DELETE | GET
         if (in_array(strtoupper($method), ['GET', 'DELETE'])) {
             $requestOptions['query'] = $params;
             $realMethod = strtoupper($method);
 
-            // 如果是DELETE | GET
+            // 如果是 POST | PUT
         } elseif (in_array(strtoupper($method), ['POST', 'PUT'])) {
-            if (in_array($format, ['body', 'json', 'form_params', 'multipart'])) {
+            if (in_array($format, self::$formats)) {
                 $requestOptions[$format] = $params;
             } else {
                 $requestOptions['form_params'] = $params;
