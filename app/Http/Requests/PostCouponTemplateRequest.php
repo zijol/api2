@@ -32,21 +32,35 @@ class PostCouponTemplateRequest extends FormRequest
                 Rule::in(CouponTemplateTypeEnum::enums())
             ],
             'name' => 'required|string|between:1,32',
-            'amount' => [
-                'filled', new Price(),
-            ],
-            'discount' => [
-                'filled', Rule::in(range(1, 100)),
-            ],
-            'attain_amount' => [
-                'filled', new Price(),
-            ],
-            'discount_amount' => [
-                'filled', new Price(),
-            ],
-            'expire' => [
-                'filled', 'integer'
-            ],
+            'amount' => $this->amountRules(),
+            'discount' => $this->discountRules(),
+            'attain_amount' => $this->attainDiscountAmountRules(),
+            'discount_amount' => $this->attainDiscountAmountRules(),
+            'expire' => 'required|integer',
         ];
+    }
+
+    protected function amountRules()
+    {
+        $data = $this->validationData();
+        return $data['type'] == 0
+            ? ['required', new Price(),]
+            : ['filled', new Price(),];
+    }
+
+    protected function discountRules()
+    {
+        $data = $this->validationData();
+        return $data['type'] == 1
+            ? ['required', new Price(),]
+            : ['filled', new Price(),];
+    }
+
+    protected function attainDiscountAmountRules()
+    {
+        $data = $this->validationData();
+        return $data['type'] == 2
+            ? ['required', new Price(),]
+            : ['filled', new Price(),];
     }
 }
