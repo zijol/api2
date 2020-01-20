@@ -1,14 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zjiol
- * Date: 2019-05-28
- * Time: 23:05
- */
 
 namespace App\Services\Cache;
 
+/**
+ * Class ExampleCache
+ * @package App\Services\Cache
+ */
 class ExampleCache extends BaseCache
 {
+    /**
+     * @var string 缓存键名称
+     */
     const CACHE_NAME = 'example';
 }
