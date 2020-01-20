@@ -1,0 +1,23 @@
+<?php
+namespace DummyNamespace;
+
+use App\Enums\DataTypeEnum;
+use App\Objects\SimpleObject;
+
+/**
+ * Class DummyClass
+ * 简单对象
+ * @package DummyNamespace
+ */
+class DummyClass extends SimpleObject
+{
+    /**
+     * @var array 对象的属性&类型定义
+     */
+    protected $_objectKeys = [
+        'id' => [
+            DataTypeEnum::INTEGER
+        ],
+        //
+    ];
+}

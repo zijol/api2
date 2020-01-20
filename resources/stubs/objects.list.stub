@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ping123
- * Date: 2020/1/17
- * Time: 14:38
- */
 
-namespace App\Objects\ModelObjects;
+namespace DummyNamespace;
 
 use App\Objects\ListObject;
 
@@ -15,7 +9,7 @@ use App\Objects\ListObject;
  * ListObject 对象
  * @package App\Objects\ModelObjects
  */
-class ArObjectListObject extends ListObject
+class DummyClass extends ListObject
 {
     /**
      * @var string 指定Item的类型类 eg. AnyItemObject::class

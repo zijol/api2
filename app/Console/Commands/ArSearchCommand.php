@@ -6,7 +6,7 @@ use App\Jobs\ArJob;
 use App\Models\Admin\ArObjectModel;
 use Illuminate\Console\Command;
 
-class ArSearch extends Command
+class ArSearchCommand extends Command
 {
     /**
      * The name and signature of the console command.
