@@ -10,7 +10,10 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Modify\PostArRequest;
+use App\Http\Requests\QueryList\ListArRequest;
 use App\Models\Admin\ArObjectModel;
+use App\Objects\ModelObjects\ArObjectListObject;
+use App\Objects\PaginationObjects\PaginateDataObject;
 
 class ArController extends Controller
 {
@@ -40,8 +43,17 @@ class ArController extends Controller
         return $this->JsonResponse(true);
     }
 
-    public function list()
+    /**
+     * @param ListArRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function list(ListArRequest $request)
     {
-
+        $paginate = $this->getPaginate($request);
+        $query = ArObjectModel::query();
+        $list = $query->forPage($paginate->page, $paginate->per_page)->get();
+        $paginate->total = $query->count();
+        $paginateDataObject = PaginateDataObject::init($paginate, new ArObjectListObject($list));
+        return $this->JsonResponse($paginateDataObject);
     }
 }

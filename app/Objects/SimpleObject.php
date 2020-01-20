@@ -62,7 +62,12 @@ class SimpleObject extends BaseObject
                     $this->_array[$key] = floatval($value);
                     break;
                 case DataTypeEnum::ARRAY:
-                    $this->_array[$key] = is_array($value) ? $value : [$value];
+                    if (is_array($value)) {
+                        $this->_array[$key] = $value;
+                    } else {
+                        $temp = json_decode($value, true);
+                        $this->_array[$key] = in_array($temp, [true, false, null], true) ? [$value] : $temp;
+                    }
                     break;
                 case DataTypeEnum::OBJECT:
                     $this->_array[$key] = is_object($value) ? $value : null;
