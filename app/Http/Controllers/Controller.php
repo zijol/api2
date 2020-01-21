@@ -25,7 +25,7 @@ class Controller extends BaseController
     public function JsonResponse($data, $status = 200, $headers = [])
     {
         $data = [
-            'code' => 0,
+            'code' => '0000',
             'message' => 'succeed',
             'data' => $data,
         ];
