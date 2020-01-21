@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Query;
 
-use App\Rules\ID;
 use Illuminate\Validation\Rule;
 use App\Http\Requests\BaseRequest;
 
@@ -21,7 +20,7 @@ class QueryDummyNameOriginalRequest extends BaseRequest
     {
         return [
             'id' => [
-                'required', 'integer', new ID('example')
+                'required', 'string'
             ],
             //
         ];

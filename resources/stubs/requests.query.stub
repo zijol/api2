@@ -19,6 +19,9 @@ class DummyClass extends BaseRequest
     public function rules()
     {
         return [
+            'id' => [
+                'required', 'string'
+            ],
             //
         ];
     }
