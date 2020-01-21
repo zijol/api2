@@ -57,6 +57,8 @@ $factory->define(
                 'discount_amount' => $faker->randomNumber(4),
                 'expire' => $faker->randomNumber(6),
             ]),
+            'headers' => json_encode([]),
+            'next_time' => '2020-01-18 12:00:00',
             'method' => $faker->randomElement(["GET", "POST"]),
             'time_periods' => json_encode([
                 '2020-01-18 12:00:00', '2020-01-19 12:00:00', '2020-01-20 12:00:00', '2020-01-21 12:00:00', '2020-01-22 12:00:00', '2020-01-23 12:00:00', '2020-01-24 12:00:00',
