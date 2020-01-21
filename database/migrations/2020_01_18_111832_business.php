@@ -15,7 +15,7 @@ class Business extends Migration
     {
         $connection = config('admin.database.connection') ?: config('database.default');
         Schema::connection($connection)->create(
-            'member_users',
+            'member_user',
             function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('admin_id', 32);
@@ -28,6 +28,7 @@ class Business extends Migration
                 $table->timestampsTz();
                 $table->softDeletesTz();
             });
+
 
         Schema::connection($connection)->create(
             'member_coupon_template',
@@ -45,16 +46,16 @@ class Business extends Migration
             });
 
         Schema::connection($connection)->create(
-            'ar_object',
+            'ar',
             function (Blueprint $table) {
                 $table->increments('id');
                 $table->tinyInteger('type')->default(0)->comment("0.无类型");
                 $table->string('url', 255)->default('')->comment('AR的请求地址');
                 $table->string('method', 16)->default('GET')->comment('GET POST DELETE PUT');
-                $table->string('headers', 1024)->default('')->comment('请求头');
-                $table->string('data', 1024)->default('')->comment('请求数据');
+                $table->string('headers', 1024)->default('')->comment('请求头Json');
+                $table->string('data', 1024)->default('')->comment('请求数据Json');
                 $table->timestampTz('next_time')->default(null)->comment('下次的执行时间');
-                $table->string('time_periods', 255)->default(0)->comment('AR时间阶梯');
+                $table->string('time_periods', 255)->default(0)->comment('AR时间阶梯Json');
                 $table->tinyInteger('status')->default(0)->comment('0.未发送 1.发送中 2.发送完成');
                 $table->timestampsTz();
             });
@@ -68,7 +69,7 @@ class Business extends Migration
     public function down()
     {
         $connection = config('admin.database.connection') ?: config('database.default');
-        Schema::connection($connection)->dropIfExists('member_users');
+        Schema::connection($connection)->dropIfExists('member_user');
         Schema::connection($connection)->dropIfExists('member_coupon_template');
         Schema::connection($connection)->dropIfExists('ar_object');
     }

@@ -16,9 +16,6 @@ class DummyClass extends SimpleObject
      * @var array 对象的属性&类型定义
      */
     protected $_objectKeys = [
-        'id' => [
-            DataTypeEnum::INTEGER
-        ],
-        //
+        DummyObjectKeys
     ];
 }

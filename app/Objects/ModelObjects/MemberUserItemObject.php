@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Objects\ModelObjects;
 
 use App\Enums\DataTypeEnum;
@@ -15,26 +14,16 @@ class MemberUserItemObject extends MemberUserObject
      * @var array 对象的属性&类型定义
      */
     protected $_objectKeys = [
-        'admin_id' => [
-            DataTypeEnum::INTEGER
-        ],
-        'no' => [
-            DataTypeEnum::INTEGER
-        ],
-        'name' => [
-            DataTypeEnum::STRING
-        ],
-        'phone' => [
-            DataTypeEnum::STRING
-        ],
-        'level' => [
-            DataTypeEnum::INTEGER
-        ],
-        'balance' => [
-            DataTypeEnum::INTEGER
-        ],
-        'points' => [
-            DataTypeEnum::INTEGER
-        ],
+        'id' => [DataTypeEnum::STRING, ],
+		'admin_id' => [DataTypeEnum::STRING, ],
+		'no' => [DataTypeEnum::STRING, ],
+		'name' => [DataTypeEnum::STRING, ],
+		'phone' => [DataTypeEnum::STRING, ],
+		'level' => [DataTypeEnum::STRING, ],
+		'balance' => [DataTypeEnum::STRING, ],
+		'points' => [DataTypeEnum::STRING, ],
+		'created_at' => [DataTypeEnum::STRING, ],
+		'updated_at' => [DataTypeEnum::STRING, ],
+		'deleted_at' => [DataTypeEnum::STRING, ],
     ];
 }

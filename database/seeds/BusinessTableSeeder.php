@@ -11,7 +11,7 @@ class BusinessTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\Admin\MemberUsers::class)->times(99)->create();
+        factory(\App\Models\Admin\MemberUserModel::class)->times(99)->create();
         factory(\App\Models\Admin\CouponTemplateModel::class)->times(99)->create();
         factory(\App\Models\Admin\ArModel::class)->times(10)->create();
     }

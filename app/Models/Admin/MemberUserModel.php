@@ -16,7 +16,7 @@ class MemberUserModel extends AdminModel
     /**
      * @var string 表名
      */
-    public $table = 'member_users';
+    public $table = 'member_user';
 
     /**
      * @var array 字段类型映射
@@ -29,20 +29,34 @@ class MemberUserModel extends AdminModel
      * @var array 可写字段
      */
     protected $fillable = [
-        'admin_id',
-        'no',
-        'name',
-        'phone',
-        'level',
-        'balance',
-        'points',
+        'id',
+		'admin_id',
+		'no',
+		'name',
+		'phone',
+		'level',
+		'balance',
+		'points',
+		'created_at',
+		'updated_at',
+		'deleted_at',
     ];
 
     /**
      * @var array 属性 <-> 字段 [ 'object_key' => 'db_key' ]
      */
     public static $KeyMap = [
-        //
+        'id' => 'id',
+		'admin_id' => 'admin_id',
+		'no' => 'no',
+		'name' => 'name',
+		'phone' => 'phone',
+		'level' => 'level',
+		'balance' => 'balance',
+		'points' => 'points',
+		'created_at' => 'created_at',
+		'updated_at' => 'updated_at',
+		'deleted_at' => 'deleted_at',
     ];
 
     /**

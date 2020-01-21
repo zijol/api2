@@ -14,7 +14,7 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(
-    App\Models\Admin\MemberUsers::class,
+    App\Models\Admin\MemberUserModel::class,
     function (Faker $faker) {
         return [
             'admin_id' => rand(10000, 99999),

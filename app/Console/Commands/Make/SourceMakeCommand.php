@@ -3,6 +3,7 @@
 namespace App\Console\Commands\Make;
 
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Facades\Schema;
 
 class SourceMakeCommand extends GeneratorCommand
 {
@@ -173,6 +174,16 @@ class SourceMakeCommand extends GeneratorCommand
             'DummyNameOriginal' => $this->getOriginalName(),
         ];
 
+        if ($this->sourceType == 'model') {
+            $replace['DummyTableName'] = $this->getTableName();
+            $replace['DummyModelFillAble'] = $this->getFillAble();
+            $replace['DummyModelKeyMap'] = $this->getKeyMap();
+        }
+
+        if ($this->sourceType == 'object_item' || $this->sourceType == 'object_simple') {
+            $replace['DummyObjectKeys'] = $this->getObjectKeys();
+        }
+
         return str_replace(
             array_keys($replace), array_values($replace), parent::buildClass($name)
         );
@@ -184,5 +195,55 @@ class SourceMakeCommand extends GeneratorCommand
     protected function getOriginalName()
     {
         return trim($this->argument('name'));
+    }
+
+    /**
+     * @return string
+     */
+    protected function getTableName()
+    {
+        return uncamelize(trim($this->argument('name')));
+    }
+
+    /**
+     * @return string
+     */
+    protected function getFillAble()
+    {
+        $tableName = $this->getTableName();
+        $columns = Schema::connection('admin')->getColumnListing($tableName);
+        $fillAbleStr = "";
+        foreach ($columns as $column) {
+            $fillAbleStr .= "'$column'," . PHP_EOL . "\t\t";
+        }
+        return trim($fillAbleStr);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getKeyMap()
+    {
+        $tableName = $this->getTableName();
+        $columns = Schema::connection('admin')->getColumnListing($tableName);
+        $keyMapStr = "";
+        foreach ($columns as $column) {
+            $keyMapStr .= "'$column' => '$column'," . PHP_EOL . "\t\t";
+        }
+        return trim($keyMapStr);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getObjectKeys()
+    {
+        $tableName = $this->getTableName();
+        $columns = Schema::connection('admin')->getColumnListing($tableName);
+        $objectKeyStr = "";
+        foreach ($columns as $column) {
+            $objectKeyStr .= "'$column' => [DataTypeEnum::STRING, ]," . PHP_EOL . "\t\t";
+        }
+        return trim($objectKeyStr);
     }
 }

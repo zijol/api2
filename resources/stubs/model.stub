@@ -16,7 +16,7 @@ class DummyClass extends AdminModel
     /**
      * @var string 表名
      */
-    public $table = 'DummyNameOriginal';
+    public $table = 'DummyTableName';
 
     /**
      * @var array 字段类型映射
@@ -29,14 +29,14 @@ class DummyClass extends AdminModel
      * @var array 可写字段
      */
     protected $fillable = [
-        //
+        DummyModelFillAble
     ];
 
     /**
      * @var array 属性 <-> 字段 [ 'object_key' => 'db_key' ]
      */
     public static $KeyMap = [
-        //
+        DummyModelKeyMap
     ];
 
     /**
