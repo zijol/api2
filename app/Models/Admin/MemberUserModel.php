@@ -1,12 +1,12 @@
 <?php
 
-namespace DummyNamespace;
+namespace App\Models\Admin;
 
 /**
- * Class DummyClass
- * @package DummyNamespace
+ * Class MemberUserModel
+ * @package App\Models\Admin
  */
-class DummyClass extends AdminModel
+class MemberUserModel extends AdminModel
 {
     /**
      * @var string 连接名
@@ -16,7 +16,7 @@ class DummyClass extends AdminModel
     /**
      * @var string 表名
      */
-    public $table = 'DummyNameOriginal';
+    public $table = 'member_users';
 
     /**
      * @var array 字段类型映射
@@ -29,7 +29,13 @@ class DummyClass extends AdminModel
      * @var array 可写字段
      */
     protected $fillable = [
-        //
+        'admin_id',
+        'no',
+        'name',
+        'phone',
+        'level',
+        'balance',
+        'points',
     ];
 
     /**

@@ -15,17 +15,17 @@ use App\Objects\ListObject;
 class PaginateDataObject extends SimpleObject
 {
     /**
-     * @param PaginateObject $paginationObject
+     * @param PaginateObject $paginateObject
      * @param ListObject $listObject
      * @return PaginateDataObject
      */
-    public static function init($paginationObject, $listObject)
+    public static function initWithPaginate($paginateObject, $listObject)
     {
-        return static::instance([
+        return new static([
             'list' => $listObject,
-            'page' => $paginationObject->page,
-            'per_page' => $paginationObject->per_page,
-            'total' => $paginationObject->total,
+            'page' => $paginateObject->page,
+            'per_page' => $paginateObject->per_page,
+            'total' => $paginateObject->total,
         ]);
     }
 

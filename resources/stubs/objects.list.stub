@@ -12,7 +12,7 @@ use App\Objects\ListObject;
 class DummyClass extends ListObject
 {
     /**
-     * @var string 指定Item的类型类 eg. AnyItemObject::class
+     * @var string 指定Item的类型类 eg. DummyNameOriginalItemObject::class
      */
-    protected $itemClass = ArObjectItemObject::class;
+    protected $itemClass = DummyNameOriginalItemObject::class;
 }

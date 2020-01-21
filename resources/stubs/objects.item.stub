@@ -2,14 +2,13 @@
 namespace DummyNamespace;
 
 use App\Enums\DataTypeEnum;
-use App\Objects\SimpleObject;
 
 /**
  * Class DummyClass
  * 组成 ListObject 的元素对象
  * @package DummyNamespace
  */
-class DummyClass extends SimpleObject
+class DummyClass extends DummyNameOriginalObject
 {
     /**
      * @var array 对象的属性&类型定义
