@@ -25,8 +25,8 @@ class CouponTemplateController extends Controller
     public function list(ListCouponTemplateRequest $request)
     {
         $paginate = $this->getPaginate($request);
-        $find = CouponTemplateModel::query()->forPage($paginate->page, $paginate->per_page)->get();
         $paginate->total = CouponTemplateModel::query()->count();
+        $find = CouponTemplateModel::query()->forPage($paginate->page, $paginate->per_page)->get();
         $paginateDataObject = PaginateDataObject::initWithPaginate($paginate, new CouponTemplateListObject($find));
         return $this->JsonResponse($paginateDataObject);
     }

@@ -19,7 +19,7 @@ class PutMemberUserRequest extends BaseRequest
     public function rules()
     {
         return [
-            //
+            'phone' => 'filled|string|between:1,32'
         ];
     }
 }

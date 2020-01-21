@@ -18,5 +18,7 @@ Route::post('/', 'Web\CouponTemplateController@post');
 Route::get('/ar', 'Web\ArController@list');
 Route::post('/ar', 'Web\ArController@post');
 
-Route::get('/user', 'Web\MemberUserController@get');
+Route::get('/user/{user}', 'Web\MemberUserController@get');
+Route::delete('/user/{user}', 'Web\MemberUserController@delete');
+Route::put('/user/{user}', 'Web\MemberUserController@put');
 Route::get('/user_list', 'Web\MemberUserController@list');

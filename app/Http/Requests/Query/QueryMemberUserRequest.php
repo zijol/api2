@@ -19,7 +19,6 @@ class QueryMemberUserRequest extends BaseRequest
     public function rules()
     {
         return [
-            'id' => 'required|integer'
         ];
     }
 }

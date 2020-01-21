@@ -110,7 +110,7 @@ class BaseModel extends Model
      * @param array $attributes
      * @return $this
      */
-    public function setMultipleAttributes(array $attributes)
+    public function setMa(array $attributes)
     {
         foreach ($attributes as $attr => $value) {
             $this->{$attr} = $value;

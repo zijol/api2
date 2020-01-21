@@ -51,8 +51,8 @@ class ArController extends Controller
     {
         $paginate = $this->getPaginate($request);
         $query = ArObjectModel::query();
-        $list = $query->forPage($paginate->page, $paginate->per_page)->get();
         $paginate->total = $query->count();
+        $list = $query->forPage($paginate->page, $paginate->per_page)->get();
         $paginateDataObject = PaginateDataObject::initWithPaginate($paginate, new ArObjectListObject($list));
         return $this->JsonResponse($paginateDataObject);
     }

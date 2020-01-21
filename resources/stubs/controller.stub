@@ -3,11 +3,16 @@
 namespace DummyNamespace;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin\DummyNameOriginalModel;
 use App\Http\Requests\Modify\PostDummyNameOriginalRequest;
 use App\Http\Requests\Modify\PutDummyNameOriginalRequest;
 use App\Http\Requests\Modify\DeleteDummyNameOriginalRequest;
 use App\Http\Requests\QueryList\ListDummyNameOriginalRequest;
 use App\Http\Requests\Query\QueryDummyNameOriginalRequest;
+use App\Objects\ModelObjects\DummyNameOriginalListObject;
+use App\Objects\ModelObjects\DummyNameOriginalObject;
+use App\Objects\PaginationObjects\PaginateDataObject;
+use App\Exceptions\NotFoundException;
 
 /**
  * Class DummyClass
@@ -17,13 +22,18 @@ class DummyClass extends Controller
 {
     /**
      * @param QueryDummyNameOriginalRequest $request
+     * @param string $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws NotFoundException
      */
-    public function get(QueryDummyNameOriginalRequest $request)
+    public function get(QueryDummyNameOriginalRequest $request, $id)
     {
         $data = $request->validated();
-        //
-        return $this->JsonResponse($data);
+        $findMode = DummyNameOriginalModel::query()->find($id);
+        if (empty($findMode)) {
+            throw new NotFoundException('未找到对象 ' . $id);
+        }
+        return $this->JsonResponse(new DummyNameOriginalObject($findMode));
     }
 
     /**
@@ -33,30 +43,43 @@ class DummyClass extends Controller
     public function post(PostDummyNameOriginalRequest $request)
     {
         $data = $request->validated();
-        //
-        return $this->JsonResponse($data);
+        $newModel = (new DummyNameOriginalModel($data));
+        $newModel->save();
+        return $this->JsonResponse(new DummyNameOriginalObject($newModel));
     }
 
     /**
      * @param PutDummyNameOriginalRequest $request
+     * @param string $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws NotFoundException
      */
-    public function put(PutDummyNameOriginalRequest $request)
+    public function put(PutDummyNameOriginalRequest $request, $id)
     {
         $data = $request->validated();
-        //
-        return $this->JsonResponse($data);
+        $findMode = DummyNameOriginalModel::query()->find($id);
+        if (empty($findMode)) {
+            throw new NotFoundException('未找到对象 ' . $id);
+        }
+        $findMode->setMa($data)->save();
+        return $this->JsonResponse(new DummyNameOriginalObject($findMode));
     }
 
     /**
      * @param DeleteDummyNameOriginalRequest $request
+     * @param string $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws NotFoundException
      */
-    public function delete(DeleteDummyNameOriginalRequest $request)
+    public function delete(DeleteDummyNameOriginalRequest $request, $id)
     {
         $data = $request->validated();
-        //
-        return $this->JsonResponse($data);
+        $findMode = DummyNameOriginalModel::query()->find($id);
+        if (empty($findMode)) {
+            throw new NotFoundException('未找到对象 ' . $id);
+        }
+        $findMode->delete();
+        return $this->JsonResponse(true);
     }
 
     /**
@@ -67,8 +90,11 @@ class DummyClass extends Controller
     {
         $data = $request->validated();
         $paginate = $this->getPaginate($request);
-        //
-        return $this->JsonResponse([$data, $paginate]);
+        $query = DummyNameOriginalModel::query();
+        $paginate->total = $query->count();
+        $list = $query->forPage($paginate->page, $paginate->per_page)->get();
+        $paginateDataObject = PaginateDataObject::initWithPaginate($paginate, new DummyNameOriginalListObject($list));
+        return $this->JsonResponse($paginateDataObject);
     }
 }
 
