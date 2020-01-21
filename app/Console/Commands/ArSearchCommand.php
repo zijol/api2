@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Jobs\ArJob;
-use App\Models\Admin\ArObjectModel;
+use App\Models\Admin\ArModel;
 use Illuminate\Console\Command;
 
 class ArSearchCommand extends Command
@@ -38,7 +38,7 @@ class ArSearchCommand extends Command
     public function handle()
     {
         while (1) {
-            $arObjects = ArObjectModel::query()
+            $arObjects = ArModel::query()
                 ->where('next_time', '<=', date('Y-m-d H:i:s'))
                 ->where('status', '!=', 2)
                 ->get();

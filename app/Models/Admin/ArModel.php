@@ -21,10 +21,10 @@ namespace App\Models\Admin;
  * @property int $time_periods
  * @property int $status
  */
-class ArObjectModel extends AdminModel
+class ArModel extends AdminModel
 {
     protected $connection = 'admin';
-    public $table = 'ar_object';
+    public $table = 'ar';
 
     public $cast = [
         'time_periods' => 'array',

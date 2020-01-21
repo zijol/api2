@@ -10,7 +10,7 @@ namespace App\Objects\ModelObjects;
 
 use App\Enums\DataTypeEnum;
 
-class ArObjectItemObject extends ArObjectObject
+class ArItemObject extends ArObject
 {
     protected $_objectKeys = [
         'method' => [

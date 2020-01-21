@@ -11,8 +11,8 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Modify\PostArRequest;
 use App\Http\Requests\QueryList\ListArRequest;
-use App\Models\Admin\ArObjectModel;
-use App\Objects\ModelObjects\ArObjectListObject;
+use App\Models\Admin\ArModel;
+use App\Objects\ModelObjects\ArListObject;
 use App\Objects\PaginationObjects\PaginateDataObject;
 
 class ArController extends Controller
@@ -38,7 +38,7 @@ class ArController extends Controller
         $data['periods'] = empty($periods) ? [date('Y-m-d H:i:s', $time)] : $periods;
         $data['time_periods'] = json_encode($data['periods']);
         $data['next_time'] = $data['periods'][0];
-        (new ArObjectModel($data))->save();
+        (new ArModel($data))->save();
 
         return $this->JsonResponse(true);
     }
@@ -50,10 +50,10 @@ class ArController extends Controller
     public function list(ListArRequest $request)
     {
         $paginate = $this->getPaginate($request);
-        $query = ArObjectModel::query();
+        $query = ArModel::query();
         $paginate->total = $query->count();
         $list = $query->forPage($paginate->page, $paginate->per_page)->get();
-        $paginateDataObject = PaginateDataObject::initWithPaginate($paginate, new ArObjectListObject($list));
+        $paginateDataObject = PaginateDataObject::initWithPaginate($paginate, new ArListObject($list));
         return $this->JsonResponse($paginateDataObject);
     }
 }

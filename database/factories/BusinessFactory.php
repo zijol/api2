@@ -43,7 +43,7 @@ $factory->define(
 
 
 $factory->define(
-    App\Models\Admin\ArObjectModel::class,
+    App\Models\Admin\ArModel::class,
     function (Faker $faker) {
         return [
             'type' => $faker->randomElement([0, 1, 2]),

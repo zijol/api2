@@ -16,7 +16,7 @@ use App\Objects\SimpleObject;
  * 简单对象
  * @package App\Objects\ModelObjects
  */
-class ArObjectObject extends SimpleObject
+class ArObject extends SimpleObject
 {
     /**
      * @var array 对象的属性&类型定义

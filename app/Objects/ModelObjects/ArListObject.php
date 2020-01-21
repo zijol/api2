@@ -15,10 +15,10 @@ use App\Objects\ListObject;
  * ListObject 对象
  * @package App\Objects\ModelObjects
  */
-class ArObjectListObject extends ListObject
+class ArListObject extends ListObject
 {
     /**
      * @var string 指定Item的类型类 eg. AnyItemObject::class
      */
-    protected $itemClass = ArObjectItemObject::class;
+    protected $itemClass = ArItemObject::class;
 }
