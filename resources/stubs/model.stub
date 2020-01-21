@@ -1,0 +1,36 @@
+<?php
+
+namespace DummyNamespace;
+
+/**
+ * Class DummyClass
+ * @package DummyNamespace
+ */
+class DummyClass extends BaseCache
+{
+    /**
+     * @var string 缓存键名称
+     */
+    const CACHE_NAME = 'DummyClass';
+}
+
+
+<?php
+namespace DummyNamespace;
+
+/**
+ * Class DummyClass
+ * @package DummyNamespace
+ */
+class DummyClass extends AdminModel
+{
+    protected $connection = 'admin';
+    public $table = 'DummyNameOriginal';
+
+    public $cast = [
+    ];
+
+    protected $fillable = [
+        //
+    ];
+}
