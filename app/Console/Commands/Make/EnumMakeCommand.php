@@ -11,7 +11,7 @@ class EnumMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'make:enum';
+    protected $name = 'zmake:enum';
 
     /**
      * The console command description.

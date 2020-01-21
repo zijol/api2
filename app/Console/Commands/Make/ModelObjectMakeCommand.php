@@ -11,7 +11,7 @@ class ModelObjectMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'make:model_object';
+    protected $name = 'zmake:model_object';
 
     /**
      * The console command description.

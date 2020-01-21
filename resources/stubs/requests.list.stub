@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Requests\QueryList;
+namespace DummyNamespace;
 
 use App\Http\Requests\BaseRequest;
 
 /**
- * Class ListArRequest
- * @package App\Http\Requests\QueryList
+ * Class DummyClass
+ * @package DummyNamespace
  */
-class ListArRequest extends BaseRequest
+class DummyClass extends BaseRequest
 {
     /**
      * @return array
