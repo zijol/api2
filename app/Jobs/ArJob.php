@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Enums\RequestMethodEnum;
 use App\Services\Http\HttpClient;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -36,16 +37,16 @@ class ArJob implements ShouldQueue
 
         $data = is_array($this->arEvent['data']) ? $this->arEvent['data'] : [];
         switch (strtoupper($this->arEvent['method'])) {
-            case "GET":
+            case RequestMethodEnum::GET:
                 $httpClient->get($this->arEvent['url'], $data);
                 break;
-            case "POST":
+            case RequestMethodEnum::POST:
                 $httpClient->post($this->arEvent['url'], $data);
                 break;
-            case "PUT":
+            case RequestMethodEnum::PUT:
                 $httpClient->put($this->arEvent['url'], $data);
                 break;
-            case "DELETE":
+            case RequestMethodEnum::DELETE:
                 $httpClient->put($this->arEvent['url'], $data);
                 break;
             default:
