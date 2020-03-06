@@ -8,7 +8,6 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Exceptions\AuthorizeException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\QueryList\ListCouponTemplateRequest;
 use App\Http\Requests\Modify\PostCouponTemplateRequest;
