@@ -5,8 +5,9 @@
  * Date: 19/2/26
  * Time: 18:01
  */
+namespace App\Exceptions\Common;
 
-namespace App\Exceptions;
+use App\Exceptions\CustomException;
 
 class UnauthorizedException extends CustomException
 {

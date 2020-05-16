@@ -1,14 +1,15 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: zjiol
- * Date: 2019-05-26
- * Time: 13:28
+ * User: ping123
+ * Date: 19/2/26
+ * Time: 17:59
  */
+namespace App\Exceptions\Common;
 
-namespace App\Exceptions;
+use App\Exceptions\CustomException;
 
-class ValidatorException extends CustomException
+class InvalidArgumentException extends CustomException
 {
     public $httpCode = 400;
     public $customType = 'invalid_parameters';

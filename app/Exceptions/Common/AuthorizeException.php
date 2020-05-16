@@ -5,8 +5,9 @@
  * Date: 2019-05-26
  * Time: 13:28
  */
+namespace App\Exceptions\Common;
 
-namespace App\Exceptions;
+use App\Exceptions\CustomException;
 
 class AuthorizeException extends CustomException
 {

@@ -5,10 +5,11 @@
  * Date: 2019-05-26
  * Time: 13:28
  */
+namespace App\Exceptions\HttpCodes;
 
-namespace App\Exceptions;
+use App\Exceptions\CustomException;
 
-class ForbiddenException extends CustomException
+class Exception403 extends CustomException
 {
     public $httpCode = 403;
     public $customType = 'invite_forbidden';
